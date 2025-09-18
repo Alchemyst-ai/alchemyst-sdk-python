@@ -18,17 +18,12 @@ import pytest
 from respx import MockRouter
 from pydantic import ValidationError
 
-from alchemyst_ai_sdk_2 import AlchemystAISDK2, AsyncAlchemystAISDK2, APIResponseValidationError
-from alchemyst_ai_sdk_2._types import Omit
-from alchemyst_ai_sdk_2._utils import asyncify
-from alchemyst_ai_sdk_2._models import BaseModel, FinalRequestOptions
-from alchemyst_ai_sdk_2._exceptions import (
-    APIStatusError,
-    APITimeoutError,
-    AlchemystAisdk2Error,
-    APIResponseValidationError,
-)
-from alchemyst_ai_sdk_2._base_client import (
+from alchemyst_ai import AlchemystAI, AsyncAlchemystAI, APIResponseValidationError
+from alchemyst_ai._types import Omit
+from alchemyst_ai._utils import asyncify
+from alchemyst_ai._models import BaseModel, FinalRequestOptions
+from alchemyst_ai._exceptions import APIStatusError, APITimeoutError, AlchemystAIError, APIResponseValidationError
+from alchemyst_ai._base_client import (
     DEFAULT_TIMEOUT,
     HTTPX_DEFAULT_TIMEOUT,
     BaseClient,
@@ -55,7 +50,7 @@ def _low_retry_timeout(*_args: Any, **_kwargs: Any) -> float:
     return 0.1
 
 
-def _get_open_connections(client: AlchemystAISDK2 | AsyncAlchemystAISDK2) -> int:
+def _get_open_connections(client: AlchemystAI | AsyncAlchemystAI) -> int:
     transport = client._client._transport
     assert isinstance(transport, httpx.HTTPTransport) or isinstance(transport, httpx.AsyncHTTPTransport)
 
@@ -63,8 +58,8 @@ def _get_open_connections(client: AlchemystAISDK2 | AsyncAlchemystAISDK2) -> int
     return len(pool._requests)
 
 
-class TestAlchemystAisdk2:
-    client = AlchemystAISDK2(base_url=base_url, api_key=api_key, _strict_response_validation=True)
+class TestAlchemystAI:
+    client = AlchemystAI(base_url=base_url, api_key=api_key, _strict_response_validation=True)
 
     @pytest.mark.respx(base_url=base_url)
     def test_raw_response(self, respx_mock: MockRouter) -> None:
@@ -111,7 +106,7 @@ class TestAlchemystAisdk2:
         assert isinstance(self.client.timeout, httpx.Timeout)
 
     def test_copy_default_headers(self) -> None:
-        client = AlchemystAISDK2(
+        client = AlchemystAI(
             base_url=base_url, api_key=api_key, _strict_response_validation=True, default_headers={"X-Foo": "bar"}
         )
         assert client.default_headers["X-Foo"] == "bar"
@@ -145,7 +140,7 @@ class TestAlchemystAisdk2:
             client.copy(set_default_headers={}, default_headers={"X-Foo": "Bar"})
 
     def test_copy_default_query(self) -> None:
-        client = AlchemystAISDK2(
+        client = AlchemystAI(
             base_url=base_url, api_key=api_key, _strict_response_validation=True, default_query={"foo": "bar"}
         )
         assert _get_params(client)["foo"] == "bar"
@@ -237,10 +232,10 @@ class TestAlchemystAisdk2:
                         # to_raw_response_wrapper leaks through the @functools.wraps() decorator.
                         #
                         # removing the decorator fixes the leak for reasons we don't understand.
-                        "alchemyst_ai_sdk_2/_legacy_response.py",
-                        "alchemyst_ai_sdk_2/_response.py",
+                        "alchemyst_ai/_legacy_response.py",
+                        "alchemyst_ai/_response.py",
                         # pydantic.BaseModel.model_dump || pydantic.BaseModel.dict leak memory for some reason.
-                        "alchemyst_ai_sdk_2/_compat.py",
+                        "alchemyst_ai/_compat.py",
                         # Standard library leaks we don't care about.
                         "/logging/__init__.py",
                     ]
@@ -271,7 +266,7 @@ class TestAlchemystAisdk2:
         assert timeout == httpx.Timeout(100.0)
 
     def test_client_timeout_option(self) -> None:
-        client = AlchemystAISDK2(
+        client = AlchemystAI(
             base_url=base_url, api_key=api_key, _strict_response_validation=True, timeout=httpx.Timeout(0)
         )
 
@@ -282,7 +277,7 @@ class TestAlchemystAisdk2:
     def test_http_client_timeout_option(self) -> None:
         # custom timeout given to the httpx client should be used
         with httpx.Client(timeout=None) as http_client:
-            client = AlchemystAISDK2(
+            client = AlchemystAI(
                 base_url=base_url, api_key=api_key, _strict_response_validation=True, http_client=http_client
             )
 
@@ -292,7 +287,7 @@ class TestAlchemystAisdk2:
 
         # no timeout given to the httpx client should not use the httpx default
         with httpx.Client() as http_client:
-            client = AlchemystAISDK2(
+            client = AlchemystAI(
                 base_url=base_url, api_key=api_key, _strict_response_validation=True, http_client=http_client
             )
 
@@ -302,7 +297,7 @@ class TestAlchemystAisdk2:
 
         # explicitly passing the default timeout currently results in it being ignored
         with httpx.Client(timeout=HTTPX_DEFAULT_TIMEOUT) as http_client:
-            client = AlchemystAISDK2(
+            client = AlchemystAI(
                 base_url=base_url, api_key=api_key, _strict_response_validation=True, http_client=http_client
             )
 
@@ -313,7 +308,7 @@ class TestAlchemystAisdk2:
     async def test_invalid_http_client(self) -> None:
         with pytest.raises(TypeError, match="Invalid `http_client` arg"):
             async with httpx.AsyncClient() as http_client:
-                AlchemystAISDK2(
+                AlchemystAI(
                     base_url=base_url,
                     api_key=api_key,
                     _strict_response_validation=True,
@@ -321,14 +316,14 @@ class TestAlchemystAisdk2:
                 )
 
     def test_default_headers_option(self) -> None:
-        client = AlchemystAISDK2(
+        client = AlchemystAI(
             base_url=base_url, api_key=api_key, _strict_response_validation=True, default_headers={"X-Foo": "bar"}
         )
         request = client._build_request(FinalRequestOptions(method="get", url="/foo"))
         assert request.headers.get("x-foo") == "bar"
         assert request.headers.get("x-stainless-lang") == "python"
 
-        client2 = AlchemystAISDK2(
+        client2 = AlchemystAI(
             base_url=base_url,
             api_key=api_key,
             _strict_response_validation=True,
@@ -342,17 +337,17 @@ class TestAlchemystAisdk2:
         assert request.headers.get("x-stainless-lang") == "my-overriding-header"
 
     def test_validate_headers(self) -> None:
-        client = AlchemystAISDK2(base_url=base_url, api_key=api_key, _strict_response_validation=True)
+        client = AlchemystAI(base_url=base_url, api_key=api_key, _strict_response_validation=True)
         request = client._build_request(FinalRequestOptions(method="get", url="/foo"))
         assert request.headers.get("Authorization") == f"Bearer {api_key}"
 
-        with pytest.raises(AlchemystAisdk2Error):
-            with update_env(**{"ALCHEMYST_AI_SDK_2_API_KEY": Omit()}):
-                client2 = AlchemystAISDK2(base_url=base_url, api_key=None, _strict_response_validation=True)
+        with pytest.raises(AlchemystAIError):
+            with update_env(**{"ALCHEMYST_AI_API_KEY": Omit()}):
+                client2 = AlchemystAI(base_url=base_url, api_key=None, _strict_response_validation=True)
             _ = client2
 
     def test_default_query_option(self) -> None:
-        client = AlchemystAISDK2(
+        client = AlchemystAI(
             base_url=base_url, api_key=api_key, _strict_response_validation=True, default_query={"query_param": "bar"}
         )
         request = client._build_request(FinalRequestOptions(method="get", url="/foo"))
@@ -466,7 +461,7 @@ class TestAlchemystAisdk2:
         params = dict(request.url.params)
         assert params == {"foo": "2"}
 
-    def test_multipart_repeating_array(self, client: AlchemystAISDK2) -> None:
+    def test_multipart_repeating_array(self, client: AlchemystAI) -> None:
         request = client._build_request(
             FinalRequestOptions.construct(
                 method="post",
@@ -553,7 +548,7 @@ class TestAlchemystAisdk2:
         assert response.foo == 2
 
     def test_base_url_setter(self) -> None:
-        client = AlchemystAISDK2(
+        client = AlchemystAI(
             base_url="https://example.com/from_init", api_key=api_key, _strict_response_validation=True
         )
         assert client.base_url == "https://example.com/from_init/"
@@ -563,17 +558,17 @@ class TestAlchemystAisdk2:
         assert client.base_url == "https://example.com/from_setter/"
 
     def test_base_url_env(self) -> None:
-        with update_env(ALCHEMYST_AI_SDK_2_BASE_URL="http://localhost:5000/from/env"):
-            client = AlchemystAISDK2(api_key=api_key, _strict_response_validation=True)
+        with update_env(ALCHEMYST_AI_BASE_URL="http://localhost:5000/from/env"):
+            client = AlchemystAI(api_key=api_key, _strict_response_validation=True)
             assert client.base_url == "http://localhost:5000/from/env/"
 
     @pytest.mark.parametrize(
         "client",
         [
-            AlchemystAISDK2(
+            AlchemystAI(
                 base_url="http://localhost:5000/custom/path/", api_key=api_key, _strict_response_validation=True
             ),
-            AlchemystAISDK2(
+            AlchemystAI(
                 base_url="http://localhost:5000/custom/path/",
                 api_key=api_key,
                 _strict_response_validation=True,
@@ -582,7 +577,7 @@ class TestAlchemystAisdk2:
         ],
         ids=["standard", "custom http client"],
     )
-    def test_base_url_trailing_slash(self, client: AlchemystAISDK2) -> None:
+    def test_base_url_trailing_slash(self, client: AlchemystAI) -> None:
         request = client._build_request(
             FinalRequestOptions(
                 method="post",
@@ -595,10 +590,10 @@ class TestAlchemystAisdk2:
     @pytest.mark.parametrize(
         "client",
         [
-            AlchemystAISDK2(
+            AlchemystAI(
                 base_url="http://localhost:5000/custom/path/", api_key=api_key, _strict_response_validation=True
             ),
-            AlchemystAISDK2(
+            AlchemystAI(
                 base_url="http://localhost:5000/custom/path/",
                 api_key=api_key,
                 _strict_response_validation=True,
@@ -607,7 +602,7 @@ class TestAlchemystAisdk2:
         ],
         ids=["standard", "custom http client"],
     )
-    def test_base_url_no_trailing_slash(self, client: AlchemystAISDK2) -> None:
+    def test_base_url_no_trailing_slash(self, client: AlchemystAI) -> None:
         request = client._build_request(
             FinalRequestOptions(
                 method="post",
@@ -620,10 +615,10 @@ class TestAlchemystAisdk2:
     @pytest.mark.parametrize(
         "client",
         [
-            AlchemystAISDK2(
+            AlchemystAI(
                 base_url="http://localhost:5000/custom/path/", api_key=api_key, _strict_response_validation=True
             ),
-            AlchemystAISDK2(
+            AlchemystAI(
                 base_url="http://localhost:5000/custom/path/",
                 api_key=api_key,
                 _strict_response_validation=True,
@@ -632,7 +627,7 @@ class TestAlchemystAisdk2:
         ],
         ids=["standard", "custom http client"],
     )
-    def test_absolute_request_url(self, client: AlchemystAISDK2) -> None:
+    def test_absolute_request_url(self, client: AlchemystAI) -> None:
         request = client._build_request(
             FinalRequestOptions(
                 method="post",
@@ -643,7 +638,7 @@ class TestAlchemystAisdk2:
         assert request.url == "https://myapi.com/foo"
 
     def test_copied_client_does_not_close_http(self) -> None:
-        client = AlchemystAISDK2(base_url=base_url, api_key=api_key, _strict_response_validation=True)
+        client = AlchemystAI(base_url=base_url, api_key=api_key, _strict_response_validation=True)
         assert not client.is_closed()
 
         copied = client.copy()
@@ -654,7 +649,7 @@ class TestAlchemystAisdk2:
         assert not client.is_closed()
 
     def test_client_context_manager(self) -> None:
-        client = AlchemystAISDK2(base_url=base_url, api_key=api_key, _strict_response_validation=True)
+        client = AlchemystAI(base_url=base_url, api_key=api_key, _strict_response_validation=True)
         with client as c2:
             assert c2 is client
             assert not c2.is_closed()
@@ -675,7 +670,7 @@ class TestAlchemystAisdk2:
 
     def test_client_max_retries_validation(self) -> None:
         with pytest.raises(TypeError, match=r"max_retries cannot be None"):
-            AlchemystAISDK2(
+            AlchemystAI(
                 base_url=base_url, api_key=api_key, _strict_response_validation=True, max_retries=cast(Any, None)
             )
 
@@ -686,12 +681,12 @@ class TestAlchemystAisdk2:
 
         respx_mock.get("/foo").mock(return_value=httpx.Response(200, text="my-custom-format"))
 
-        strict_client = AlchemystAISDK2(base_url=base_url, api_key=api_key, _strict_response_validation=True)
+        strict_client = AlchemystAI(base_url=base_url, api_key=api_key, _strict_response_validation=True)
 
         with pytest.raises(APIResponseValidationError):
             strict_client.get("/foo", cast_to=Model)
 
-        client = AlchemystAISDK2(base_url=base_url, api_key=api_key, _strict_response_validation=False)
+        client = AlchemystAI(base_url=base_url, api_key=api_key, _strict_response_validation=False)
 
         response = client.get("/foo", cast_to=Model)
         assert isinstance(response, str)  # type: ignore[unreachable]
@@ -719,16 +714,16 @@ class TestAlchemystAisdk2:
     )
     @mock.patch("time.time", mock.MagicMock(return_value=1696004797))
     def test_parse_retry_after_header(self, remaining_retries: int, retry_after: str, timeout: float) -> None:
-        client = AlchemystAISDK2(base_url=base_url, api_key=api_key, _strict_response_validation=True)
+        client = AlchemystAI(base_url=base_url, api_key=api_key, _strict_response_validation=True)
 
         headers = httpx.Headers({"retry-after": retry_after})
         options = FinalRequestOptions(method="get", url="/foo", max_retries=3)
         calculated = client._calculate_retry_timeout(remaining_retries, options, headers)
         assert calculated == pytest.approx(timeout, 0.5 * 0.875)  # pyright: ignore[reportUnknownMemberType]
 
-    @mock.patch("alchemyst_ai_sdk_2._base_client.BaseClient._calculate_retry_timeout", _low_retry_timeout)
+    @mock.patch("alchemyst_ai._base_client.BaseClient._calculate_retry_timeout", _low_retry_timeout)
     @pytest.mark.respx(base_url=base_url)
-    def test_retrying_timeout_errors_doesnt_leak(self, respx_mock: MockRouter, client: AlchemystAISDK2) -> None:
+    def test_retrying_timeout_errors_doesnt_leak(self, respx_mock: MockRouter, client: AlchemystAI) -> None:
         respx_mock.post("/api/v1/context/add").mock(side_effect=httpx.TimeoutException("Test timeout error"))
 
         with pytest.raises(APITimeoutError):
@@ -736,9 +731,9 @@ class TestAlchemystAisdk2:
 
         assert _get_open_connections(self.client) == 0
 
-    @mock.patch("alchemyst_ai_sdk_2._base_client.BaseClient._calculate_retry_timeout", _low_retry_timeout)
+    @mock.patch("alchemyst_ai._base_client.BaseClient._calculate_retry_timeout", _low_retry_timeout)
     @pytest.mark.respx(base_url=base_url)
-    def test_retrying_status_errors_doesnt_leak(self, respx_mock: MockRouter, client: AlchemystAISDK2) -> None:
+    def test_retrying_status_errors_doesnt_leak(self, respx_mock: MockRouter, client: AlchemystAI) -> None:
         respx_mock.post("/api/v1/context/add").mock(return_value=httpx.Response(500))
 
         with pytest.raises(APIStatusError):
@@ -746,12 +741,12 @@ class TestAlchemystAisdk2:
         assert _get_open_connections(self.client) == 0
 
     @pytest.mark.parametrize("failures_before_success", [0, 2, 4])
-    @mock.patch("alchemyst_ai_sdk_2._base_client.BaseClient._calculate_retry_timeout", _low_retry_timeout)
+    @mock.patch("alchemyst_ai._base_client.BaseClient._calculate_retry_timeout", _low_retry_timeout)
     @pytest.mark.respx(base_url=base_url)
     @pytest.mark.parametrize("failure_mode", ["status", "exception"])
     def test_retries_taken(
         self,
-        client: AlchemystAISDK2,
+        client: AlchemystAI,
         failures_before_success: int,
         failure_mode: Literal["status", "exception"],
         respx_mock: MockRouter,
@@ -777,10 +772,10 @@ class TestAlchemystAisdk2:
         assert int(response.http_request.headers.get("x-stainless-retry-count")) == failures_before_success
 
     @pytest.mark.parametrize("failures_before_success", [0, 2, 4])
-    @mock.patch("alchemyst_ai_sdk_2._base_client.BaseClient._calculate_retry_timeout", _low_retry_timeout)
+    @mock.patch("alchemyst_ai._base_client.BaseClient._calculate_retry_timeout", _low_retry_timeout)
     @pytest.mark.respx(base_url=base_url)
     def test_omit_retry_count_header(
-        self, client: AlchemystAISDK2, failures_before_success: int, respx_mock: MockRouter
+        self, client: AlchemystAI, failures_before_success: int, respx_mock: MockRouter
     ) -> None:
         client = client.with_options(max_retries=4)
 
@@ -800,10 +795,10 @@ class TestAlchemystAisdk2:
         assert len(response.http_request.headers.get_list("x-stainless-retry-count")) == 0
 
     @pytest.mark.parametrize("failures_before_success", [0, 2, 4])
-    @mock.patch("alchemyst_ai_sdk_2._base_client.BaseClient._calculate_retry_timeout", _low_retry_timeout)
+    @mock.patch("alchemyst_ai._base_client.BaseClient._calculate_retry_timeout", _low_retry_timeout)
     @pytest.mark.respx(base_url=base_url)
     def test_overwrite_retry_count_header(
-        self, client: AlchemystAISDK2, failures_before_success: int, respx_mock: MockRouter
+        self, client: AlchemystAI, failures_before_success: int, respx_mock: MockRouter
     ) -> None:
         client = client.with_options(max_retries=4)
 
@@ -872,8 +867,8 @@ class TestAlchemystAisdk2:
         assert exc_info.value.response.headers["Location"] == f"{base_url}/redirected"
 
 
-class TestAsyncAlchemystAisdk2:
-    client = AsyncAlchemystAISDK2(base_url=base_url, api_key=api_key, _strict_response_validation=True)
+class TestAsyncAlchemystAI:
+    client = AsyncAlchemystAI(base_url=base_url, api_key=api_key, _strict_response_validation=True)
 
     @pytest.mark.respx(base_url=base_url)
     @pytest.mark.asyncio
@@ -922,7 +917,7 @@ class TestAsyncAlchemystAisdk2:
         assert isinstance(self.client.timeout, httpx.Timeout)
 
     def test_copy_default_headers(self) -> None:
-        client = AsyncAlchemystAISDK2(
+        client = AsyncAlchemystAI(
             base_url=base_url, api_key=api_key, _strict_response_validation=True, default_headers={"X-Foo": "bar"}
         )
         assert client.default_headers["X-Foo"] == "bar"
@@ -956,7 +951,7 @@ class TestAsyncAlchemystAisdk2:
             client.copy(set_default_headers={}, default_headers={"X-Foo": "Bar"})
 
     def test_copy_default_query(self) -> None:
-        client = AsyncAlchemystAISDK2(
+        client = AsyncAlchemystAI(
             base_url=base_url, api_key=api_key, _strict_response_validation=True, default_query={"foo": "bar"}
         )
         assert _get_params(client)["foo"] == "bar"
@@ -1048,10 +1043,10 @@ class TestAsyncAlchemystAisdk2:
                         # to_raw_response_wrapper leaks through the @functools.wraps() decorator.
                         #
                         # removing the decorator fixes the leak for reasons we don't understand.
-                        "alchemyst_ai_sdk_2/_legacy_response.py",
-                        "alchemyst_ai_sdk_2/_response.py",
+                        "alchemyst_ai/_legacy_response.py",
+                        "alchemyst_ai/_response.py",
                         # pydantic.BaseModel.model_dump || pydantic.BaseModel.dict leak memory for some reason.
-                        "alchemyst_ai_sdk_2/_compat.py",
+                        "alchemyst_ai/_compat.py",
                         # Standard library leaks we don't care about.
                         "/logging/__init__.py",
                     ]
@@ -1082,7 +1077,7 @@ class TestAsyncAlchemystAisdk2:
         assert timeout == httpx.Timeout(100.0)
 
     async def test_client_timeout_option(self) -> None:
-        client = AsyncAlchemystAISDK2(
+        client = AsyncAlchemystAI(
             base_url=base_url, api_key=api_key, _strict_response_validation=True, timeout=httpx.Timeout(0)
         )
 
@@ -1093,7 +1088,7 @@ class TestAsyncAlchemystAisdk2:
     async def test_http_client_timeout_option(self) -> None:
         # custom timeout given to the httpx client should be used
         async with httpx.AsyncClient(timeout=None) as http_client:
-            client = AsyncAlchemystAISDK2(
+            client = AsyncAlchemystAI(
                 base_url=base_url, api_key=api_key, _strict_response_validation=True, http_client=http_client
             )
 
@@ -1103,7 +1098,7 @@ class TestAsyncAlchemystAisdk2:
 
         # no timeout given to the httpx client should not use the httpx default
         async with httpx.AsyncClient() as http_client:
-            client = AsyncAlchemystAISDK2(
+            client = AsyncAlchemystAI(
                 base_url=base_url, api_key=api_key, _strict_response_validation=True, http_client=http_client
             )
 
@@ -1113,7 +1108,7 @@ class TestAsyncAlchemystAisdk2:
 
         # explicitly passing the default timeout currently results in it being ignored
         async with httpx.AsyncClient(timeout=HTTPX_DEFAULT_TIMEOUT) as http_client:
-            client = AsyncAlchemystAISDK2(
+            client = AsyncAlchemystAI(
                 base_url=base_url, api_key=api_key, _strict_response_validation=True, http_client=http_client
             )
 
@@ -1124,7 +1119,7 @@ class TestAsyncAlchemystAisdk2:
     def test_invalid_http_client(self) -> None:
         with pytest.raises(TypeError, match="Invalid `http_client` arg"):
             with httpx.Client() as http_client:
-                AsyncAlchemystAISDK2(
+                AsyncAlchemystAI(
                     base_url=base_url,
                     api_key=api_key,
                     _strict_response_validation=True,
@@ -1132,14 +1127,14 @@ class TestAsyncAlchemystAisdk2:
                 )
 
     def test_default_headers_option(self) -> None:
-        client = AsyncAlchemystAISDK2(
+        client = AsyncAlchemystAI(
             base_url=base_url, api_key=api_key, _strict_response_validation=True, default_headers={"X-Foo": "bar"}
         )
         request = client._build_request(FinalRequestOptions(method="get", url="/foo"))
         assert request.headers.get("x-foo") == "bar"
         assert request.headers.get("x-stainless-lang") == "python"
 
-        client2 = AsyncAlchemystAISDK2(
+        client2 = AsyncAlchemystAI(
             base_url=base_url,
             api_key=api_key,
             _strict_response_validation=True,
@@ -1153,17 +1148,17 @@ class TestAsyncAlchemystAisdk2:
         assert request.headers.get("x-stainless-lang") == "my-overriding-header"
 
     def test_validate_headers(self) -> None:
-        client = AsyncAlchemystAISDK2(base_url=base_url, api_key=api_key, _strict_response_validation=True)
+        client = AsyncAlchemystAI(base_url=base_url, api_key=api_key, _strict_response_validation=True)
         request = client._build_request(FinalRequestOptions(method="get", url="/foo"))
         assert request.headers.get("Authorization") == f"Bearer {api_key}"
 
-        with pytest.raises(AlchemystAisdk2Error):
-            with update_env(**{"ALCHEMYST_AI_SDK_2_API_KEY": Omit()}):
-                client2 = AsyncAlchemystAISDK2(base_url=base_url, api_key=None, _strict_response_validation=True)
+        with pytest.raises(AlchemystAIError):
+            with update_env(**{"ALCHEMYST_AI_API_KEY": Omit()}):
+                client2 = AsyncAlchemystAI(base_url=base_url, api_key=None, _strict_response_validation=True)
             _ = client2
 
     def test_default_query_option(self) -> None:
-        client = AsyncAlchemystAISDK2(
+        client = AsyncAlchemystAI(
             base_url=base_url, api_key=api_key, _strict_response_validation=True, default_query={"query_param": "bar"}
         )
         request = client._build_request(FinalRequestOptions(method="get", url="/foo"))
@@ -1277,7 +1272,7 @@ class TestAsyncAlchemystAisdk2:
         params = dict(request.url.params)
         assert params == {"foo": "2"}
 
-    def test_multipart_repeating_array(self, async_client: AsyncAlchemystAISDK2) -> None:
+    def test_multipart_repeating_array(self, async_client: AsyncAlchemystAI) -> None:
         request = async_client._build_request(
             FinalRequestOptions.construct(
                 method="post",
@@ -1364,7 +1359,7 @@ class TestAsyncAlchemystAisdk2:
         assert response.foo == 2
 
     def test_base_url_setter(self) -> None:
-        client = AsyncAlchemystAISDK2(
+        client = AsyncAlchemystAI(
             base_url="https://example.com/from_init", api_key=api_key, _strict_response_validation=True
         )
         assert client.base_url == "https://example.com/from_init/"
@@ -1374,17 +1369,17 @@ class TestAsyncAlchemystAisdk2:
         assert client.base_url == "https://example.com/from_setter/"
 
     def test_base_url_env(self) -> None:
-        with update_env(ALCHEMYST_AI_SDK_2_BASE_URL="http://localhost:5000/from/env"):
-            client = AsyncAlchemystAISDK2(api_key=api_key, _strict_response_validation=True)
+        with update_env(ALCHEMYST_AI_BASE_URL="http://localhost:5000/from/env"):
+            client = AsyncAlchemystAI(api_key=api_key, _strict_response_validation=True)
             assert client.base_url == "http://localhost:5000/from/env/"
 
     @pytest.mark.parametrize(
         "client",
         [
-            AsyncAlchemystAISDK2(
+            AsyncAlchemystAI(
                 base_url="http://localhost:5000/custom/path/", api_key=api_key, _strict_response_validation=True
             ),
-            AsyncAlchemystAISDK2(
+            AsyncAlchemystAI(
                 base_url="http://localhost:5000/custom/path/",
                 api_key=api_key,
                 _strict_response_validation=True,
@@ -1393,7 +1388,7 @@ class TestAsyncAlchemystAisdk2:
         ],
         ids=["standard", "custom http client"],
     )
-    def test_base_url_trailing_slash(self, client: AsyncAlchemystAISDK2) -> None:
+    def test_base_url_trailing_slash(self, client: AsyncAlchemystAI) -> None:
         request = client._build_request(
             FinalRequestOptions(
                 method="post",
@@ -1406,10 +1401,10 @@ class TestAsyncAlchemystAisdk2:
     @pytest.mark.parametrize(
         "client",
         [
-            AsyncAlchemystAISDK2(
+            AsyncAlchemystAI(
                 base_url="http://localhost:5000/custom/path/", api_key=api_key, _strict_response_validation=True
             ),
-            AsyncAlchemystAISDK2(
+            AsyncAlchemystAI(
                 base_url="http://localhost:5000/custom/path/",
                 api_key=api_key,
                 _strict_response_validation=True,
@@ -1418,7 +1413,7 @@ class TestAsyncAlchemystAisdk2:
         ],
         ids=["standard", "custom http client"],
     )
-    def test_base_url_no_trailing_slash(self, client: AsyncAlchemystAISDK2) -> None:
+    def test_base_url_no_trailing_slash(self, client: AsyncAlchemystAI) -> None:
         request = client._build_request(
             FinalRequestOptions(
                 method="post",
@@ -1431,10 +1426,10 @@ class TestAsyncAlchemystAisdk2:
     @pytest.mark.parametrize(
         "client",
         [
-            AsyncAlchemystAISDK2(
+            AsyncAlchemystAI(
                 base_url="http://localhost:5000/custom/path/", api_key=api_key, _strict_response_validation=True
             ),
-            AsyncAlchemystAISDK2(
+            AsyncAlchemystAI(
                 base_url="http://localhost:5000/custom/path/",
                 api_key=api_key,
                 _strict_response_validation=True,
@@ -1443,7 +1438,7 @@ class TestAsyncAlchemystAisdk2:
         ],
         ids=["standard", "custom http client"],
     )
-    def test_absolute_request_url(self, client: AsyncAlchemystAISDK2) -> None:
+    def test_absolute_request_url(self, client: AsyncAlchemystAI) -> None:
         request = client._build_request(
             FinalRequestOptions(
                 method="post",
@@ -1454,7 +1449,7 @@ class TestAsyncAlchemystAisdk2:
         assert request.url == "https://myapi.com/foo"
 
     async def test_copied_client_does_not_close_http(self) -> None:
-        client = AsyncAlchemystAISDK2(base_url=base_url, api_key=api_key, _strict_response_validation=True)
+        client = AsyncAlchemystAI(base_url=base_url, api_key=api_key, _strict_response_validation=True)
         assert not client.is_closed()
 
         copied = client.copy()
@@ -1466,7 +1461,7 @@ class TestAsyncAlchemystAisdk2:
         assert not client.is_closed()
 
     async def test_client_context_manager(self) -> None:
-        client = AsyncAlchemystAISDK2(base_url=base_url, api_key=api_key, _strict_response_validation=True)
+        client = AsyncAlchemystAI(base_url=base_url, api_key=api_key, _strict_response_validation=True)
         async with client as c2:
             assert c2 is client
             assert not c2.is_closed()
@@ -1488,7 +1483,7 @@ class TestAsyncAlchemystAisdk2:
 
     async def test_client_max_retries_validation(self) -> None:
         with pytest.raises(TypeError, match=r"max_retries cannot be None"):
-            AsyncAlchemystAISDK2(
+            AsyncAlchemystAI(
                 base_url=base_url, api_key=api_key, _strict_response_validation=True, max_retries=cast(Any, None)
             )
 
@@ -1500,12 +1495,12 @@ class TestAsyncAlchemystAisdk2:
 
         respx_mock.get("/foo").mock(return_value=httpx.Response(200, text="my-custom-format"))
 
-        strict_client = AsyncAlchemystAISDK2(base_url=base_url, api_key=api_key, _strict_response_validation=True)
+        strict_client = AsyncAlchemystAI(base_url=base_url, api_key=api_key, _strict_response_validation=True)
 
         with pytest.raises(APIResponseValidationError):
             await strict_client.get("/foo", cast_to=Model)
 
-        client = AsyncAlchemystAISDK2(base_url=base_url, api_key=api_key, _strict_response_validation=False)
+        client = AsyncAlchemystAI(base_url=base_url, api_key=api_key, _strict_response_validation=False)
 
         response = await client.get("/foo", cast_to=Model)
         assert isinstance(response, str)  # type: ignore[unreachable]
@@ -1534,17 +1529,17 @@ class TestAsyncAlchemystAisdk2:
     @mock.patch("time.time", mock.MagicMock(return_value=1696004797))
     @pytest.mark.asyncio
     async def test_parse_retry_after_header(self, remaining_retries: int, retry_after: str, timeout: float) -> None:
-        client = AsyncAlchemystAISDK2(base_url=base_url, api_key=api_key, _strict_response_validation=True)
+        client = AsyncAlchemystAI(base_url=base_url, api_key=api_key, _strict_response_validation=True)
 
         headers = httpx.Headers({"retry-after": retry_after})
         options = FinalRequestOptions(method="get", url="/foo", max_retries=3)
         calculated = client._calculate_retry_timeout(remaining_retries, options, headers)
         assert calculated == pytest.approx(timeout, 0.5 * 0.875)  # pyright: ignore[reportUnknownMemberType]
 
-    @mock.patch("alchemyst_ai_sdk_2._base_client.BaseClient._calculate_retry_timeout", _low_retry_timeout)
+    @mock.patch("alchemyst_ai._base_client.BaseClient._calculate_retry_timeout", _low_retry_timeout)
     @pytest.mark.respx(base_url=base_url)
     async def test_retrying_timeout_errors_doesnt_leak(
-        self, respx_mock: MockRouter, async_client: AsyncAlchemystAISDK2
+        self, respx_mock: MockRouter, async_client: AsyncAlchemystAI
     ) -> None:
         respx_mock.post("/api/v1/context/add").mock(side_effect=httpx.TimeoutException("Test timeout error"))
 
@@ -1553,10 +1548,10 @@ class TestAsyncAlchemystAisdk2:
 
         assert _get_open_connections(self.client) == 0
 
-    @mock.patch("alchemyst_ai_sdk_2._base_client.BaseClient._calculate_retry_timeout", _low_retry_timeout)
+    @mock.patch("alchemyst_ai._base_client.BaseClient._calculate_retry_timeout", _low_retry_timeout)
     @pytest.mark.respx(base_url=base_url)
     async def test_retrying_status_errors_doesnt_leak(
-        self, respx_mock: MockRouter, async_client: AsyncAlchemystAISDK2
+        self, respx_mock: MockRouter, async_client: AsyncAlchemystAI
     ) -> None:
         respx_mock.post("/api/v1/context/add").mock(return_value=httpx.Response(500))
 
@@ -1565,13 +1560,13 @@ class TestAsyncAlchemystAisdk2:
         assert _get_open_connections(self.client) == 0
 
     @pytest.mark.parametrize("failures_before_success", [0, 2, 4])
-    @mock.patch("alchemyst_ai_sdk_2._base_client.BaseClient._calculate_retry_timeout", _low_retry_timeout)
+    @mock.patch("alchemyst_ai._base_client.BaseClient._calculate_retry_timeout", _low_retry_timeout)
     @pytest.mark.respx(base_url=base_url)
     @pytest.mark.asyncio
     @pytest.mark.parametrize("failure_mode", ["status", "exception"])
     async def test_retries_taken(
         self,
-        async_client: AsyncAlchemystAISDK2,
+        async_client: AsyncAlchemystAI,
         failures_before_success: int,
         failure_mode: Literal["status", "exception"],
         respx_mock: MockRouter,
@@ -1597,11 +1592,11 @@ class TestAsyncAlchemystAisdk2:
         assert int(response.http_request.headers.get("x-stainless-retry-count")) == failures_before_success
 
     @pytest.mark.parametrize("failures_before_success", [0, 2, 4])
-    @mock.patch("alchemyst_ai_sdk_2._base_client.BaseClient._calculate_retry_timeout", _low_retry_timeout)
+    @mock.patch("alchemyst_ai._base_client.BaseClient._calculate_retry_timeout", _low_retry_timeout)
     @pytest.mark.respx(base_url=base_url)
     @pytest.mark.asyncio
     async def test_omit_retry_count_header(
-        self, async_client: AsyncAlchemystAISDK2, failures_before_success: int, respx_mock: MockRouter
+        self, async_client: AsyncAlchemystAI, failures_before_success: int, respx_mock: MockRouter
     ) -> None:
         client = async_client.with_options(max_retries=4)
 
@@ -1621,11 +1616,11 @@ class TestAsyncAlchemystAisdk2:
         assert len(response.http_request.headers.get_list("x-stainless-retry-count")) == 0
 
     @pytest.mark.parametrize("failures_before_success", [0, 2, 4])
-    @mock.patch("alchemyst_ai_sdk_2._base_client.BaseClient._calculate_retry_timeout", _low_retry_timeout)
+    @mock.patch("alchemyst_ai._base_client.BaseClient._calculate_retry_timeout", _low_retry_timeout)
     @pytest.mark.respx(base_url=base_url)
     @pytest.mark.asyncio
     async def test_overwrite_retry_count_header(
-        self, async_client: AsyncAlchemystAISDK2, failures_before_success: int, respx_mock: MockRouter
+        self, async_client: AsyncAlchemystAI, failures_before_success: int, respx_mock: MockRouter
     ) -> None:
         client = async_client.with_options(max_retries=4)
 

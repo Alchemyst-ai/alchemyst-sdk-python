@@ -18,11 +18,11 @@ __all__ = [
 ]
 
 
-class AlchemystAisdk2Error(Exception):
+class AlchemystAIError(Exception):
     pass
 
 
-class APIError(AlchemystAisdk2Error):
+class APIError(AlchemystAIError):
     message: str
     request: httpx.Request
 

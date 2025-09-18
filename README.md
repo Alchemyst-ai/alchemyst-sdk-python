@@ -1,9 +1,9 @@
-# Alchemyst AI SDK 2 Python API library
+# Alchemyst AI Python API library
 
 <!-- prettier-ignore -->
 [![PyPI version](https://img.shields.io/pypi/v/alchemystai.svg?label=pypi%20(stable))](https://pypi.org/project/alchemystai/)
 
-The Alchemyst AI SDK 2 Python library provides convenient access to the Alchemyst AI SDK 2 REST API from any Python 3.8+
+The Alchemyst AI Python library provides convenient access to the Alchemyst AI REST API from any Python 3.8+
 application. The library includes type definitions for all request params and response fields,
 and offers both synchronous and asynchronous clients powered by [httpx](https://github.com/encode/httpx).
 
@@ -26,10 +26,10 @@ The full API of this library can be found in [api.md](api.md).
 
 ```python
 import os
-from alchemyst_ai_sdk_2 import AlchemystAISDK2
+from alchemyst_ai import AlchemystAI
 
-client = AlchemystAISDK2(
-    api_key=os.environ.get("ALCHEMYST_AI_SDK_2_API_KEY"),  # This is the default and can be omitted
+client = AlchemystAI(
+    api_key=os.environ.get("ALCHEMYST_AI_API_KEY"),  # This is the default and can be omitted
 )
 
 response = client.v1.context.add()
@@ -37,20 +37,20 @@ response = client.v1.context.add()
 
 While you can provide an `api_key` keyword argument,
 we recommend using [python-dotenv](https://pypi.org/project/python-dotenv/)
-to add `ALCHEMYST_AI_SDK_2_API_KEY="My API Key"` to your `.env` file
+to add `ALCHEMYST_AI_API_KEY="My API Key"` to your `.env` file
 so that your API Key is not stored in source control.
 
 ## Async usage
 
-Simply import `AsyncAlchemystAISDK2` instead of `AlchemystAISDK2` and use `await` with each API call:
+Simply import `AsyncAlchemystAI` instead of `AlchemystAI` and use `await` with each API call:
 
 ```python
 import os
 import asyncio
-from alchemyst_ai_sdk_2 import AsyncAlchemystAISDK2
+from alchemyst_ai import AsyncAlchemystAI
 
-client = AsyncAlchemystAISDK2(
-    api_key=os.environ.get("ALCHEMYST_AI_SDK_2_API_KEY"),  # This is the default and can be omitted
+client = AsyncAlchemystAI(
+    api_key=os.environ.get("ALCHEMYST_AI_API_KEY"),  # This is the default and can be omitted
 )
 
 
@@ -78,12 +78,12 @@ Then you can enable it by instantiating the client with `http_client=DefaultAioH
 
 ```python
 import asyncio
-from alchemyst_ai_sdk_2 import DefaultAioHttpClient
-from alchemyst_ai_sdk_2 import AsyncAlchemystAISDK2
+from alchemyst_ai import DefaultAioHttpClient
+from alchemyst_ai import AsyncAlchemystAI
 
 
 async def main() -> None:
-    async with AsyncAlchemystAISDK2(
+    async with AsyncAlchemystAI(
         api_key="My API Key",
         http_client=DefaultAioHttpClient(),
     ) as client:
@@ -107,9 +107,9 @@ Typed requests and responses provide autocomplete and documentation within your 
 Nested parameters are dictionaries, typed using `TypedDict`, for example:
 
 ```python
-from alchemyst_ai_sdk_2 import AlchemystAISDK2
+from alchemyst_ai import AlchemystAI
 
-client = AlchemystAISDK2()
+client = AlchemystAI()
 
 response = client.v1.context.add(
     metadata={},
@@ -119,27 +119,27 @@ print(response.metadata)
 
 ## Handling errors
 
-When the library is unable to connect to the API (for example, due to network connection problems or a timeout), a subclass of `alchemyst_ai_sdk_2.APIConnectionError` is raised.
+When the library is unable to connect to the API (for example, due to network connection problems or a timeout), a subclass of `alchemyst_ai.APIConnectionError` is raised.
 
 When the API returns a non-success status code (that is, 4xx or 5xx
-response), a subclass of `alchemyst_ai_sdk_2.APIStatusError` is raised, containing `status_code` and `response` properties.
+response), a subclass of `alchemyst_ai.APIStatusError` is raised, containing `status_code` and `response` properties.
 
-All errors inherit from `alchemyst_ai_sdk_2.APIError`.
+All errors inherit from `alchemyst_ai.APIError`.
 
 ```python
-import alchemyst_ai_sdk_2
-from alchemyst_ai_sdk_2 import AlchemystAISDK2
+import alchemyst_ai
+from alchemyst_ai import AlchemystAI
 
-client = AlchemystAISDK2()
+client = AlchemystAI()
 
 try:
     client.v1.context.add()
-except alchemyst_ai_sdk_2.APIConnectionError as e:
+except alchemyst_ai.APIConnectionError as e:
     print("The server could not be reached")
     print(e.__cause__)  # an underlying Exception, likely raised within httpx.
-except alchemyst_ai_sdk_2.RateLimitError as e:
+except alchemyst_ai.RateLimitError as e:
     print("A 429 status code was received; we should back off a bit.")
-except alchemyst_ai_sdk_2.APIStatusError as e:
+except alchemyst_ai.APIStatusError as e:
     print("Another non-200-range status code was received")
     print(e.status_code)
     print(e.response)
@@ -167,10 +167,10 @@ Connection errors (for example, due to a network connectivity problem), 408 Requ
 You can use the `max_retries` option to configure or disable retry settings:
 
 ```python
-from alchemyst_ai_sdk_2 import AlchemystAISDK2
+from alchemyst_ai import AlchemystAI
 
 # Configure the default for all requests:
-client = AlchemystAISDK2(
+client = AlchemystAI(
     # default is 2
     max_retries=0,
 )
@@ -185,16 +185,16 @@ By default requests time out after 1 minute. You can configure this with a `time
 which accepts a float or an [`httpx.Timeout`](https://www.python-httpx.org/advanced/timeouts/#fine-tuning-the-configuration) object:
 
 ```python
-from alchemyst_ai_sdk_2 import AlchemystAISDK2
+from alchemyst_ai import AlchemystAI
 
 # Configure the default for all requests:
-client = AlchemystAISDK2(
+client = AlchemystAI(
     # 20 seconds (default is 1 minute)
     timeout=20.0,
 )
 
 # More granular control:
-client = AlchemystAISDK2(
+client = AlchemystAI(
     timeout=httpx.Timeout(60.0, read=5.0, write=10.0, connect=2.0),
 )
 
@@ -212,10 +212,10 @@ Note that requests that time out are [retried twice by default](#retries).
 
 We use the standard library [`logging`](https://docs.python.org/3/library/logging.html) module.
 
-You can enable logging by setting the environment variable `ALCHEMYST_AI_SDK_2_LOG` to `info`.
+You can enable logging by setting the environment variable `ALCHEMYST_AI_LOG` to `info`.
 
 ```shell
-$ export ALCHEMYST_AI_SDK_2_LOG=info
+$ export ALCHEMYST_AI_LOG=info
 ```
 
 Or to `debug` for more verbose logging.
@@ -237,9 +237,9 @@ if response.my_field is None:
 The "raw" Response object can be accessed by prefixing `.with_raw_response.` to any HTTP method call, e.g.,
 
 ```py
-from alchemyst_ai_sdk_2 import AlchemystAISDK2
+from alchemyst_ai import AlchemystAI
 
-client = AlchemystAISDK2()
+client = AlchemystAI()
 response = client.v1.context.with_raw_response.add()
 print(response.headers.get('X-My-Header'))
 
@@ -247,9 +247,9 @@ context = response.parse()  # get the object that `v1.context.add()` would have 
 print(context)
 ```
 
-These methods return an [`APIResponse`](https://github.com/Alchemyst-ai/alchemyst-sdk-python/tree/main/src/alchemyst_ai_sdk_2/_response.py) object.
+These methods return an [`APIResponse`](https://github.com/Alchemyst-ai/alchemyst-sdk-python/tree/main/src/alchemyst_ai/_response.py) object.
 
-The async client returns an [`AsyncAPIResponse`](https://github.com/Alchemyst-ai/alchemyst-sdk-python/tree/main/src/alchemyst_ai_sdk_2/_response.py) with the same structure, the only difference being `await`able methods for reading the response content.
+The async client returns an [`AsyncAPIResponse`](https://github.com/Alchemyst-ai/alchemyst-sdk-python/tree/main/src/alchemyst_ai/_response.py) with the same structure, the only difference being `await`able methods for reading the response content.
 
 #### `.with_streaming_response`
 
@@ -311,10 +311,10 @@ You can directly override the [httpx client](https://www.python-httpx.org/api/#c
 
 ```python
 import httpx
-from alchemyst_ai_sdk_2 import AlchemystAISDK2, DefaultHttpxClient
+from alchemyst_ai import AlchemystAI, DefaultHttpxClient
 
-client = AlchemystAISDK2(
-    # Or use the `ALCHEMYST_AI_SDK_2_BASE_URL` env var
+client = AlchemystAI(
+    # Or use the `ALCHEMYST_AI_BASE_URL` env var
     base_url="http://my.test.server.example.com:8083",
     http_client=DefaultHttpxClient(
         proxy="http://my.test.proxy.example.com",
@@ -334,9 +334,9 @@ client.with_options(http_client=DefaultHttpxClient(...))
 By default the library closes underlying HTTP connections whenever the client is [garbage collected](https://docs.python.org/3/reference/datamodel.html#object.__del__). You can manually close the client using the `.close()` method if desired, or with a context manager that closes when exiting.
 
 ```py
-from alchemyst_ai_sdk_2 import AlchemystAISDK2
+from alchemyst_ai import AlchemystAI
 
-with AlchemystAISDK2() as client:
+with AlchemystAI() as client:
   # make requests here
   ...
 
@@ -362,8 +362,8 @@ If you've upgraded to the latest version but aren't seeing any new features you 
 You can determine the version that is being used at runtime with:
 
 ```py
-import alchemyst_ai_sdk_2
-print(alchemyst_ai_sdk_2.__version__)
+import alchemyst_ai
+print(alchemyst_ai.__version__)
 ```
 
 ## Requirements

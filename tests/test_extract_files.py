@@ -4,8 +4,8 @@ from typing import Sequence
 
 import pytest
 
-from alchemyst_ai_sdk_2._types import FileTypes
-from alchemyst_ai_sdk_2._utils import extract_files
+from alchemyst_ai._types import FileTypes
+from alchemyst_ai._utils import extract_files
 
 
 def test_removes_files_from_input() -> None:

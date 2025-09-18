@@ -12,7 +12,7 @@ import httpx
 from ._utils import extract_type_var_from_base
 
 if TYPE_CHECKING:
-    from ._client import AlchemystAISDK2, AsyncAlchemystAISDK2
+    from ._client import AlchemystAI, AsyncAlchemystAI
 
 
 _T = TypeVar("_T")
@@ -30,7 +30,7 @@ class Stream(Generic[_T]):
         *,
         cast_to: type[_T],
         response: httpx.Response,
-        client: AlchemystAISDK2,
+        client: AlchemystAI,
     ) -> None:
         self.response = response
         self._cast_to = cast_to
@@ -93,7 +93,7 @@ class AsyncStream(Generic[_T]):
         *,
         cast_to: type[_T],
         response: httpx.Response,
-        client: AsyncAlchemystAISDK2,
+        client: AsyncAlchemystAI,
     ) -> None:
         self.response = response
         self._cast_to = cast_to

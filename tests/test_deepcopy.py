@@ -1,4 +1,4 @@
-from alchemyst_ai_sdk_2._utils import deepcopy_minimal
+from alchemyst_ai._utils import deepcopy_minimal
 
 
 def assert_different_identities(obj1: object, obj2: object) -> None:

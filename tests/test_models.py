@@ -7,9 +7,9 @@ import pytest
 import pydantic
 from pydantic import Field
 
-from alchemyst_ai_sdk_2._utils import PropertyInfo
-from alchemyst_ai_sdk_2._compat import PYDANTIC_V1, parse_obj, model_dump, model_json
-from alchemyst_ai_sdk_2._models import BaseModel, construct_type
+from alchemyst_ai._utils import PropertyInfo
+from alchemyst_ai._compat import PYDANTIC_V1, parse_obj, model_dump, model_json
+from alchemyst_ai._models import BaseModel, construct_type
 
 
 class BasicModel(BaseModel):

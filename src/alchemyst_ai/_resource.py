@@ -8,13 +8,13 @@ from typing import TYPE_CHECKING
 import anyio
 
 if TYPE_CHECKING:
-    from ._client import AlchemystAISDK2, AsyncAlchemystAISDK2
+    from ._client import AlchemystAI, AsyncAlchemystAI
 
 
 class SyncAPIResource:
-    _client: AlchemystAISDK2
+    _client: AlchemystAI
 
-    def __init__(self, client: AlchemystAISDK2) -> None:
+    def __init__(self, client: AlchemystAI) -> None:
         self._client = client
         self._get = client.get
         self._post = client.post
@@ -28,9 +28,9 @@ class SyncAPIResource:
 
 
 class AsyncAPIResource:
-    _client: AsyncAlchemystAISDK2
+    _client: AsyncAlchemystAI
 
-    def __init__(self, client: AsyncAlchemystAISDK2) -> None:
+    def __init__(self, client: AsyncAlchemystAI) -> None:
         self._client = client
         self._get = client.get
         self._post = client.post

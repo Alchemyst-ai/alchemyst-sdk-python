@@ -8,15 +8,15 @@ from typing_extensions import Required, Annotated, TypedDict
 
 import pytest
 
-from alchemyst_ai_sdk_2._types import Base64FileInput, omit, not_given
-from alchemyst_ai_sdk_2._utils import (
+from alchemyst_ai._types import Base64FileInput, omit, not_given
+from alchemyst_ai._utils import (
     PropertyInfo,
     transform as _transform,
     parse_datetime,
     async_transform as _async_transform,
 )
-from alchemyst_ai_sdk_2._compat import PYDANTIC_V1
-from alchemyst_ai_sdk_2._models import BaseModel
+from alchemyst_ai._compat import PYDANTIC_V1
+from alchemyst_ai._models import BaseModel
 
 _T = TypeVar("_T")
 
