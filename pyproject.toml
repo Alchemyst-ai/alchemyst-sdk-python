@@ -1,5 +1,5 @@
 [project]
-name = "alchemyst_ai_sdk_2"
+name = "alchemystai"
 version = "0.0.1"
 description = "The official Python library for the alchemyst-ai-sdk-2 API"
 dynamic = ["readme"]
