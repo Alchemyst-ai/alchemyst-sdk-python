@@ -61,6 +61,6 @@
   ],
   "release-type": "python",
   "extra-files": [
-    "src/alchemyst_ai_sdk_2/_version.py"
+    "src/alchemyst_ai/_version.py"
   ]
 }

@@ -10,15 +10,15 @@ import httpx
 import pytest
 from pytest_asyncio import is_async_test
 
-from alchemyst_ai_sdk_2 import AlchemystAISDK2, AsyncAlchemystAISDK2, DefaultAioHttpClient
-from alchemyst_ai_sdk_2._utils import is_dict
+from alchemyst_ai import AlchemystAI, AsyncAlchemystAI, DefaultAioHttpClient
+from alchemyst_ai._utils import is_dict
 
 if TYPE_CHECKING:
     from _pytest.fixtures import FixtureRequest  # pyright: ignore[reportPrivateImportUsage]
 
 pytest.register_assert_rewrite("tests.utils")
 
-logging.getLogger("alchemyst_ai_sdk_2").setLevel(logging.DEBUG)
+logging.getLogger("alchemyst_ai").setLevel(logging.DEBUG)
 
 
 # automatically add `pytest.mark.asyncio()` to all of our async tests
@@ -49,17 +49,17 @@ api_key = "My API Key"
 
 
 @pytest.fixture(scope="session")
-def client(request: FixtureRequest) -> Iterator[AlchemystAISDK2]:
+def client(request: FixtureRequest) -> Iterator[AlchemystAI]:
     strict = getattr(request, "param", True)
     if not isinstance(strict, bool):
         raise TypeError(f"Unexpected fixture parameter type {type(strict)}, expected {bool}")
 
-    with AlchemystAISDK2(base_url=base_url, api_key=api_key, _strict_response_validation=strict) as client:
+    with AlchemystAI(base_url=base_url, api_key=api_key, _strict_response_validation=strict) as client:
         yield client
 
 
 @pytest.fixture(scope="session")
-async def async_client(request: FixtureRequest) -> AsyncIterator[AsyncAlchemystAISDK2]:
+async def async_client(request: FixtureRequest) -> AsyncIterator[AsyncAlchemystAI]:
     param = getattr(request, "param", True)
 
     # defaults
@@ -78,7 +78,7 @@ async def async_client(request: FixtureRequest) -> AsyncIterator[AsyncAlchemystA
     else:
         raise TypeError(f"Unexpected fixture parameter type {type(param)}, expected bool or dict")
 
-    async with AsyncAlchemystAISDK2(
+    async with AsyncAlchemystAI(
         base_url=base_url, api_key=api_key, _strict_response_validation=strict, http_client=http_client
     ) as client:
         yield client
