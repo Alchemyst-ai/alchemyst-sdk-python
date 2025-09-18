@@ -10,11 +10,11 @@ from ._client import (
     Stream,
     Timeout,
     Transport,
+    AlchemystAI,
     AsyncClient,
     AsyncStream,
     RequestOptions,
-    AlchemystAISDK2,
-    AsyncAlchemystAISDK2,
+    AsyncAlchemystAI,
 )
 from ._models import BaseModel
 from ._version import __title__, __version__
@@ -28,10 +28,10 @@ from ._exceptions import (
     RateLimitError,
     APITimeoutError,
     BadRequestError,
+    AlchemystAIError,
     APIConnectionError,
     AuthenticationError,
     InternalServerError,
-    AlchemystAisdk2Error,
     PermissionDeniedError,
     UnprocessableEntityError,
     APIResponseValidationError,
@@ -51,7 +51,7 @@ __all__ = [
     "not_given",
     "Omit",
     "omit",
-    "AlchemystAisdk2Error",
+    "AlchemystAIError",
     "APIError",
     "APIStatusError",
     "APITimeoutError",
@@ -71,8 +71,8 @@ __all__ = [
     "AsyncClient",
     "Stream",
     "AsyncStream",
-    "AlchemystAISDK2",
-    "AsyncAlchemystAISDK2",
+    "AlchemystAI",
+    "AsyncAlchemystAI",
     "file_from_path",
     "BaseModel",
     "DEFAULT_TIMEOUT",
@@ -91,12 +91,12 @@ _setup_logging()
 # Update the __module__ attribute for exported symbols so that
 # error messages point to this module instead of the module
 # it was originally defined in, e.g.
-# alchemyst_ai_sdk_2._exceptions.NotFoundError -> alchemyst_ai_sdk_2.NotFoundError
+# alchemyst_ai._exceptions.NotFoundError -> alchemyst_ai.NotFoundError
 __locals = locals()
 for __name in __all__:
     if not __name.startswith("__"):
         try:
-            __locals[__name].__module__ = "alchemyst_ai_sdk_2"
+            __locals[__name].__module__ = "alchemyst_ai"
         except (TypeError, AttributeError):
             # Some of our exported symbols are builtins which we can't set attributes for.
             pass

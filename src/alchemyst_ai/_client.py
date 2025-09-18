@@ -22,7 +22,7 @@ from ._types import (
 from ._utils import is_given, get_async_library
 from ._version import __version__
 from ._streaming import Stream as Stream, AsyncStream as AsyncStream
-from ._exceptions import APIStatusError, AlchemystAisdk2Error
+from ._exceptions import APIStatusError, AlchemystAIError
 from ._base_client import (
     DEFAULT_MAX_RETRIES,
     SyncAPIClient,
@@ -35,17 +35,17 @@ __all__ = [
     "Transport",
     "ProxiesTypes",
     "RequestOptions",
-    "AlchemystAISDK2",
-    "AsyncAlchemystAISDK2",
+    "AlchemystAI",
+    "AsyncAlchemystAI",
     "Client",
     "AsyncClient",
 ]
 
 
-class AlchemystAISDK2(SyncAPIClient):
+class AlchemystAI(SyncAPIClient):
     v1: v1.V1Resource
-    with_raw_response: AlchemystAISDK2WithRawResponse
-    with_streaming_response: AlchemystAISDK2WithStreamedResponse
+    with_raw_response: AlchemystAIWithRawResponse
+    with_streaming_response: AlchemystAIWithStreamedResponse
 
     # client options
     api_key: str
@@ -73,22 +73,22 @@ class AlchemystAISDK2(SyncAPIClient):
         # part of our public interface in the future.
         _strict_response_validation: bool = False,
     ) -> None:
-        """Construct a new synchronous AlchemystAISDK2 client instance.
+        """Construct a new synchronous AlchemystAI client instance.
 
-        This automatically infers the `api_key` argument from the `ALCHEMYST_AI_SDK_2_API_KEY` environment variable if it is not provided.
+        This automatically infers the `api_key` argument from the `ALCHEMYST_AI_API_KEY` environment variable if it is not provided.
         """
         if api_key is None:
-            api_key = os.environ.get("ALCHEMYST_AI_SDK_2_API_KEY")
+            api_key = os.environ.get("ALCHEMYST_AI_API_KEY")
         if api_key is None:
-            raise AlchemystAisdk2Error(
-                "The api_key client option must be set either by passing api_key to the client or by setting the ALCHEMYST_AI_SDK_2_API_KEY environment variable"
+            raise AlchemystAIError(
+                "The api_key client option must be set either by passing api_key to the client or by setting the ALCHEMYST_AI_API_KEY environment variable"
             )
         self.api_key = api_key
 
         if base_url is None:
-            base_url = os.environ.get("ALCHEMYST_AI_SDK_2_BASE_URL")
+            base_url = os.environ.get("ALCHEMYST_AI_BASE_URL")
         if base_url is None:
-            base_url = f"https://api.example.com"
+            base_url = f"https://platform-backend.getalchemystai.com"
 
         super().__init__(
             version=__version__,
@@ -102,8 +102,8 @@ class AlchemystAISDK2(SyncAPIClient):
         )
 
         self.v1 = v1.V1Resource(self)
-        self.with_raw_response = AlchemystAISDK2WithRawResponse(self)
-        self.with_streaming_response = AlchemystAISDK2WithStreamedResponse(self)
+        self.with_raw_response = AlchemystAIWithRawResponse(self)
+        self.with_streaming_response = AlchemystAIWithStreamedResponse(self)
 
     @property
     @override
@@ -210,10 +210,10 @@ class AlchemystAISDK2(SyncAPIClient):
         return APIStatusError(err_msg, response=response, body=body)
 
 
-class AsyncAlchemystAISDK2(AsyncAPIClient):
+class AsyncAlchemystAI(AsyncAPIClient):
     v1: v1.AsyncV1Resource
-    with_raw_response: AsyncAlchemystAISDK2WithRawResponse
-    with_streaming_response: AsyncAlchemystAISDK2WithStreamedResponse
+    with_raw_response: AsyncAlchemystAIWithRawResponse
+    with_streaming_response: AsyncAlchemystAIWithStreamedResponse
 
     # client options
     api_key: str
@@ -241,22 +241,22 @@ class AsyncAlchemystAISDK2(AsyncAPIClient):
         # part of our public interface in the future.
         _strict_response_validation: bool = False,
     ) -> None:
-        """Construct a new async AsyncAlchemystAISDK2 client instance.
+        """Construct a new async AsyncAlchemystAI client instance.
 
-        This automatically infers the `api_key` argument from the `ALCHEMYST_AI_SDK_2_API_KEY` environment variable if it is not provided.
+        This automatically infers the `api_key` argument from the `ALCHEMYST_AI_API_KEY` environment variable if it is not provided.
         """
         if api_key is None:
-            api_key = os.environ.get("ALCHEMYST_AI_SDK_2_API_KEY")
+            api_key = os.environ.get("ALCHEMYST_AI_API_KEY")
         if api_key is None:
-            raise AlchemystAisdk2Error(
-                "The api_key client option must be set either by passing api_key to the client or by setting the ALCHEMYST_AI_SDK_2_API_KEY environment variable"
+            raise AlchemystAIError(
+                "The api_key client option must be set either by passing api_key to the client or by setting the ALCHEMYST_AI_API_KEY environment variable"
             )
         self.api_key = api_key
 
         if base_url is None:
-            base_url = os.environ.get("ALCHEMYST_AI_SDK_2_BASE_URL")
+            base_url = os.environ.get("ALCHEMYST_AI_BASE_URL")
         if base_url is None:
-            base_url = f"https://api.example.com"
+            base_url = f"https://platform-backend.getalchemystai.com"
 
         super().__init__(
             version=__version__,
@@ -270,8 +270,8 @@ class AsyncAlchemystAISDK2(AsyncAPIClient):
         )
 
         self.v1 = v1.AsyncV1Resource(self)
-        self.with_raw_response = AsyncAlchemystAISDK2WithRawResponse(self)
-        self.with_streaming_response = AsyncAlchemystAISDK2WithStreamedResponse(self)
+        self.with_raw_response = AsyncAlchemystAIWithRawResponse(self)
+        self.with_streaming_response = AsyncAlchemystAIWithStreamedResponse(self)
 
     @property
     @override
@@ -378,26 +378,26 @@ class AsyncAlchemystAISDK2(AsyncAPIClient):
         return APIStatusError(err_msg, response=response, body=body)
 
 
-class AlchemystAISDK2WithRawResponse:
-    def __init__(self, client: AlchemystAISDK2) -> None:
+class AlchemystAIWithRawResponse:
+    def __init__(self, client: AlchemystAI) -> None:
         self.v1 = v1.V1ResourceWithRawResponse(client.v1)
 
 
-class AsyncAlchemystAISDK2WithRawResponse:
-    def __init__(self, client: AsyncAlchemystAISDK2) -> None:
+class AsyncAlchemystAIWithRawResponse:
+    def __init__(self, client: AsyncAlchemystAI) -> None:
         self.v1 = v1.AsyncV1ResourceWithRawResponse(client.v1)
 
 
-class AlchemystAISDK2WithStreamedResponse:
-    def __init__(self, client: AlchemystAISDK2) -> None:
+class AlchemystAIWithStreamedResponse:
+    def __init__(self, client: AlchemystAI) -> None:
         self.v1 = v1.V1ResourceWithStreamingResponse(client.v1)
 
 
-class AsyncAlchemystAISDK2WithStreamedResponse:
-    def __init__(self, client: AsyncAlchemystAISDK2) -> None:
+class AsyncAlchemystAIWithStreamedResponse:
+    def __init__(self, client: AsyncAlchemystAI) -> None:
         self.v1 = v1.AsyncV1ResourceWithStreamingResponse(client.v1)
 
 
-Client = AlchemystAISDK2
+Client = AlchemystAI
 
-AsyncClient = AsyncAlchemystAISDK2
+AsyncClient = AsyncAlchemystAI

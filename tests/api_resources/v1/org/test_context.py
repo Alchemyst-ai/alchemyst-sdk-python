@@ -8,8 +8,8 @@ from typing import Any, cast
 import pytest
 
 from tests.utils import assert_matches_type
-from alchemyst_ai_sdk_2 import AlchemystAISDK2, AsyncAlchemystAISDK2
-from alchemyst_ai_sdk_2.types.v1.org import ContextViewResponse
+from alchemyst_ai import AlchemystAI, AsyncAlchemystAI
+from alchemyst_ai.types.v1.org import ContextViewResponse
 
 base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
 
@@ -19,7 +19,7 @@ class TestContext:
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
-    def test_method_view(self, client: AlchemystAISDK2) -> None:
+    def test_method_view(self, client: AlchemystAI) -> None:
         context = client.v1.org.context.view(
             user_ids=["string"],
         )
@@ -27,7 +27,7 @@ class TestContext:
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
-    def test_raw_response_view(self, client: AlchemystAISDK2) -> None:
+    def test_raw_response_view(self, client: AlchemystAI) -> None:
         response = client.v1.org.context.with_raw_response.view(
             user_ids=["string"],
         )
@@ -39,7 +39,7 @@ class TestContext:
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
-    def test_streaming_response_view(self, client: AlchemystAISDK2) -> None:
+    def test_streaming_response_view(self, client: AlchemystAI) -> None:
         with client.v1.org.context.with_streaming_response.view(
             user_ids=["string"],
         ) as response:
@@ -59,7 +59,7 @@ class TestAsyncContext:
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
-    async def test_method_view(self, async_client: AsyncAlchemystAISDK2) -> None:
+    async def test_method_view(self, async_client: AsyncAlchemystAI) -> None:
         context = await async_client.v1.org.context.view(
             user_ids=["string"],
         )
@@ -67,7 +67,7 @@ class TestAsyncContext:
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
-    async def test_raw_response_view(self, async_client: AsyncAlchemystAISDK2) -> None:
+    async def test_raw_response_view(self, async_client: AsyncAlchemystAI) -> None:
         response = await async_client.v1.org.context.with_raw_response.view(
             user_ids=["string"],
         )
@@ -79,7 +79,7 @@ class TestAsyncContext:
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
-    async def test_streaming_response_view(self, async_client: AsyncAlchemystAISDK2) -> None:
+    async def test_streaming_response_view(self, async_client: AsyncAlchemystAI) -> None:
         async with async_client.v1.org.context.with_streaming_response.view(
             user_ids=["string"],
         ) as response:

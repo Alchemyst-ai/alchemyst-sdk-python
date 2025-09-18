@@ -8,8 +8,8 @@ from typing import Any, cast
 import pytest
 
 from tests.utils import assert_matches_type
-from alchemyst_ai_sdk_2 import AlchemystAISDK2, AsyncAlchemystAISDK2
-from alchemyst_ai_sdk_2.types.v1 import (
+from alchemyst_ai import AlchemystAI, AsyncAlchemystAI
+from alchemyst_ai.types.v1 import (
     ContextSearchResponse,
 )
 
@@ -21,13 +21,13 @@ class TestContext:
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
-    def test_method_delete(self, client: AlchemystAISDK2) -> None:
+    def test_method_delete(self, client: AlchemystAI) -> None:
         context = client.v1.context.delete()
         assert_matches_type(object, context, path=["response"])
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
-    def test_method_delete_with_all_params(self, client: AlchemystAISDK2) -> None:
+    def test_method_delete_with_all_params(self, client: AlchemystAI) -> None:
         context = client.v1.context.delete(
             by_doc=True,
             by_id=True,
@@ -39,7 +39,7 @@ class TestContext:
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
-    def test_raw_response_delete(self, client: AlchemystAISDK2) -> None:
+    def test_raw_response_delete(self, client: AlchemystAI) -> None:
         response = client.v1.context.with_raw_response.delete()
 
         assert response.is_closed is True
@@ -49,7 +49,7 @@ class TestContext:
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
-    def test_streaming_response_delete(self, client: AlchemystAISDK2) -> None:
+    def test_streaming_response_delete(self, client: AlchemystAI) -> None:
         with client.v1.context.with_streaming_response.delete() as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -61,13 +61,13 @@ class TestContext:
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
-    def test_method_add(self, client: AlchemystAISDK2) -> None:
+    def test_method_add(self, client: AlchemystAI) -> None:
         context = client.v1.context.add()
         assert_matches_type(object, context, path=["response"])
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
-    def test_method_add_with_all_params(self, client: AlchemystAISDK2) -> None:
+    def test_method_add_with_all_params(self, client: AlchemystAI) -> None:
         context = client.v1.context.add(
             documents=[{"content": "content"}],
             metadata={
@@ -83,7 +83,7 @@ class TestContext:
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
-    def test_raw_response_add(self, client: AlchemystAISDK2) -> None:
+    def test_raw_response_add(self, client: AlchemystAI) -> None:
         response = client.v1.context.with_raw_response.add()
 
         assert response.is_closed is True
@@ -93,7 +93,7 @@ class TestContext:
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
-    def test_streaming_response_add(self, client: AlchemystAISDK2) -> None:
+    def test_streaming_response_add(self, client: AlchemystAI) -> None:
         with client.v1.context.with_streaming_response.add() as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -105,7 +105,7 @@ class TestContext:
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
-    def test_method_search(self, client: AlchemystAISDK2) -> None:
+    def test_method_search(self, client: AlchemystAI) -> None:
         context = client.v1.context.search(
             minimum_similarity_threshold=0.5,
             query="search query for user preferences",
@@ -115,7 +115,7 @@ class TestContext:
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
-    def test_method_search_with_all_params(self, client: AlchemystAISDK2) -> None:
+    def test_method_search_with_all_params(self, client: AlchemystAI) -> None:
         context = client.v1.context.search(
             minimum_similarity_threshold=0.5,
             query="search query for user preferences",
@@ -128,7 +128,7 @@ class TestContext:
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
-    def test_raw_response_search(self, client: AlchemystAISDK2) -> None:
+    def test_raw_response_search(self, client: AlchemystAI) -> None:
         response = client.v1.context.with_raw_response.search(
             minimum_similarity_threshold=0.5,
             query="search query for user preferences",
@@ -142,7 +142,7 @@ class TestContext:
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
-    def test_streaming_response_search(self, client: AlchemystAISDK2) -> None:
+    def test_streaming_response_search(self, client: AlchemystAI) -> None:
         with client.v1.context.with_streaming_response.search(
             minimum_similarity_threshold=0.5,
             query="search query for user preferences",
@@ -164,13 +164,13 @@ class TestAsyncContext:
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
-    async def test_method_delete(self, async_client: AsyncAlchemystAISDK2) -> None:
+    async def test_method_delete(self, async_client: AsyncAlchemystAI) -> None:
         context = await async_client.v1.context.delete()
         assert_matches_type(object, context, path=["response"])
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
-    async def test_method_delete_with_all_params(self, async_client: AsyncAlchemystAISDK2) -> None:
+    async def test_method_delete_with_all_params(self, async_client: AsyncAlchemystAI) -> None:
         context = await async_client.v1.context.delete(
             by_doc=True,
             by_id=True,
@@ -182,7 +182,7 @@ class TestAsyncContext:
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
-    async def test_raw_response_delete(self, async_client: AsyncAlchemystAISDK2) -> None:
+    async def test_raw_response_delete(self, async_client: AsyncAlchemystAI) -> None:
         response = await async_client.v1.context.with_raw_response.delete()
 
         assert response.is_closed is True
@@ -192,7 +192,7 @@ class TestAsyncContext:
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
-    async def test_streaming_response_delete(self, async_client: AsyncAlchemystAISDK2) -> None:
+    async def test_streaming_response_delete(self, async_client: AsyncAlchemystAI) -> None:
         async with async_client.v1.context.with_streaming_response.delete() as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -204,13 +204,13 @@ class TestAsyncContext:
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
-    async def test_method_add(self, async_client: AsyncAlchemystAISDK2) -> None:
+    async def test_method_add(self, async_client: AsyncAlchemystAI) -> None:
         context = await async_client.v1.context.add()
         assert_matches_type(object, context, path=["response"])
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
-    async def test_method_add_with_all_params(self, async_client: AsyncAlchemystAISDK2) -> None:
+    async def test_method_add_with_all_params(self, async_client: AsyncAlchemystAI) -> None:
         context = await async_client.v1.context.add(
             documents=[{"content": "content"}],
             metadata={
@@ -226,7 +226,7 @@ class TestAsyncContext:
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
-    async def test_raw_response_add(self, async_client: AsyncAlchemystAISDK2) -> None:
+    async def test_raw_response_add(self, async_client: AsyncAlchemystAI) -> None:
         response = await async_client.v1.context.with_raw_response.add()
 
         assert response.is_closed is True
@@ -236,7 +236,7 @@ class TestAsyncContext:
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
-    async def test_streaming_response_add(self, async_client: AsyncAlchemystAISDK2) -> None:
+    async def test_streaming_response_add(self, async_client: AsyncAlchemystAI) -> None:
         async with async_client.v1.context.with_streaming_response.add() as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -248,7 +248,7 @@ class TestAsyncContext:
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
-    async def test_method_search(self, async_client: AsyncAlchemystAISDK2) -> None:
+    async def test_method_search(self, async_client: AsyncAlchemystAI) -> None:
         context = await async_client.v1.context.search(
             minimum_similarity_threshold=0.5,
             query="search query for user preferences",
@@ -258,7 +258,7 @@ class TestAsyncContext:
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
-    async def test_method_search_with_all_params(self, async_client: AsyncAlchemystAISDK2) -> None:
+    async def test_method_search_with_all_params(self, async_client: AsyncAlchemystAI) -> None:
         context = await async_client.v1.context.search(
             minimum_similarity_threshold=0.5,
             query="search query for user preferences",
@@ -271,7 +271,7 @@ class TestAsyncContext:
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
-    async def test_raw_response_search(self, async_client: AsyncAlchemystAISDK2) -> None:
+    async def test_raw_response_search(self, async_client: AsyncAlchemystAI) -> None:
         response = await async_client.v1.context.with_raw_response.search(
             minimum_similarity_threshold=0.5,
             query="search query for user preferences",
@@ -285,7 +285,7 @@ class TestAsyncContext:
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
-    async def test_streaming_response_search(self, async_client: AsyncAlchemystAISDK2) -> None:
+    async def test_streaming_response_search(self, async_client: AsyncAlchemystAI) -> None:
         async with async_client.v1.context.with_streaming_response.search(
             minimum_similarity_threshold=0.5,
             query="search query for user preferences",

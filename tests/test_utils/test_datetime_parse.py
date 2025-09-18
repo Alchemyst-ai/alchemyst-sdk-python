@@ -8,7 +8,7 @@ from datetime import date, datetime, timezone, timedelta
 
 import pytest
 
-from alchemyst_ai_sdk_2._utils import parse_date, parse_datetime
+from alchemyst_ai._utils import parse_date, parse_datetime
 
 
 def create_tz(minutes: int) -> timezone:

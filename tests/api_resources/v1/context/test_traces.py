@@ -8,8 +8,8 @@ from typing import Any, cast
 import pytest
 
 from tests.utils import assert_matches_type
-from alchemyst_ai_sdk_2 import AlchemystAISDK2, AsyncAlchemystAISDK2
-from alchemyst_ai_sdk_2.types.v1.context import TraceListResponse, TraceDeleteResponse
+from alchemyst_ai import AlchemystAI, AsyncAlchemystAI
+from alchemyst_ai.types.v1.context import TraceListResponse, TraceDeleteResponse
 
 base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
 
@@ -19,13 +19,13 @@ class TestTraces:
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
-    def test_method_list(self, client: AlchemystAISDK2) -> None:
+    def test_method_list(self, client: AlchemystAI) -> None:
         trace = client.v1.context.traces.list()
         assert_matches_type(TraceListResponse, trace, path=["response"])
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
-    def test_raw_response_list(self, client: AlchemystAISDK2) -> None:
+    def test_raw_response_list(self, client: AlchemystAI) -> None:
         response = client.v1.context.traces.with_raw_response.list()
 
         assert response.is_closed is True
@@ -35,7 +35,7 @@ class TestTraces:
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
-    def test_streaming_response_list(self, client: AlchemystAISDK2) -> None:
+    def test_streaming_response_list(self, client: AlchemystAI) -> None:
         with client.v1.context.traces.with_streaming_response.list() as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -47,7 +47,7 @@ class TestTraces:
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
-    def test_method_delete(self, client: AlchemystAISDK2) -> None:
+    def test_method_delete(self, client: AlchemystAI) -> None:
         trace = client.v1.context.traces.delete(
             "traceId",
         )
@@ -55,7 +55,7 @@ class TestTraces:
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
-    def test_raw_response_delete(self, client: AlchemystAISDK2) -> None:
+    def test_raw_response_delete(self, client: AlchemystAI) -> None:
         response = client.v1.context.traces.with_raw_response.delete(
             "traceId",
         )
@@ -67,7 +67,7 @@ class TestTraces:
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
-    def test_streaming_response_delete(self, client: AlchemystAISDK2) -> None:
+    def test_streaming_response_delete(self, client: AlchemystAI) -> None:
         with client.v1.context.traces.with_streaming_response.delete(
             "traceId",
         ) as response:
@@ -81,7 +81,7 @@ class TestTraces:
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
-    def test_path_params_delete(self, client: AlchemystAISDK2) -> None:
+    def test_path_params_delete(self, client: AlchemystAI) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `trace_id` but received ''"):
             client.v1.context.traces.with_raw_response.delete(
                 "",
@@ -95,13 +95,13 @@ class TestAsyncTraces:
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
-    async def test_method_list(self, async_client: AsyncAlchemystAISDK2) -> None:
+    async def test_method_list(self, async_client: AsyncAlchemystAI) -> None:
         trace = await async_client.v1.context.traces.list()
         assert_matches_type(TraceListResponse, trace, path=["response"])
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
-    async def test_raw_response_list(self, async_client: AsyncAlchemystAISDK2) -> None:
+    async def test_raw_response_list(self, async_client: AsyncAlchemystAI) -> None:
         response = await async_client.v1.context.traces.with_raw_response.list()
 
         assert response.is_closed is True
@@ -111,7 +111,7 @@ class TestAsyncTraces:
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
-    async def test_streaming_response_list(self, async_client: AsyncAlchemystAISDK2) -> None:
+    async def test_streaming_response_list(self, async_client: AsyncAlchemystAI) -> None:
         async with async_client.v1.context.traces.with_streaming_response.list() as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -123,7 +123,7 @@ class TestAsyncTraces:
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
-    async def test_method_delete(self, async_client: AsyncAlchemystAISDK2) -> None:
+    async def test_method_delete(self, async_client: AsyncAlchemystAI) -> None:
         trace = await async_client.v1.context.traces.delete(
             "traceId",
         )
@@ -131,7 +131,7 @@ class TestAsyncTraces:
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
-    async def test_raw_response_delete(self, async_client: AsyncAlchemystAISDK2) -> None:
+    async def test_raw_response_delete(self, async_client: AsyncAlchemystAI) -> None:
         response = await async_client.v1.context.traces.with_raw_response.delete(
             "traceId",
         )
@@ -143,7 +143,7 @@ class TestAsyncTraces:
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
-    async def test_streaming_response_delete(self, async_client: AsyncAlchemystAISDK2) -> None:
+    async def test_streaming_response_delete(self, async_client: AsyncAlchemystAI) -> None:
         async with async_client.v1.context.traces.with_streaming_response.delete(
             "traceId",
         ) as response:
@@ -157,7 +157,7 @@ class TestAsyncTraces:
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
-    async def test_path_params_delete(self, async_client: AsyncAlchemystAISDK2) -> None:
+    async def test_path_params_delete(self, async_client: AsyncAlchemystAI) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `trace_id` but received ''"):
             await async_client.v1.context.traces.with_raw_response.delete(
                 "",
