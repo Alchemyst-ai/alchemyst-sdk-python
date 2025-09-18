@@ -1,7 +1,7 @@
 # Alchemyst AI SDK 2 Python API library
 
 <!-- prettier-ignore -->
-[![PyPI version](https://img.shields.io/pypi/v/alchemyst_ai_sdk_2.svg?label=pypi%20(stable))](https://pypi.org/project/alchemyst_ai_sdk_2/)
+[![PyPI version](https://img.shields.io/pypi/v/alchemystai.svg?label=pypi%20(stable))](https://pypi.org/project/alchemystai/)
 
 The Alchemyst AI SDK 2 Python library provides convenient access to the Alchemyst AI SDK 2 REST API from any Python 3.8+
 application. The library includes type definitions for all request params and response fields,
@@ -16,12 +16,9 @@ The full API of this library can be found in [api.md](api.md).
 ## Installation
 
 ```sh
-# install from the production repo
-pip install git+ssh://git@github.com/Alchemyst-ai/alchemyst-sdk-python.git
+# install from PyPI
+pip install alchemystai
 ```
-
-> [!NOTE]
-> Once this package is [published to PyPI](https://www.stainless.com/docs/guides/publish), this will become: `pip install alchemyst_ai_sdk_2`
 
 ## Usage
 
@@ -73,8 +70,8 @@ By default, the async client uses `httpx` for HTTP requests. However, for improv
 You can enable this by installing `aiohttp`:
 
 ```sh
-# install from the production repo
-pip install 'alchemyst_ai_sdk_2[aiohttp] @ git+ssh://git@github.com/Alchemyst-ai/alchemyst-sdk-python.git'
+# install from PyPI
+pip install alchemystai[aiohttp]
 ```
 
 Then you can enable it by instantiating the client with `http_client=DefaultAioHttpClient()`:
