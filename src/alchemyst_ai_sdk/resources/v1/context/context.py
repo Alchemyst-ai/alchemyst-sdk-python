@@ -126,6 +126,7 @@ class ContextResource(SyncAPIResource):
     def add(
         self,
         *,
+        context_type: Literal["resource", "conversation", "instruction"] | Omit = omit,
         documents: Iterable[context_add_params.Document] | Omit = omit,
         metadata: context_add_params.Metadata | Omit = omit,
         scope: Literal["internal", "external"] | Omit = omit,
@@ -143,6 +144,8 @@ class ContextResource(SyncAPIResource):
         from the context processor.
 
         Args:
+          context_type: Type of context being added
+
           documents: Array of documents with content and additional metadata
 
           metadata: Additional metadata for the context
@@ -163,6 +166,7 @@ class ContextResource(SyncAPIResource):
             "/api/v1/context/add",
             body=maybe_transform(
                 {
+                    "context_type": context_type,
                     "documents": documents,
                     "metadata": metadata,
                     "scope": scope,
@@ -323,6 +327,7 @@ class AsyncContextResource(AsyncAPIResource):
     async def add(
         self,
         *,
+        context_type: Literal["resource", "conversation", "instruction"] | Omit = omit,
         documents: Iterable[context_add_params.Document] | Omit = omit,
         metadata: context_add_params.Metadata | Omit = omit,
         scope: Literal["internal", "external"] | Omit = omit,
@@ -340,6 +345,8 @@ class AsyncContextResource(AsyncAPIResource):
         from the context processor.
 
         Args:
+          context_type: Type of context being added
+
           documents: Array of documents with content and additional metadata
 
           metadata: Additional metadata for the context
@@ -360,6 +367,7 @@ class AsyncContextResource(AsyncAPIResource):
             "/api/v1/context/add",
             body=await async_maybe_transform(
                 {
+                    "context_type": context_type,
                     "documents": documents,
                     "metadata": metadata,
                     "scope": scope,
