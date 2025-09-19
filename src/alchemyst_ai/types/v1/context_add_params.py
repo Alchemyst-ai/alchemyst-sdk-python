@@ -11,6 +11,9 @@ __all__ = ["ContextAddParams", "Document", "Metadata"]
 
 
 class ContextAddParams(TypedDict, total=False):
+    context_type: Literal["resource", "conversation", "instruction"]
+    """Type of context being added"""
+
     documents: Iterable[Document]
     """Array of documents with content and additional metadata"""
 
