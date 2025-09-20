@@ -69,6 +69,7 @@ class TestContext:
     @parametrize
     def test_method_add_with_all_params(self, client: AlchemystAI) -> None:
         context = client.v1.context.add(
+            context_type="resource",
             documents=[{"content": "content"}],
             metadata={
                 "file_name": "fileName",
@@ -212,6 +213,7 @@ class TestAsyncContext:
     @parametrize
     async def test_method_add_with_all_params(self, async_client: AsyncAlchemystAI) -> None:
         context = await async_client.v1.context.add(
+            context_type="resource",
             documents=[{"content": "content"}],
             metadata={
                 "file_name": "fileName",
