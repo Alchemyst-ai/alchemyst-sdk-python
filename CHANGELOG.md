@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.4.0 (2025-10-01)
+
+Full Changelog: [v0.3.0...v0.4.0](https://github.com/Alchemyst-ai/alchemyst-sdk-python/compare/v0.3.0...v0.4.0)
+
+### Features
+
+* **api:** manual updates ([fb63c26](https://github.com/Alchemyst-ai/alchemyst-sdk-python/commit/fb63c269c64dea5e2881d557c81581056f21da05))
+
 ## 0.3.0 (2025-10-01)
 
 Full Changelog: [v0.2.0...v0.3.0](https://github.com/Alchemyst-ai/alchemyst-sdk-python/compare/v0.2.0...v0.3.0)

@@ -1,11 +1,11 @@
 [project]
 name = "alchemystai"
-version = "0.3.0"
+version = "0.4.0"
 description = "The official Python library for the alchemyst-ai API"
 dynamic = ["readme"]
 license = "Apache-2.0"
 authors = [
-{ name = "Alchemyst AI", email = "" },
+{ name = "Alchemyst AI", email = "anuran@getalchemystai.com" },
 ]
 dependencies = [
     "httpx>=0.23.0, <1",
