@@ -15,6 +15,14 @@ from .view import (
     ViewResourceWithStreamingResponse,
     AsyncViewResourceWithStreamingResponse,
 )
+from .memory import (
+    MemoryResource,
+    AsyncMemoryResource,
+    MemoryResourceWithRawResponse,
+    AsyncMemoryResourceWithRawResponse,
+    MemoryResourceWithStreamingResponse,
+    AsyncMemoryResourceWithStreamingResponse,
+)
 from .traces import (
     TracesResource,
     AsyncTracesResource,
@@ -48,6 +56,10 @@ class ContextResource(SyncAPIResource):
     @cached_property
     def view(self) -> ViewResource:
         return ViewResource(self._client)
+
+    @cached_property
+    def memory(self) -> MemoryResource:
+        return MemoryResource(self._client)
 
     @cached_property
     def with_raw_response(self) -> ContextResourceWithRawResponse:
@@ -249,6 +261,10 @@ class AsyncContextResource(AsyncAPIResource):
     @cached_property
     def view(self) -> AsyncViewResource:
         return AsyncViewResource(self._client)
+
+    @cached_property
+    def memory(self) -> AsyncMemoryResource:
+        return AsyncMemoryResource(self._client)
 
     @cached_property
     def with_raw_response(self) -> AsyncContextResourceWithRawResponse:
@@ -464,6 +480,10 @@ class ContextResourceWithRawResponse:
     def view(self) -> ViewResourceWithRawResponse:
         return ViewResourceWithRawResponse(self._context.view)
 
+    @cached_property
+    def memory(self) -> MemoryResourceWithRawResponse:
+        return MemoryResourceWithRawResponse(self._context.memory)
+
 
 class AsyncContextResourceWithRawResponse:
     def __init__(self, context: AsyncContextResource) -> None:
@@ -486,6 +506,10 @@ class AsyncContextResourceWithRawResponse:
     @cached_property
     def view(self) -> AsyncViewResourceWithRawResponse:
         return AsyncViewResourceWithRawResponse(self._context.view)
+
+    @cached_property
+    def memory(self) -> AsyncMemoryResourceWithRawResponse:
+        return AsyncMemoryResourceWithRawResponse(self._context.memory)
 
 
 class ContextResourceWithStreamingResponse:
@@ -510,6 +534,10 @@ class ContextResourceWithStreamingResponse:
     def view(self) -> ViewResourceWithStreamingResponse:
         return ViewResourceWithStreamingResponse(self._context.view)
 
+    @cached_property
+    def memory(self) -> MemoryResourceWithStreamingResponse:
+        return MemoryResourceWithStreamingResponse(self._context.memory)
+
 
 class AsyncContextResourceWithStreamingResponse:
     def __init__(self, context: AsyncContextResource) -> None:
@@ -532,3 +560,7 @@ class AsyncContextResourceWithStreamingResponse:
     @cached_property
     def view(self) -> AsyncViewResourceWithStreamingResponse:
         return AsyncViewResourceWithStreamingResponse(self._context.view)
+
+    @cached_property
+    def memory(self) -> AsyncMemoryResourceWithStreamingResponse:
+        return AsyncMemoryResourceWithStreamingResponse(self._context.memory)

@@ -8,6 +8,14 @@ from .view import (
     ViewResourceWithStreamingResponse,
     AsyncViewResourceWithStreamingResponse,
 )
+from .memory import (
+    MemoryResource,
+    AsyncMemoryResource,
+    MemoryResourceWithRawResponse,
+    AsyncMemoryResourceWithRawResponse,
+    MemoryResourceWithStreamingResponse,
+    AsyncMemoryResourceWithStreamingResponse,
+)
 from .traces import (
     TracesResource,
     AsyncTracesResource,
@@ -38,6 +46,12 @@ __all__ = [
     "AsyncViewResourceWithRawResponse",
     "ViewResourceWithStreamingResponse",
     "AsyncViewResourceWithStreamingResponse",
+    "MemoryResource",
+    "AsyncMemoryResource",
+    "MemoryResourceWithRawResponse",
+    "AsyncMemoryResourceWithRawResponse",
+    "MemoryResourceWithStreamingResponse",
+    "AsyncMemoryResourceWithStreamingResponse",
     "ContextResource",
     "AsyncContextResource",
     "ContextResourceWithRawResponse",
