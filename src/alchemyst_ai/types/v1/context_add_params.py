@@ -45,5 +45,8 @@ class Metadata(TypedDict, total=False):
     file_type: Annotated[str, PropertyInfo(alias="fileType")]
     """Type/MIME of the file"""
 
+    group_name: Annotated[object, PropertyInfo(alias="groupName")]
+    """Array of Group Name to which the file belongs to"""
+
     last_modified: Annotated[str, PropertyInfo(alias="lastModified")]
     """Last modified timestamp"""
