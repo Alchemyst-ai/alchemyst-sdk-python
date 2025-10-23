@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.5.0 (2025-10-23)
+
+Full Changelog: [v0.4.0...v0.5.0](https://github.com/Alchemyst-ai/alchemyst-sdk-python/compare/v0.4.0...v0.5.0)
+
+### Features
+
+* **api:** api update ([8b6419b](https://github.com/Alchemyst-ai/alchemyst-sdk-python/commit/8b6419b8d3645059c5231c4e14dd1fe46b6dd3d8))
+* **api:** api update ([1be64d9](https://github.com/Alchemyst-ai/alchemyst-sdk-python/commit/1be64d9cd19dc3df6d72ebb5b2496779e9b76424))
+
+
+### Chores
+
+* bump `httpx-aiohttp` version to 0.1.9 ([5ddd383](https://github.com/Alchemyst-ai/alchemyst-sdk-python/commit/5ddd3838203c871a97ab101d0fa71755a3b835ef))
+* **internal:** detect missing future annotations with ruff ([fac1c37](https://github.com/Alchemyst-ai/alchemyst-sdk-python/commit/fac1c371e564ca90bc31cef5335c8285ef1ab92a))
+
 ## 0.4.0 (2025-10-01)
 
 Full Changelog: [v0.3.0...v0.4.0](https://github.com/Alchemyst-ai/alchemyst-sdk-python/compare/v0.3.0...v0.4.0)
