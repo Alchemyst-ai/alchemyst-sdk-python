@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import Dict, Union, Iterable
 from typing_extensions import Literal, Annotated, TypeAlias, TypedDict
 
+from ..._types import SequenceNotStr
 from ..._utils import PropertyInfo
 
 __all__ = ["ContextAddParams", "Document", "Metadata"]
@@ -45,7 +46,7 @@ class Metadata(TypedDict, total=False):
     file_type: Annotated[str, PropertyInfo(alias="fileType")]
     """Type/MIME of the file"""
 
-    group_name: Annotated[object, PropertyInfo(alias="groupName")]
+    group_name: Annotated[SequenceNotStr[str], PropertyInfo(alias="groupName")]
     """Array of Group Name to which the file belongs to"""
 
     last_modified: Annotated[str, PropertyInfo(alias="lastModified")]
