@@ -7,7 +7,7 @@ from typing import Any, cast
 
 import pytest
 
-from alchemyst_ai import AlchemystAI, AsyncAlchemystAI
+from alchemyst_ai_sdk import AlchemystAI, AsyncAlchemystAI
 
 base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
 

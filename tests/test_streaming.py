@@ -5,8 +5,8 @@ from typing import Iterator, AsyncIterator
 import httpx
 import pytest
 
-from alchemyst_ai import AlchemystAI, AsyncAlchemystAI
-from alchemyst_ai._streaming import Stream, AsyncStream, ServerSentEvent
+from alchemyst_ai_sdk import AlchemystAI, AsyncAlchemystAI
+from alchemyst_ai_sdk._streaming import Stream, AsyncStream, ServerSentEvent
 
 
 @pytest.mark.asyncio

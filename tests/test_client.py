@@ -18,12 +18,12 @@ import pytest
 from respx import MockRouter
 from pydantic import ValidationError
 
-from alchemyst_ai import AlchemystAI, AsyncAlchemystAI, APIResponseValidationError
-from alchemyst_ai._types import Omit
-from alchemyst_ai._utils import asyncify
-from alchemyst_ai._models import BaseModel, FinalRequestOptions
-from alchemyst_ai._exceptions import APIStatusError, APITimeoutError, AlchemystAIError, APIResponseValidationError
-from alchemyst_ai._base_client import (
+from alchemyst_ai_sdk import AlchemystAI, AsyncAlchemystAI, APIResponseValidationError
+from alchemyst_ai_sdk._types import Omit
+from alchemyst_ai_sdk._utils import asyncify
+from alchemyst_ai_sdk._models import BaseModel, FinalRequestOptions
+from alchemyst_ai_sdk._exceptions import APIStatusError, APITimeoutError, APIResponseValidationError
+from alchemyst_ai_sdk._base_client import (
     DEFAULT_TIMEOUT,
     HTTPX_DEFAULT_TIMEOUT,
     BaseClient,
@@ -232,10 +232,10 @@ class TestAlchemystAI:
                         # to_raw_response_wrapper leaks through the @functools.wraps() decorator.
                         #
                         # removing the decorator fixes the leak for reasons we don't understand.
-                        "alchemyst_ai/_legacy_response.py",
-                        "alchemyst_ai/_response.py",
+                        "alchemyst_ai_sdk/_legacy_response.py",
+                        "alchemyst_ai_sdk/_response.py",
                         # pydantic.BaseModel.model_dump || pydantic.BaseModel.dict leak memory for some reason.
-                        "alchemyst_ai/_compat.py",
+                        "alchemyst_ai_sdk/_compat.py",
                         # Standard library leaks we don't care about.
                         "/logging/__init__.py",
                     ]
@@ -341,10 +341,19 @@ class TestAlchemystAI:
         request = client._build_request(FinalRequestOptions(method="get", url="/foo"))
         assert request.headers.get("Authorization") == f"Bearer {api_key}"
 
-        with pytest.raises(AlchemystAIError):
-            with update_env(**{"ALCHEMYST_AI_API_KEY": Omit()}):
-                client2 = AlchemystAI(base_url=base_url, api_key=None, _strict_response_validation=True)
-            _ = client2
+        with update_env(**{"ALCHEMYST_AI_API_KEY": Omit()}):
+            client2 = AlchemystAI(base_url=base_url, api_key=None, _strict_response_validation=True)
+
+        with pytest.raises(
+            TypeError,
+            match="Could not resolve authentication method. Expected the api_key to be set. Or for the `Authorization` headers to be explicitly omitted",
+        ):
+            client2._build_request(FinalRequestOptions(method="get", url="/foo"))
+
+        request2 = client2._build_request(
+            FinalRequestOptions(method="get", url="/foo", headers={"Authorization": Omit()})
+        )
+        assert request2.headers.get("Authorization") is None
 
     def test_default_query_option(self) -> None:
         client = AlchemystAI(
@@ -721,7 +730,7 @@ class TestAlchemystAI:
         calculated = client._calculate_retry_timeout(remaining_retries, options, headers)
         assert calculated == pytest.approx(timeout, 0.5 * 0.875)  # pyright: ignore[reportUnknownMemberType]
 
-    @mock.patch("alchemyst_ai._base_client.BaseClient._calculate_retry_timeout", _low_retry_timeout)
+    @mock.patch("alchemyst_ai_sdk._base_client.BaseClient._calculate_retry_timeout", _low_retry_timeout)
     @pytest.mark.respx(base_url=base_url)
     def test_retrying_timeout_errors_doesnt_leak(self, respx_mock: MockRouter, client: AlchemystAI) -> None:
         respx_mock.post("/api/v1/context/add").mock(side_effect=httpx.TimeoutException("Test timeout error"))
@@ -731,7 +740,7 @@ class TestAlchemystAI:
 
         assert _get_open_connections(self.client) == 0
 
-    @mock.patch("alchemyst_ai._base_client.BaseClient._calculate_retry_timeout", _low_retry_timeout)
+    @mock.patch("alchemyst_ai_sdk._base_client.BaseClient._calculate_retry_timeout", _low_retry_timeout)
     @pytest.mark.respx(base_url=base_url)
     def test_retrying_status_errors_doesnt_leak(self, respx_mock: MockRouter, client: AlchemystAI) -> None:
         respx_mock.post("/api/v1/context/add").mock(return_value=httpx.Response(500))
@@ -741,7 +750,7 @@ class TestAlchemystAI:
         assert _get_open_connections(self.client) == 0
 
     @pytest.mark.parametrize("failures_before_success", [0, 2, 4])
-    @mock.patch("alchemyst_ai._base_client.BaseClient._calculate_retry_timeout", _low_retry_timeout)
+    @mock.patch("alchemyst_ai_sdk._base_client.BaseClient._calculate_retry_timeout", _low_retry_timeout)
     @pytest.mark.respx(base_url=base_url)
     @pytest.mark.parametrize("failure_mode", ["status", "exception"])
     def test_retries_taken(
@@ -772,7 +781,7 @@ class TestAlchemystAI:
         assert int(response.http_request.headers.get("x-stainless-retry-count")) == failures_before_success
 
     @pytest.mark.parametrize("failures_before_success", [0, 2, 4])
-    @mock.patch("alchemyst_ai._base_client.BaseClient._calculate_retry_timeout", _low_retry_timeout)
+    @mock.patch("alchemyst_ai_sdk._base_client.BaseClient._calculate_retry_timeout", _low_retry_timeout)
     @pytest.mark.respx(base_url=base_url)
     def test_omit_retry_count_header(
         self, client: AlchemystAI, failures_before_success: int, respx_mock: MockRouter
@@ -795,7 +804,7 @@ class TestAlchemystAI:
         assert len(response.http_request.headers.get_list("x-stainless-retry-count")) == 0
 
     @pytest.mark.parametrize("failures_before_success", [0, 2, 4])
-    @mock.patch("alchemyst_ai._base_client.BaseClient._calculate_retry_timeout", _low_retry_timeout)
+    @mock.patch("alchemyst_ai_sdk._base_client.BaseClient._calculate_retry_timeout", _low_retry_timeout)
     @pytest.mark.respx(base_url=base_url)
     def test_overwrite_retry_count_header(
         self, client: AlchemystAI, failures_before_success: int, respx_mock: MockRouter
@@ -1043,10 +1052,10 @@ class TestAsyncAlchemystAI:
                         # to_raw_response_wrapper leaks through the @functools.wraps() decorator.
                         #
                         # removing the decorator fixes the leak for reasons we don't understand.
-                        "alchemyst_ai/_legacy_response.py",
-                        "alchemyst_ai/_response.py",
+                        "alchemyst_ai_sdk/_legacy_response.py",
+                        "alchemyst_ai_sdk/_response.py",
                         # pydantic.BaseModel.model_dump || pydantic.BaseModel.dict leak memory for some reason.
-                        "alchemyst_ai/_compat.py",
+                        "alchemyst_ai_sdk/_compat.py",
                         # Standard library leaks we don't care about.
                         "/logging/__init__.py",
                     ]
@@ -1152,10 +1161,19 @@ class TestAsyncAlchemystAI:
         request = client._build_request(FinalRequestOptions(method="get", url="/foo"))
         assert request.headers.get("Authorization") == f"Bearer {api_key}"
 
-        with pytest.raises(AlchemystAIError):
-            with update_env(**{"ALCHEMYST_AI_API_KEY": Omit()}):
-                client2 = AsyncAlchemystAI(base_url=base_url, api_key=None, _strict_response_validation=True)
-            _ = client2
+        with update_env(**{"ALCHEMYST_AI_API_KEY": Omit()}):
+            client2 = AsyncAlchemystAI(base_url=base_url, api_key=None, _strict_response_validation=True)
+
+        with pytest.raises(
+            TypeError,
+            match="Could not resolve authentication method. Expected the api_key to be set. Or for the `Authorization` headers to be explicitly omitted",
+        ):
+            client2._build_request(FinalRequestOptions(method="get", url="/foo"))
+
+        request2 = client2._build_request(
+            FinalRequestOptions(method="get", url="/foo", headers={"Authorization": Omit()})
+        )
+        assert request2.headers.get("Authorization") is None
 
     def test_default_query_option(self) -> None:
         client = AsyncAlchemystAI(
@@ -1536,7 +1554,7 @@ class TestAsyncAlchemystAI:
         calculated = client._calculate_retry_timeout(remaining_retries, options, headers)
         assert calculated == pytest.approx(timeout, 0.5 * 0.875)  # pyright: ignore[reportUnknownMemberType]
 
-    @mock.patch("alchemyst_ai._base_client.BaseClient._calculate_retry_timeout", _low_retry_timeout)
+    @mock.patch("alchemyst_ai_sdk._base_client.BaseClient._calculate_retry_timeout", _low_retry_timeout)
     @pytest.mark.respx(base_url=base_url)
     async def test_retrying_timeout_errors_doesnt_leak(
         self, respx_mock: MockRouter, async_client: AsyncAlchemystAI
@@ -1548,7 +1566,7 @@ class TestAsyncAlchemystAI:
 
         assert _get_open_connections(self.client) == 0
 
-    @mock.patch("alchemyst_ai._base_client.BaseClient._calculate_retry_timeout", _low_retry_timeout)
+    @mock.patch("alchemyst_ai_sdk._base_client.BaseClient._calculate_retry_timeout", _low_retry_timeout)
     @pytest.mark.respx(base_url=base_url)
     async def test_retrying_status_errors_doesnt_leak(
         self, respx_mock: MockRouter, async_client: AsyncAlchemystAI
@@ -1560,7 +1578,7 @@ class TestAsyncAlchemystAI:
         assert _get_open_connections(self.client) == 0
 
     @pytest.mark.parametrize("failures_before_success", [0, 2, 4])
-    @mock.patch("alchemyst_ai._base_client.BaseClient._calculate_retry_timeout", _low_retry_timeout)
+    @mock.patch("alchemyst_ai_sdk._base_client.BaseClient._calculate_retry_timeout", _low_retry_timeout)
     @pytest.mark.respx(base_url=base_url)
     @pytest.mark.asyncio
     @pytest.mark.parametrize("failure_mode", ["status", "exception"])
@@ -1592,7 +1610,7 @@ class TestAsyncAlchemystAI:
         assert int(response.http_request.headers.get("x-stainless-retry-count")) == failures_before_success
 
     @pytest.mark.parametrize("failures_before_success", [0, 2, 4])
-    @mock.patch("alchemyst_ai._base_client.BaseClient._calculate_retry_timeout", _low_retry_timeout)
+    @mock.patch("alchemyst_ai_sdk._base_client.BaseClient._calculate_retry_timeout", _low_retry_timeout)
     @pytest.mark.respx(base_url=base_url)
     @pytest.mark.asyncio
     async def test_omit_retry_count_header(
@@ -1616,7 +1634,7 @@ class TestAsyncAlchemystAI:
         assert len(response.http_request.headers.get_list("x-stainless-retry-count")) == 0
 
     @pytest.mark.parametrize("failures_before_success", [0, 2, 4])
-    @mock.patch("alchemyst_ai._base_client.BaseClient._calculate_retry_timeout", _low_retry_timeout)
+    @mock.patch("alchemyst_ai_sdk._base_client.BaseClient._calculate_retry_timeout", _low_retry_timeout)
     @pytest.mark.respx(base_url=base_url)
     @pytest.mark.asyncio
     async def test_overwrite_retry_count_header(
