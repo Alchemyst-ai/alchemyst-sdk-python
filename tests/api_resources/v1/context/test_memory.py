@@ -17,6 +17,43 @@ class TestMemory:
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
+    def test_method_update(self, client: AlchemystAI) -> None:
+        memory = client.v1.context.memory.update()
+        assert memory is None
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_method_update_with_all_params(self, client: AlchemystAI) -> None:
+        memory = client.v1.context.memory.update(
+            contents=[{"content": "content"}],
+            memory_id="memoryId",
+        )
+        assert memory is None
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_raw_response_update(self, client: AlchemystAI) -> None:
+        response = client.v1.context.memory.with_raw_response.update()
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        memory = response.parse()
+        assert memory is None
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_streaming_response_update(self, client: AlchemystAI) -> None:
+        with client.v1.context.memory.with_streaming_response.update() as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            memory = response.parse()
+            assert memory is None
+
+        assert cast(Any, response.is_closed) is True
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
     def test_method_delete(self, client: AlchemystAI) -> None:
         memory = client.v1.context.memory.delete()
         assert memory is None
@@ -95,6 +132,43 @@ class TestAsyncMemory:
     parametrize = pytest.mark.parametrize(
         "async_client", [False, True, {"http_client": "aiohttp"}], indirect=True, ids=["loose", "strict", "aiohttp"]
     )
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_method_update(self, async_client: AsyncAlchemystAI) -> None:
+        memory = await async_client.v1.context.memory.update()
+        assert memory is None
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_method_update_with_all_params(self, async_client: AsyncAlchemystAI) -> None:
+        memory = await async_client.v1.context.memory.update(
+            contents=[{"content": "content"}],
+            memory_id="memoryId",
+        )
+        assert memory is None
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_raw_response_update(self, async_client: AsyncAlchemystAI) -> None:
+        response = await async_client.v1.context.memory.with_raw_response.update()
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        memory = await response.parse()
+        assert memory is None
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_streaming_response_update(self, async_client: AsyncAlchemystAI) -> None:
+        async with async_client.v1.context.memory.with_streaming_response.update() as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            memory = await response.parse()
+            assert memory is None
+
+        assert cast(Any, response.is_closed) is True
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
