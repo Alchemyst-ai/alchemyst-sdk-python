@@ -8,8 +8,8 @@ from typing import Any, cast
 import pytest
 
 from tests.utils import assert_matches_type
-from alchemyst_ai_sdk import AlchemystAI, AsyncAlchemystAI
-from alchemyst_ai_sdk.types.v1.context import TraceListResponse, TraceDeleteResponse
+from alchemyst_ai import AlchemystAI, AsyncAlchemystAI
+from alchemyst_ai.types.v1.context import TraceListResponse, TraceDeleteResponse
 
 base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
 

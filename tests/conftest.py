@@ -10,15 +10,15 @@ import httpx
 import pytest
 from pytest_asyncio import is_async_test
 
-from alchemyst_ai_sdk import AlchemystAI, AsyncAlchemystAI, DefaultAioHttpClient
-from alchemyst_ai_sdk._utils import is_dict
+from alchemyst_ai import AlchemystAI, AsyncAlchemystAI, DefaultAioHttpClient
+from alchemyst_ai._utils import is_dict
 
 if TYPE_CHECKING:
     from _pytest.fixtures import FixtureRequest  # pyright: ignore[reportPrivateImportUsage]
 
 pytest.register_assert_rewrite("tests.utils")
 
-logging.getLogger("alchemyst_ai_sdk").setLevel(logging.DEBUG)
+logging.getLogger("alchemyst_ai").setLevel(logging.DEBUG)
 
 
 # automatically add `pytest.mark.asyncio()` to all of our async tests
