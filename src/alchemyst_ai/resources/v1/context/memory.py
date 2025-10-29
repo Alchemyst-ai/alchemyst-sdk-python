@@ -17,7 +17,7 @@ from ...._response import (
     async_to_streamed_response_wrapper,
 )
 from ...._base_client import make_request_options
-from ....types.v1.context import memory_add_params, memory_delete_params
+from ....types.v1.context import memory_add_params, memory_delete_params, memory_update_params
 
 __all__ = ["MemoryResource", "AsyncMemoryResource"]
 
@@ -41,6 +41,50 @@ class MemoryResource(SyncAPIResource):
         For more information, see https://www.github.com/Alchemyst-ai/alchemyst-sdk-python#with_streaming_response
         """
         return MemoryResourceWithStreamingResponse(self)
+
+    def update(
+        self,
+        *,
+        contents: Iterable[memory_update_params.Content] | Omit = omit,
+        memory_id: str | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> None:
+        """
+        This endpoint updates memory context data.
+
+        Args:
+          contents: Array of updated content objects
+
+          memory_id: The ID of the memory to update
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        extra_headers = {"Accept": "*/*", **(extra_headers or {})}
+        return self._post(
+            "/api/v1/context/memory/update",
+            body=maybe_transform(
+                {
+                    "contents": contents,
+                    "memory_id": memory_id,
+                },
+                memory_update_params.MemoryUpdateParams,
+            ),
+            options=make_request_options(
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+            ),
+            cast_to=NoneType,
+        )
 
     def delete(
         self,
@@ -155,6 +199,50 @@ class AsyncMemoryResource(AsyncAPIResource):
         """
         return AsyncMemoryResourceWithStreamingResponse(self)
 
+    async def update(
+        self,
+        *,
+        contents: Iterable[memory_update_params.Content] | Omit = omit,
+        memory_id: str | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> None:
+        """
+        This endpoint updates memory context data.
+
+        Args:
+          contents: Array of updated content objects
+
+          memory_id: The ID of the memory to update
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        extra_headers = {"Accept": "*/*", **(extra_headers or {})}
+        return await self._post(
+            "/api/v1/context/memory/update",
+            body=await async_maybe_transform(
+                {
+                    "contents": contents,
+                    "memory_id": memory_id,
+                },
+                memory_update_params.MemoryUpdateParams,
+            ),
+            options=make_request_options(
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+            ),
+            cast_to=NoneType,
+        )
+
     async def delete(
         self,
         *,
@@ -252,6 +340,9 @@ class MemoryResourceWithRawResponse:
     def __init__(self, memory: MemoryResource) -> None:
         self._memory = memory
 
+        self.update = to_raw_response_wrapper(
+            memory.update,
+        )
         self.delete = to_raw_response_wrapper(
             memory.delete,
         )
@@ -264,6 +355,9 @@ class AsyncMemoryResourceWithRawResponse:
     def __init__(self, memory: AsyncMemoryResource) -> None:
         self._memory = memory
 
+        self.update = async_to_raw_response_wrapper(
+            memory.update,
+        )
         self.delete = async_to_raw_response_wrapper(
             memory.delete,
         )
@@ -276,6 +370,9 @@ class MemoryResourceWithStreamingResponse:
     def __init__(self, memory: MemoryResource) -> None:
         self._memory = memory
 
+        self.update = to_streamed_response_wrapper(
+            memory.update,
+        )
         self.delete = to_streamed_response_wrapper(
             memory.delete,
         )
@@ -288,6 +385,9 @@ class AsyncMemoryResourceWithStreamingResponse:
     def __init__(self, memory: AsyncMemoryResource) -> None:
         self._memory = memory
 
+        self.update = async_to_streamed_response_wrapper(
+            memory.update,
+        )
         self.delete = async_to_streamed_response_wrapper(
             memory.delete,
         )
