@@ -8,8 +8,8 @@ from typing import Any, cast
 import pytest
 
 from tests.utils import assert_matches_type
-from alchemyst_ai import AlchemystAI, AsyncAlchemystAI
-from alchemyst_ai.types.v1 import (
+from alchemyst_ai_sdk import AlchemystAI, AsyncAlchemystAI
+from alchemyst_ai_sdk.types.v1 import (
     ContextSearchResponse,
 )
 
