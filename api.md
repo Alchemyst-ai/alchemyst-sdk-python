@@ -40,6 +40,13 @@ Methods:
 - <code title="get /api/v1/context/view">client.v1.context.view.<a href="./src/alchemyst_ai_sdk/resources/v1/context/view.py">retrieve</a>() -> <a href="./src/alchemyst_ai_sdk/types/v1/context/view_retrieve_response.py">ViewRetrieveResponse</a></code>
 - <code title="get /api/v1/context/view/docs">client.v1.context.view.<a href="./src/alchemyst_ai_sdk/resources/v1/context/view.py">docs</a>() -> object</code>
 
+### Memory
+
+Methods:
+
+- <code title="post /api/v1/context/memory/delete">client.v1.context.memory.<a href="./src/alchemyst_ai_sdk/resources/v1/context/memory.py">delete</a>(\*\*<a href="src/alchemyst_ai_sdk/types/v1/context/memory_delete_params.py">params</a>) -> None</code>
+- <code title="post /api/v1/context/memory/add">client.v1.context.memory.<a href="./src/alchemyst_ai_sdk/resources/v1/context/memory.py">add</a>(\*\*<a href="src/alchemyst_ai_sdk/types/v1/context/memory_add_params.py">params</a>) -> None</code>
+
 ## Org
 
 ### Context

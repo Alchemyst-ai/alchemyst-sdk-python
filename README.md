@@ -35,7 +35,18 @@ client = AlchemystAI(
     api_key=os.environ.get("ALCHEMYST_AI_API_KEY"),  # This is the default and can be omitted
 )
 
-response = client.v1.context.add()
+response = client.v1.context.add(
+    context_type="resource",
+    documents=[{"content": "The content of the document"}],
+    metadata={
+        "file_name": "notes.txt",
+        "file_type": "text/plain",
+        "last_modified": "2025-10-01T18:42:40.419Z",
+        "file_size": 1024,
+    },
+    scope="internal",
+    source="platform.api.context.add",
+)
 ```
 
 While you can provide an `api_key` keyword argument,
@@ -58,7 +69,18 @@ client = AsyncAlchemystAI(
 
 
 async def main() -> None:
-    response = await client.v1.context.add()
+    response = await client.v1.context.add(
+        context_type="resource",
+        documents=[{"content": "The content of the document"}],
+        metadata={
+            "file_name": "notes.txt",
+            "file_type": "text/plain",
+            "last_modified": "2025-10-01T18:42:40.419Z",
+            "file_size": 1024,
+        },
+        scope="internal",
+        source="platform.api.context.add",
+    )
 
 
 asyncio.run(main())
@@ -90,7 +112,18 @@ async def main() -> None:
         api_key="My API Key",
         http_client=DefaultAioHttpClient(),
     ) as client:
-        response = await client.v1.context.add()
+        response = await client.v1.context.add(
+            context_type="resource",
+            documents=[{"content": "The content of the document"}],
+            metadata={
+                "file_name": "notes.txt",
+                "file_type": "text/plain",
+                "last_modified": "2025-10-01T18:42:40.419Z",
+                "file_size": 1024,
+            },
+            scope="internal",
+            source="platform.api.context.add",
+        )
 
 
 asyncio.run(main())
@@ -136,7 +169,18 @@ from alchemyst_ai_sdk import AlchemystAI
 client = AlchemystAI()
 
 try:
-    client.v1.context.add()
+    client.v1.context.add(
+        context_type="resource",
+        documents=[{"content": "The content of the document"}],
+        metadata={
+            "file_name": "notes.txt",
+            "file_type": "text/plain",
+            "last_modified": "2025-10-01T18:42:40.419Z",
+            "file_size": 1024,
+        },
+        scope="internal",
+        source="platform.api.context.add",
+    )
 except alchemyst_ai_sdk.APIConnectionError as e:
     print("The server could not be reached")
     print(e.__cause__)  # an underlying Exception, likely raised within httpx.
@@ -179,7 +223,18 @@ client = AlchemystAI(
 )
 
 # Or, configure per-request:
-client.with_options(max_retries=5).v1.context.add()
+client.with_options(max_retries=5).v1.context.add(
+    context_type="resource",
+    documents=[{"content": "The content of the document"}],
+    metadata={
+        "file_name": "notes.txt",
+        "file_type": "text/plain",
+        "last_modified": "2025-10-01T18:42:40.419Z",
+        "file_size": 1024,
+    },
+    scope="internal",
+    source="platform.api.context.add",
+)
 ```
 
 ### Timeouts
@@ -202,7 +257,18 @@ client = AlchemystAI(
 )
 
 # Override per-request:
-client.with_options(timeout=5.0).v1.context.add()
+client.with_options(timeout=5.0).v1.context.add(
+    context_type="resource",
+    documents=[{"content": "The content of the document"}],
+    metadata={
+        "file_name": "notes.txt",
+        "file_type": "text/plain",
+        "last_modified": "2025-10-01T18:42:40.419Z",
+        "file_size": 1024,
+    },
+    scope="internal",
+    source="platform.api.context.add",
+)
 ```
 
 On timeout, an `APITimeoutError` is thrown.
@@ -243,7 +309,20 @@ The "raw" Response object can be accessed by prefixing `.with_raw_response.` to 
 from alchemyst_ai_sdk import AlchemystAI
 
 client = AlchemystAI()
-response = client.v1.context.with_raw_response.add()
+response = client.v1.context.with_raw_response.add(
+    context_type="resource",
+    documents=[{
+        "content": "The content of the document"
+    }],
+    metadata={
+        "file_name": "notes.txt",
+        "file_type": "text/plain",
+        "last_modified": "2025-10-01T18:42:40.419Z",
+        "file_size": 1024,
+    },
+    scope="internal",
+    source="platform.api.context.add",
+)
 print(response.headers.get('X-My-Header'))
 
 context = response.parse()  # get the object that `v1.context.add()` would have returned
@@ -261,7 +340,18 @@ The above interface eagerly reads the full response body when you make the reque
 To stream the response body, use `.with_streaming_response` instead, which requires a context manager and only reads the response body once you call `.read()`, `.text()`, `.json()`, `.iter_bytes()`, `.iter_text()`, `.iter_lines()` or `.parse()`. In the async client, these are async methods.
 
 ```python
-with client.v1.context.with_streaming_response.add() as response:
+with client.v1.context.with_streaming_response.add(
+    context_type="resource",
+    documents=[{"content": "The content of the document"}],
+    metadata={
+        "file_name": "notes.txt",
+        "file_type": "text/plain",
+        "last_modified": "2025-10-01T18:42:40.419Z",
+        "file_size": 1024,
+    },
+    scope="internal",
+    source="platform.api.context.add",
+) as response:
     print(response.headers.get("X-My-Header"))
 
     for line in response.iter_lines():
