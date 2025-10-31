@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.6.1 (2025-10-31)
+
+Full Changelog: [v0.6.0...v0.6.1](https://github.com/Alchemyst-ai/alchemyst-sdk-python/compare/v0.6.0...v0.6.1)
+
+### Bug Fixes
+
+* **client:** close streams without requiring full consumption ([338aad1](https://github.com/Alchemyst-ai/alchemyst-sdk-python/commit/338aad1501c8d322cf7f4bc9609e57ab7f06f03d))
+
+
+### Chores
+
+* bump `httpx-aiohttp` version to 0.1.9 ([9421012](https://github.com/Alchemyst-ai/alchemyst-sdk-python/commit/94210125a9c4d6a333d720d751a9c9d242b70ab5))
+* **internal/tests:** avoid race condition with implicit client cleanup ([46f4d22](https://github.com/Alchemyst-ai/alchemyst-sdk-python/commit/46f4d2289bb353f0a76e02852dfc8fcdae171108))
+* **internal:** codegen related update ([efa3043](https://github.com/Alchemyst-ai/alchemyst-sdk-python/commit/efa30430779a0557f3b87c2196146a0ba89b56a9))
+
 ## 0.6.0 (2025-10-29)
 
 Full Changelog: [v0.5.0...v0.6.0](https://github.com/Alchemyst-ai/alchemyst-sdk-python/compare/v0.5.0...v0.6.0)
