@@ -3,7 +3,7 @@
 <!-- prettier-ignore -->
 [![PyPI version](https://img.shields.io/pypi/v/alchemystai.svg?label=pypi%20(stable))](https://pypi.org/project/alchemystai/)
 
-The Alchemyst AI Python library provides convenient access to the Alchemyst AI REST API from any Python 3.8+
+The Alchemyst AI Python library provides convenient access to the Alchemyst AI REST API from any Python 3.9+
 application. The library includes type definitions for all request params and response fields,
 and offers both synchronous and asynchronous clients powered by [httpx](https://github.com/encode/httpx).
 
@@ -99,6 +99,7 @@ pip install alchemystai[aiohttp]
 Then you can enable it by instantiating the client with `http_client=DefaultAioHttpClient()`:
 
 ```python
+import os
 import asyncio
 from alchemyst_ai import DefaultAioHttpClient
 from alchemyst_ai import AsyncAlchemystAI
@@ -106,7 +107,7 @@ from alchemyst_ai import AsyncAlchemystAI
 
 async def main() -> None:
     async with AsyncAlchemystAI(
-        api_key="My API Key",
+        api_key=os.environ.get("ALCHEMYST_AI_API_KEY"),  # This is the default and can be omitted
         http_client=DefaultAioHttpClient(),
     ) as client:
         response = await client.v1.context.add(
@@ -145,7 +146,13 @@ from alchemyst_ai import AlchemystAI
 client = AlchemystAI()
 
 response = client.v1.context.add(
-    metadata={},
+    metadata={
+        "file_name": "support_thread_TCK-1234.txt",
+        "file_size": 2048,
+        "file_type": "text/plain",
+        "group_name": ["support", "pricing"],
+        "last_modified": "2025-01-10T12:34:56.000Z",
+    },
 )
 print(response.metadata)
 ```
@@ -458,7 +465,7 @@ print(alchemyst_ai.__version__)
 
 ## Requirements
 
-Python 3.8 or higher.
+Python 3.9 or higher.
 
 ## Contributing
 

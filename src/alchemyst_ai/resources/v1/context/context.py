@@ -198,7 +198,9 @@ class ContextResource(SyncAPIResource):
         minimum_similarity_threshold: float,
         query: str,
         similarity_threshold: float,
-        metadata: object | Omit = omit,
+        query_metadata: Literal["true", "false"] | Omit = omit,
+        mode: Literal["fast", "standard"] | Omit = omit,
+        body_metadata: object | Omit = omit,
         scope: Literal["internal", "external"] | Omit = omit,
         user_id: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
@@ -219,7 +221,21 @@ class ContextResource(SyncAPIResource):
 
           similarity_threshold: Maximum similarity threshold (must be >= minimum_similarity_threshold)
 
-          metadata: Additional metadata for the search
+          query_metadata:
+              Controls whether metadata is included in the response:
+
+              - metadata=true → metadata will be included in each context item in the
+                response.
+              - metadata=false (or omitted) → metadata will be excluded from the response for
+                better performance.
+
+          mode:
+              Controls the search mode:
+
+              - mode=fast → prioritizes speed over completeness.
+              - mode=standard → performs a comprehensive search (default if omitted).
+
+          body_metadata: Additional metadata for the search
 
           scope: Search scope
 
@@ -240,14 +256,24 @@ class ContextResource(SyncAPIResource):
                     "minimum_similarity_threshold": minimum_similarity_threshold,
                     "query": query,
                     "similarity_threshold": similarity_threshold,
-                    "metadata": metadata,
+                    "body_metadata": body_metadata,
                     "scope": scope,
                     "user_id": user_id,
                 },
                 context_search_params.ContextSearchParams,
             ),
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=maybe_transform(
+                    {
+                        "query_metadata": query_metadata,
+                        "mode": mode,
+                    },
+                    context_search_params.ContextSearchParams,
+                ),
             ),
             cast_to=ContextSearchResponse,
         )
@@ -403,7 +429,9 @@ class AsyncContextResource(AsyncAPIResource):
         minimum_similarity_threshold: float,
         query: str,
         similarity_threshold: float,
-        metadata: object | Omit = omit,
+        query_metadata: Literal["true", "false"] | Omit = omit,
+        mode: Literal["fast", "standard"] | Omit = omit,
+        body_metadata: object | Omit = omit,
         scope: Literal["internal", "external"] | Omit = omit,
         user_id: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
@@ -424,7 +452,21 @@ class AsyncContextResource(AsyncAPIResource):
 
           similarity_threshold: Maximum similarity threshold (must be >= minimum_similarity_threshold)
 
-          metadata: Additional metadata for the search
+          query_metadata:
+              Controls whether metadata is included in the response:
+
+              - metadata=true → metadata will be included in each context item in the
+                response.
+              - metadata=false (or omitted) → metadata will be excluded from the response for
+                better performance.
+
+          mode:
+              Controls the search mode:
+
+              - mode=fast → prioritizes speed over completeness.
+              - mode=standard → performs a comprehensive search (default if omitted).
+
+          body_metadata: Additional metadata for the search
 
           scope: Search scope
 
@@ -445,14 +487,24 @@ class AsyncContextResource(AsyncAPIResource):
                     "minimum_similarity_threshold": minimum_similarity_threshold,
                     "query": query,
                     "similarity_threshold": similarity_threshold,
-                    "metadata": metadata,
+                    "body_metadata": body_metadata,
                     "scope": scope,
                     "user_id": user_id,
                 },
                 context_search_params.ContextSearchParams,
             ),
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=await async_maybe_transform(
+                    {
+                        "query_metadata": query_metadata,
+                        "mode": mode,
+                    },
+                    context_search_params.ContextSearchParams,
+                ),
             ),
             cast_to=ContextSearchResponse,
         )

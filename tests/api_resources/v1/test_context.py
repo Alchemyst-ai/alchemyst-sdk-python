@@ -30,9 +30,9 @@ class TestContext:
     def test_method_delete_with_all_params(self, client: AlchemystAI) -> None:
         context = client.v1.context.delete(
             by_doc=True,
-            by_id=True,
+            by_id=False,
             organization_id="organization_id",
-            source="source",
+            source="support-inbox",
             user_id="user_id",
         )
         assert_matches_type(object, context, path=["response"])
@@ -70,16 +70,16 @@ class TestContext:
     def test_method_add_with_all_params(self, client: AlchemystAI) -> None:
         context = client.v1.context.add(
             context_type="resource",
-            documents=[{"content": "content"}],
+            documents=[{"content": "Customer asked about pricing for the Scale plan."}],
             metadata={
-                "file_name": "fileName",
-                "file_size": 0,
-                "file_type": "fileType",
-                "group_name": ["string"],
-                "last_modified": "lastModified",
+                "file_name": "support_thread_TCK-1234.txt",
+                "file_size": 2048,
+                "file_type": "text/plain",
+                "group_name": ["support", "pricing"],
+                "last_modified": "2025-01-10T12:34:56.000Z",
             },
             scope="internal",
-            source="source",
+            source="support-inbox",
         )
         assert_matches_type(object, context, path=["response"])
 
@@ -110,7 +110,7 @@ class TestContext:
     def test_method_search(self, client: AlchemystAI) -> None:
         context = client.v1.context.search(
             minimum_similarity_threshold=0.5,
-            query="search query for user preferences",
+            query="What did the customer ask about pricing for the Scale plan?",
             similarity_threshold=0.8,
         )
         assert_matches_type(ContextSearchResponse, context, path=["response"])
@@ -120,9 +120,11 @@ class TestContext:
     def test_method_search_with_all_params(self, client: AlchemystAI) -> None:
         context = client.v1.context.search(
             minimum_similarity_threshold=0.5,
-            query="search query for user preferences",
+            query="What did the customer ask about pricing for the Scale plan?",
             similarity_threshold=0.8,
-            metadata={},
+            query_metadata="true",
+            mode="fast",
+            body_metadata={},
             scope="internal",
             user_id="user123",
         )
@@ -133,7 +135,7 @@ class TestContext:
     def test_raw_response_search(self, client: AlchemystAI) -> None:
         response = client.v1.context.with_raw_response.search(
             minimum_similarity_threshold=0.5,
-            query="search query for user preferences",
+            query="What did the customer ask about pricing for the Scale plan?",
             similarity_threshold=0.8,
         )
 
@@ -147,7 +149,7 @@ class TestContext:
     def test_streaming_response_search(self, client: AlchemystAI) -> None:
         with client.v1.context.with_streaming_response.search(
             minimum_similarity_threshold=0.5,
-            query="search query for user preferences",
+            query="What did the customer ask about pricing for the Scale plan?",
             similarity_threshold=0.8,
         ) as response:
             assert not response.is_closed
@@ -175,9 +177,9 @@ class TestAsyncContext:
     async def test_method_delete_with_all_params(self, async_client: AsyncAlchemystAI) -> None:
         context = await async_client.v1.context.delete(
             by_doc=True,
-            by_id=True,
+            by_id=False,
             organization_id="organization_id",
-            source="source",
+            source="support-inbox",
             user_id="user_id",
         )
         assert_matches_type(object, context, path=["response"])
@@ -215,16 +217,16 @@ class TestAsyncContext:
     async def test_method_add_with_all_params(self, async_client: AsyncAlchemystAI) -> None:
         context = await async_client.v1.context.add(
             context_type="resource",
-            documents=[{"content": "content"}],
+            documents=[{"content": "Customer asked about pricing for the Scale plan."}],
             metadata={
-                "file_name": "fileName",
-                "file_size": 0,
-                "file_type": "fileType",
-                "group_name": ["string"],
-                "last_modified": "lastModified",
+                "file_name": "support_thread_TCK-1234.txt",
+                "file_size": 2048,
+                "file_type": "text/plain",
+                "group_name": ["support", "pricing"],
+                "last_modified": "2025-01-10T12:34:56.000Z",
             },
             scope="internal",
-            source="source",
+            source="support-inbox",
         )
         assert_matches_type(object, context, path=["response"])
 
@@ -255,7 +257,7 @@ class TestAsyncContext:
     async def test_method_search(self, async_client: AsyncAlchemystAI) -> None:
         context = await async_client.v1.context.search(
             minimum_similarity_threshold=0.5,
-            query="search query for user preferences",
+            query="What did the customer ask about pricing for the Scale plan?",
             similarity_threshold=0.8,
         )
         assert_matches_type(ContextSearchResponse, context, path=["response"])
@@ -265,9 +267,11 @@ class TestAsyncContext:
     async def test_method_search_with_all_params(self, async_client: AsyncAlchemystAI) -> None:
         context = await async_client.v1.context.search(
             minimum_similarity_threshold=0.5,
-            query="search query for user preferences",
+            query="What did the customer ask about pricing for the Scale plan?",
             similarity_threshold=0.8,
-            metadata={},
+            query_metadata="true",
+            mode="fast",
+            body_metadata={},
             scope="internal",
             user_id="user123",
         )
@@ -278,7 +282,7 @@ class TestAsyncContext:
     async def test_raw_response_search(self, async_client: AsyncAlchemystAI) -> None:
         response = await async_client.v1.context.with_raw_response.search(
             minimum_similarity_threshold=0.5,
-            query="search query for user preferences",
+            query="What did the customer ask about pricing for the Scale plan?",
             similarity_threshold=0.8,
         )
 
@@ -292,7 +296,7 @@ class TestAsyncContext:
     async def test_streaming_response_search(self, async_client: AsyncAlchemystAI) -> None:
         async with async_client.v1.context.with_streaming_response.search(
             minimum_similarity_threshold=0.5,
-            query="search query for user preferences",
+            query="What did the customer ask about pricing for the Scale plan?",
             similarity_threshold=0.8,
         ) as response:
             assert not response.is_closed

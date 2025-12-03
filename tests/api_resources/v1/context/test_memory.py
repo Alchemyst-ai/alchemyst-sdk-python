@@ -25,8 +25,11 @@ class TestMemory:
     @parametrize
     def test_method_update_with_all_params(self, client: AlchemystAI) -> None:
         memory = client.v1.context.memory.update(
-            contents=[{"content": "content"}],
-            memory_id="memoryId",
+            contents=[
+                {"content": "Customer asked about pricing for the Scale plan."},
+                {"content": "Updated answer about the Scale plan pricing after discounts."},
+            ],
+            memory_id="support-thread-TCK-1234",
         )
         assert memory is None
 
@@ -62,7 +65,7 @@ class TestMemory:
     @parametrize
     def test_method_delete_with_all_params(self, client: AlchemystAI) -> None:
         memory = client.v1.context.memory.delete(
-            memory_id="memoryId",
+            memory_id="support-thread-TCK-1234",
             organization_id="organization_id",
             user_id="user_id",
         )
@@ -100,8 +103,11 @@ class TestMemory:
     @parametrize
     def test_method_add_with_all_params(self, client: AlchemystAI) -> None:
         memory = client.v1.context.memory.add(
-            contents=[{"content": "content"}],
-            memory_id="memoryId",
+            contents=[
+                {"content": "Customer asked about pricing for the Scale plan."},
+                {"content": "Explained the Scale plan pricing and shared the pricing page link."},
+            ],
+            memory_id="support-thread-TCK-1234",
         )
         assert memory is None
 
@@ -143,8 +149,11 @@ class TestAsyncMemory:
     @parametrize
     async def test_method_update_with_all_params(self, async_client: AsyncAlchemystAI) -> None:
         memory = await async_client.v1.context.memory.update(
-            contents=[{"content": "content"}],
-            memory_id="memoryId",
+            contents=[
+                {"content": "Customer asked about pricing for the Scale plan."},
+                {"content": "Updated answer about the Scale plan pricing after discounts."},
+            ],
+            memory_id="support-thread-TCK-1234",
         )
         assert memory is None
 
@@ -180,7 +189,7 @@ class TestAsyncMemory:
     @parametrize
     async def test_method_delete_with_all_params(self, async_client: AsyncAlchemystAI) -> None:
         memory = await async_client.v1.context.memory.delete(
-            memory_id="memoryId",
+            memory_id="support-thread-TCK-1234",
             organization_id="organization_id",
             user_id="user_id",
         )
@@ -218,8 +227,11 @@ class TestAsyncMemory:
     @parametrize
     async def test_method_add_with_all_params(self, async_client: AsyncAlchemystAI) -> None:
         memory = await async_client.v1.context.memory.add(
-            contents=[{"content": "content"}],
-            memory_id="memoryId",
+            contents=[
+                {"content": "Customer asked about pricing for the Scale plan."},
+                {"content": "Explained the Scale plan pricing and shared the pricing page link."},
+            ],
+            memory_id="support-thread-TCK-1234",
         )
         assert memory is None
 
