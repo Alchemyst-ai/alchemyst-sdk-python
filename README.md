@@ -99,6 +99,7 @@ pip install alchemystai[aiohttp]
 Then you can enable it by instantiating the client with `http_client=DefaultAioHttpClient()`:
 
 ```python
+import os
 import asyncio
 from alchemyst_ai import DefaultAioHttpClient
 from alchemyst_ai import AsyncAlchemystAI
@@ -106,7 +107,7 @@ from alchemyst_ai import AsyncAlchemystAI
 
 async def main() -> None:
     async with AsyncAlchemystAI(
-        api_key="My API Key",
+        api_key=os.environ.get("ALCHEMYST_AI_API_KEY"),  # This is the default and can be omitted
         http_client=DefaultAioHttpClient(),
     ) as client:
         response = await client.v1.context.add(
