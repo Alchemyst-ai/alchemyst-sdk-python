@@ -146,7 +146,13 @@ from alchemyst_ai import AlchemystAI
 client = AlchemystAI()
 
 response = client.v1.context.add(
-    metadata={},
+    metadata={
+        "file_name": "support_thread_TCK-1234.txt",
+        "file_size": 2048,
+        "file_type": "text/plain",
+        "group_name": ["support", "pricing"],
+        "last_modified": "2025-01-10T12:34:56.000Z",
+    },
 )
 print(response.metadata)
 ```

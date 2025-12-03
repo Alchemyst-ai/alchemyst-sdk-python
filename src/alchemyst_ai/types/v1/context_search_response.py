@@ -16,6 +16,7 @@ class Context(BaseModel):
     created_at: Optional[datetime] = FieldInfo(alias="createdAt", default=None)
 
     metadata: Optional[object] = None
+    """Only included when query parameter metadata=true"""
 
     score: Optional[float] = None
 
