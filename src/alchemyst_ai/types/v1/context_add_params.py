@@ -37,6 +37,8 @@ Document: TypeAlias = Union[DocumentTyped, Dict[str, str]]
 
 
 class Metadata(TypedDict, total=False):
+    """Additional metadata for the context"""
+
     file_name: Annotated[str, PropertyInfo(alias="fileName")]
     """Name of the file"""
 
