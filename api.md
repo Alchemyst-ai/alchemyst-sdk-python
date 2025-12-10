@@ -37,7 +37,7 @@ from alchemyst_ai.types.v1.context import ViewRetrieveResponse
 
 Methods:
 
-- <code title="get /api/v1/context/view">client.v1.context.view.<a href="./src/alchemyst_ai/resources/v1/context/view.py">retrieve</a>() -> <a href="./src/alchemyst_ai/types/v1/context/view_retrieve_response.py">ViewRetrieveResponse</a></code>
+- <code title="get /api/v1/context/view">client.v1.context.view.<a href="./src/alchemyst_ai/resources/v1/context/view.py">retrieve</a>(\*\*<a href="src/alchemyst_ai/types/v1/context/view_retrieve_params.py">params</a>) -> <a href="./src/alchemyst_ai/types/v1/context/view_retrieve_response.py">ViewRetrieveResponse</a></code>
 - <code title="get /api/v1/context/view/docs">client.v1.context.view.<a href="./src/alchemyst_ai/resources/v1/context/view.py">docs</a>() -> object</code>
 
 ### Memory
