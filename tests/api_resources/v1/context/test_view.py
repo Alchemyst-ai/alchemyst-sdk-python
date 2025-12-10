@@ -25,6 +25,15 @@ class TestView:
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
+    def test_method_retrieve_with_all_params(self, client: AlchemystAI) -> None:
+        view = client.v1.context.view.retrieve(
+            file_name="file_name",
+            magic_key="magic_key",
+        )
+        assert_matches_type(ViewRetrieveResponse, view, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
     def test_raw_response_retrieve(self, client: AlchemystAI) -> None:
         response = client.v1.context.view.with_raw_response.retrieve()
 
@@ -83,6 +92,15 @@ class TestAsyncView:
     @parametrize
     async def test_method_retrieve(self, async_client: AsyncAlchemystAI) -> None:
         view = await async_client.v1.context.view.retrieve()
+        assert_matches_type(ViewRetrieveResponse, view, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_method_retrieve_with_all_params(self, async_client: AsyncAlchemystAI) -> None:
+        view = await async_client.v1.context.view.retrieve(
+            file_name="file_name",
+            magic_key="magic_key",
+        )
         assert_matches_type(ViewRetrieveResponse, view, path=["response"])
 
     @pytest.mark.skip(reason="Prism tests are disabled")
