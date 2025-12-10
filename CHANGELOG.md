@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.8.0 (2025-12-10)
+
+Full Changelog: [v0.7.0...v0.8.0](https://github.com/Alchemyst-ai/alchemyst-sdk-python/compare/v0.7.0...v0.8.0)
+
+### Features
+
+* **api:** api update ([67f9147](https://github.com/Alchemyst-ai/alchemyst-sdk-python/commit/67f9147bbb0eb3f144a3f3aaa7b718483f7b13b5))
+
+
+### Bug Fixes
+
+* **types:** allow pyright to infer TypedDict types within SequenceNotStr ([0b0833a](https://github.com/Alchemyst-ai/alchemyst-sdk-python/commit/0b0833a2758c4e0715713a85ed199f24601f38a7))
+
+
+### Chores
+
+* add missing docstrings ([ae31a75](https://github.com/Alchemyst-ai/alchemyst-sdk-python/commit/ae31a757dee2a63edf41456179883b40a52da924))
+
 ## 0.7.0 (2025-12-03)
 
 Full Changelog: [v0.6.0...v0.7.0](https://github.com/Alchemyst-ai/alchemyst-sdk-python/compare/v0.6.0...v0.7.0)
