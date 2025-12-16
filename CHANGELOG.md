@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.8.1 (2025-12-16)
+
+Full Changelog: [v0.8.0...v0.8.1](https://github.com/Alchemyst-ai/alchemyst-sdk-python/compare/v0.8.0...v0.8.1)
+
+### Chores
+
+* **internal:** add missing files argument to base client ([30792e6](https://github.com/Alchemyst-ai/alchemyst-sdk-python/commit/30792e6e2b550d61d7db0ee42e8b661237455989))
+
 ## 0.8.0 (2025-12-10)
 
 Full Changelog: [v0.7.0...v0.8.0](https://github.com/Alchemyst-ai/alchemyst-sdk-python/compare/v0.7.0...v0.8.0)
