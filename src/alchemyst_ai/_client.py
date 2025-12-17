@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import os
-from typing import Any, Mapping
+from typing import TYPE_CHECKING, Any, Mapping
 from typing_extensions import Self, override
 
 import httpx
@@ -21,6 +21,7 @@ from ._types import (
     not_given,
 )
 from ._utils import is_given, get_async_library
+from ._compat import cached_property
 from ._version import __version__
 from ._streaming import Stream as Stream, AsyncStream as AsyncStream
 from ._exceptions import APIStatusError
@@ -29,7 +30,10 @@ from ._base_client import (
     SyncAPIClient,
     AsyncAPIClient,
 )
-from .resources.v1 import v1
+
+if TYPE_CHECKING:
+    from .resources import v1
+    from .resources.v1.v1 import V1Resource, AsyncV1Resource
 
 __all__ = [
     "Timeout",
@@ -44,10 +48,6 @@ __all__ = [
 
 
 class AlchemystAI(SyncAPIClient):
-    v1: v1.V1Resource
-    with_raw_response: AlchemystAIWithRawResponse
-    with_streaming_response: AlchemystAIWithStreamedResponse
-
     # client options
     api_key: str | None
 
@@ -98,9 +98,19 @@ class AlchemystAI(SyncAPIClient):
             _strict_response_validation=_strict_response_validation,
         )
 
-        self.v1 = v1.V1Resource(self)
-        self.with_raw_response = AlchemystAIWithRawResponse(self)
-        self.with_streaming_response = AlchemystAIWithStreamedResponse(self)
+    @cached_property
+    def v1(self) -> V1Resource:
+        from .resources.v1 import V1Resource
+
+        return V1Resource(self)
+
+    @cached_property
+    def with_raw_response(self) -> AlchemystAIWithRawResponse:
+        return AlchemystAIWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> AlchemystAIWithStreamedResponse:
+        return AlchemystAIWithStreamedResponse(self)
 
     @property
     @override
@@ -221,10 +231,6 @@ class AlchemystAI(SyncAPIClient):
 
 
 class AsyncAlchemystAI(AsyncAPIClient):
-    v1: v1.AsyncV1Resource
-    with_raw_response: AsyncAlchemystAIWithRawResponse
-    with_streaming_response: AsyncAlchemystAIWithStreamedResponse
-
     # client options
     api_key: str | None
 
@@ -275,9 +281,19 @@ class AsyncAlchemystAI(AsyncAPIClient):
             _strict_response_validation=_strict_response_validation,
         )
 
-        self.v1 = v1.AsyncV1Resource(self)
-        self.with_raw_response = AsyncAlchemystAIWithRawResponse(self)
-        self.with_streaming_response = AsyncAlchemystAIWithStreamedResponse(self)
+    @cached_property
+    def v1(self) -> AsyncV1Resource:
+        from .resources.v1 import AsyncV1Resource
+
+        return AsyncV1Resource(self)
+
+    @cached_property
+    def with_raw_response(self) -> AsyncAlchemystAIWithRawResponse:
+        return AsyncAlchemystAIWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> AsyncAlchemystAIWithStreamedResponse:
+        return AsyncAlchemystAIWithStreamedResponse(self)
 
     @property
     @override
@@ -398,23 +414,55 @@ class AsyncAlchemystAI(AsyncAPIClient):
 
 
 class AlchemystAIWithRawResponse:
+    _client: AlchemystAI
+
     def __init__(self, client: AlchemystAI) -> None:
-        self.v1 = v1.V1ResourceWithRawResponse(client.v1)
+        self._client = client
+
+    @cached_property
+    def v1(self) -> v1.V1ResourceWithRawResponse:
+        from .resources.v1 import V1ResourceWithRawResponse
+
+        return V1ResourceWithRawResponse(self._client.v1)
 
 
 class AsyncAlchemystAIWithRawResponse:
+    _client: AsyncAlchemystAI
+
     def __init__(self, client: AsyncAlchemystAI) -> None:
-        self.v1 = v1.AsyncV1ResourceWithRawResponse(client.v1)
+        self._client = client
+
+    @cached_property
+    def v1(self) -> v1.AsyncV1ResourceWithRawResponse:
+        from .resources.v1 import AsyncV1ResourceWithRawResponse
+
+        return AsyncV1ResourceWithRawResponse(self._client.v1)
 
 
 class AlchemystAIWithStreamedResponse:
+    _client: AlchemystAI
+
     def __init__(self, client: AlchemystAI) -> None:
-        self.v1 = v1.V1ResourceWithStreamingResponse(client.v1)
+        self._client = client
+
+    @cached_property
+    def v1(self) -> v1.V1ResourceWithStreamingResponse:
+        from .resources.v1 import V1ResourceWithStreamingResponse
+
+        return V1ResourceWithStreamingResponse(self._client.v1)
 
 
 class AsyncAlchemystAIWithStreamedResponse:
+    _client: AsyncAlchemystAI
+
     def __init__(self, client: AsyncAlchemystAI) -> None:
-        self.v1 = v1.AsyncV1ResourceWithStreamingResponse(client.v1)
+        self._client = client
+
+    @cached_property
+    def v1(self) -> v1.AsyncV1ResourceWithStreamingResponse:
+        from .resources.v1 import AsyncV1ResourceWithStreamingResponse
+
+        return AsyncV1ResourceWithStreamingResponse(self._client.v1)
 
 
 Client = AlchemystAI
