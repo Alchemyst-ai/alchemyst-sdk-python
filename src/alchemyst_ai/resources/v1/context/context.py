@@ -198,7 +198,7 @@ class ContextResource(SyncAPIResource):
         minimum_similarity_threshold: float,
         query: str,
         similarity_threshold: float,
-        query_metadata: Literal["true", "false"] | Omit = omit,
+        metadata: Literal["true", "false"] | Omit = omit,
         mode: Literal["fast", "standard"] | Omit = omit,
         body_metadata: object | Omit = omit,
         scope: Literal["internal", "external"] | Omit = omit,
@@ -221,7 +221,7 @@ class ContextResource(SyncAPIResource):
 
           similarity_threshold: Maximum similarity threshold (must be >= minimum_similarity_threshold)
 
-          query_metadata:
+          metadata:
               Controls whether metadata is included in the response:
 
               - metadata=true → metadata will be included in each context item in the
@@ -269,7 +269,7 @@ class ContextResource(SyncAPIResource):
                 timeout=timeout,
                 query=maybe_transform(
                     {
-                        "query_metadata": query_metadata,
+                        "metadata": metadata,
                         "mode": mode,
                     },
                     context_search_params.ContextSearchParams,
@@ -429,7 +429,7 @@ class AsyncContextResource(AsyncAPIResource):
         minimum_similarity_threshold: float,
         query: str,
         similarity_threshold: float,
-        query_metadata: Literal["true", "false"] | Omit = omit,
+        metadata: Literal["true", "false"] | Omit = omit,
         mode: Literal["fast", "standard"] | Omit = omit,
         body_metadata: object | Omit = omit,
         scope: Literal["internal", "external"] | Omit = omit,
@@ -452,7 +452,7 @@ class AsyncContextResource(AsyncAPIResource):
 
           similarity_threshold: Maximum similarity threshold (must be >= minimum_similarity_threshold)
 
-          query_metadata:
+          metadata:
               Controls whether metadata is included in the response:
 
               - metadata=true → metadata will be included in each context item in the
@@ -500,7 +500,7 @@ class AsyncContextResource(AsyncAPIResource):
                 timeout=timeout,
                 query=await async_maybe_transform(
                     {
-                        "query_metadata": query_metadata,
+                        "metadata": metadata,
                         "mode": mode,
                     },
                     context_search_params.ContextSearchParams,

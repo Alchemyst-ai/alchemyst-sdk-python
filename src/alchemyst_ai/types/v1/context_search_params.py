@@ -2,9 +2,7 @@
 
 from __future__ import annotations
 
-from typing_extensions import Literal, Required, Annotated, TypedDict
-
-from ..._utils import PropertyInfo
+from typing_extensions import Literal, Required, TypedDict
 
 __all__ = ["ContextSearchParams"]
 
@@ -19,7 +17,7 @@ class ContextSearchParams(TypedDict, total=False):
     similarity_threshold: Required[float]
     """Maximum similarity threshold (must be >= minimum_similarity_threshold)"""
 
-    query_metadata: Annotated[Literal["true", "false"], PropertyInfo(alias="metadata")]
+    metadata: Literal["true", "false"]
     """Controls whether metadata is included in the response:
 
     - metadata=true → metadata will be included in each context item in the
@@ -35,7 +33,7 @@ class ContextSearchParams(TypedDict, total=False):
     - mode=standard → performs a comprehensive search (default if omitted).
     """
 
-    body_metadata: Annotated[object, PropertyInfo(alias="metadata")]
+    body_metadata: object
     """Additional metadata for the search"""
 
     scope: Literal["internal", "external"]

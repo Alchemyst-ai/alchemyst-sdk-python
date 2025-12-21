@@ -1,5 +1,24 @@
 # Changelog
 
+## 0.8.1 (2025-12-21)
+
+Full Changelog: [v0.8.1...v0.8.1](https://github.com/Alchemyst-ai/alchemyst-sdk-python/compare/v0.8.1...v0.8.1)
+
+### Features
+
+* **api:** api update ([dbb74dc](https://github.com/Alchemyst-ai/alchemyst-sdk-python/commit/dbb74dc4619118e05fa382aef7ce3d6e121bd692))
+
+
+### Bug Fixes
+
+* use async_to_httpx_files in patch method ([fa01b68](https://github.com/Alchemyst-ai/alchemyst-sdk-python/commit/fa01b6872e813a0add58bb36334df5be1b22fddc))
+
+
+### Chores
+
+* **internal:** add `--fix` argument to lint script ([befdcef](https://github.com/Alchemyst-ai/alchemyst-sdk-python/commit/befdcef3d2fbb9166cd149625e1b159ec5f9f008))
+* speedup initial import ([030c938](https://github.com/Alchemyst-ai/alchemyst-sdk-python/commit/030c938672dff5bfdc92efc6d2126ee85ac24397))
+
 ## 0.8.1 (2025-12-16)
 
 Full Changelog: [v0.8.0...v0.8.1](https://github.com/Alchemyst-ai/alchemyst-sdk-python/compare/v0.8.0...v0.8.1)
