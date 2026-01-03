@@ -5,13 +5,14 @@
 Types:
 
 ```python
-from alchemyst_ai.types.v1 import ContextAddResponse
+from alchemyst_ai.types.v1 import ContextAddResponse, ContextSearchResponse
 ```
 
 Methods:
 
 - <code title="post /api/v1/context/delete">client.v1.context.<a href="./src/alchemyst_ai/resources/v1/context/context.py">delete</a>(\*\*<a href="src/alchemyst_ai/types/v1/context_delete_params.py">params</a>) -> object</code>
 - <code title="post /api/v1/context/add">client.v1.context.<a href="./src/alchemyst_ai/resources/v1/context/context.py">add</a>(\*\*<a href="src/alchemyst_ai/types/v1/context_add_params.py">params</a>) -> <a href="./src/alchemyst_ai/types/v1/context_add_response.py">ContextAddResponse</a></code>
+- <code title="post /api/v1/context/search">client.v1.context.<a href="./src/alchemyst_ai/resources/v1/context/context.py">search</a>(\*\*<a href="src/alchemyst_ai/types/v1/context_search_params.py">params</a>) -> <a href="./src/alchemyst_ai/types/v1/context_search_response.py">ContextSearchResponse</a></code>
 
 ### Traces
 

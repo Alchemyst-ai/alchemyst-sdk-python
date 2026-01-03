@@ -34,7 +34,7 @@ from .traces import (
 from ...._types import Body, Omit, Query, Headers, NotGiven, omit, not_given
 from ...._utils import maybe_transform, async_maybe_transform
 from ...._compat import cached_property
-from ....types.v1 import context_add_params, context_delete_params
+from ....types.v1 import context_add_params, context_delete_params, context_search_params
 from ...._resource import SyncAPIResource, AsyncAPIResource
 from ...._response import (
     to_raw_response_wrapper,
@@ -44,6 +44,7 @@ from ...._response import (
 )
 from ...._base_client import make_request_options
 from ....types.v1.context_add_response import ContextAddResponse
+from ....types.v1.context_search_response import ContextSearchResponse
 
 __all__ = ["ContextResource", "AsyncContextResource"]
 
@@ -194,6 +195,92 @@ class ContextResource(SyncAPIResource):
             cast_to=ContextAddResponse,
         )
 
+    def search(
+        self,
+        *,
+        minimum_similarity_threshold: float,
+        query: str,
+        similarity_threshold: float,
+        metadata: Literal | Omit = omit,
+        mode: Literal["fast", "standard"] | Omit = omit,
+        body_metadata: object | Omit = omit,
+        scope: Literal["internal", "external"] | Omit = omit,
+        user_id: str | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> ContextSearchResponse:
+        """
+        This endpoint sends a search request to the context processor to retrieve
+        relevant context data based on the provided query.
+
+        Args:
+          minimum_similarity_threshold: Minimum similarity threshold
+
+          query: The search query used to search for context data
+
+          similarity_threshold: Maximum similarity threshold (must be >= minimum_similarity_threshold)
+
+          metadata:
+              Controls whether metadata is included in the response:
+
+              - metadata=true → metadata will be included in each context item in the
+                response.
+              - metadata=false (or omitted) → metadata will be excluded from the response for
+                better performance.
+
+          mode:
+              Controls the search mode:
+
+              - mode=fast → prioritizes speed over completeness.
+              - mode=standard → performs a comprehensive search (default if omitted).
+
+          body_metadata: Additional metadata for the search
+
+          scope: Search scope
+
+          user_id: The ID of the user making the request
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        return self._post(
+            "/api/v1/context/search",
+            body=maybe_transform(
+                {
+                    "minimum_similarity_threshold": minimum_similarity_threshold,
+                    "query": query,
+                    "similarity_threshold": similarity_threshold,
+                    "body_metadata": body_metadata,
+                    "scope": scope,
+                    "user_id": user_id,
+                },
+                context_search_params.ContextSearchParams,
+            ),
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=maybe_transform(
+                    {
+                        "metadata": metadata,
+                        "mode": mode,
+                    },
+                    context_search_params.ContextSearchParams,
+                ),
+            ),
+            cast_to=ContextSearchResponse,
+        )
+
 
 class AsyncContextResource(AsyncAPIResource):
     @cached_property
@@ -341,6 +428,92 @@ class AsyncContextResource(AsyncAPIResource):
             cast_to=ContextAddResponse,
         )
 
+    async def search(
+        self,
+        *,
+        minimum_similarity_threshold: float,
+        query: str,
+        similarity_threshold: float,
+        metadata: Literal | Omit = omit,
+        mode: Literal["fast", "standard"] | Omit = omit,
+        body_metadata: object | Omit = omit,
+        scope: Literal["internal", "external"] | Omit = omit,
+        user_id: str | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> ContextSearchResponse:
+        """
+        This endpoint sends a search request to the context processor to retrieve
+        relevant context data based on the provided query.
+
+        Args:
+          minimum_similarity_threshold: Minimum similarity threshold
+
+          query: The search query used to search for context data
+
+          similarity_threshold: Maximum similarity threshold (must be >= minimum_similarity_threshold)
+
+          metadata:
+              Controls whether metadata is included in the response:
+
+              - metadata=true → metadata will be included in each context item in the
+                response.
+              - metadata=false (or omitted) → metadata will be excluded from the response for
+                better performance.
+
+          mode:
+              Controls the search mode:
+
+              - mode=fast → prioritizes speed over completeness.
+              - mode=standard → performs a comprehensive search (default if omitted).
+
+          body_metadata: Additional metadata for the search
+
+          scope: Search scope
+
+          user_id: The ID of the user making the request
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        return await self._post(
+            "/api/v1/context/search",
+            body=await async_maybe_transform(
+                {
+                    "minimum_similarity_threshold": minimum_similarity_threshold,
+                    "query": query,
+                    "similarity_threshold": similarity_threshold,
+                    "body_metadata": body_metadata,
+                    "scope": scope,
+                    "user_id": user_id,
+                },
+                context_search_params.ContextSearchParams,
+            ),
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=await async_maybe_transform(
+                    {
+                        "metadata": metadata,
+                        "mode": mode,
+                    },
+                    context_search_params.ContextSearchParams,
+                ),
+            ),
+            cast_to=ContextSearchResponse,
+        )
+
 
 class ContextResourceWithRawResponse:
     def __init__(self, context: ContextResource) -> None:
@@ -351,6 +524,9 @@ class ContextResourceWithRawResponse:
         )
         self.add = to_raw_response_wrapper(
             context.add,
+        )
+        self.search = to_raw_response_wrapper(
+            context.search,
         )
 
     @cached_property
@@ -376,6 +552,9 @@ class AsyncContextResourceWithRawResponse:
         self.add = async_to_raw_response_wrapper(
             context.add,
         )
+        self.search = async_to_raw_response_wrapper(
+            context.search,
+        )
 
     @cached_property
     def traces(self) -> AsyncTracesResourceWithRawResponse:
@@ -400,6 +579,9 @@ class ContextResourceWithStreamingResponse:
         self.add = to_streamed_response_wrapper(
             context.add,
         )
+        self.search = to_streamed_response_wrapper(
+            context.search,
+        )
 
     @cached_property
     def traces(self) -> TracesResourceWithStreamingResponse:
@@ -423,6 +605,9 @@ class AsyncContextResourceWithStreamingResponse:
         )
         self.add = async_to_streamed_response_wrapper(
             context.add,
+        )
+        self.search = async_to_streamed_response_wrapper(
+            context.search,
         )
 
     @cached_property

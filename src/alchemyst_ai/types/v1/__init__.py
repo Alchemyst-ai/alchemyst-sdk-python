@@ -5,3 +5,5 @@ from __future__ import annotations
 from .context_add_params import ContextAddParams as ContextAddParams
 from .context_add_response import ContextAddResponse as ContextAddResponse
 from .context_delete_params import ContextDeleteParams as ContextDeleteParams
+from .context_search_params import ContextSearchParams as ContextSearchParams
+from .context_search_response import ContextSearchResponse as ContextSearchResponse
