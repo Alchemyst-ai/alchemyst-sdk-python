@@ -9,7 +9,7 @@ import pytest
 
 from tests.utils import assert_matches_type
 from alchemyst_ai import AlchemystAI, AsyncAlchemystAI
-from alchemyst_ai.types.v1.context import ViewRetrieveResponse
+from alchemyst_ai.types.v1.context import ViewDocsResponse, ViewRetrieveResponse
 
 base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
 
@@ -58,7 +58,15 @@ class TestView:
     @parametrize
     def test_method_docs(self, client: AlchemystAI) -> None:
         view = client.v1.context.view.docs()
-        assert_matches_type(object, view, path=["response"])
+        assert_matches_type(ViewDocsResponse, view, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_method_docs_with_all_params(self, client: AlchemystAI) -> None:
+        view = client.v1.context.view.docs(
+            magic_key="magic_key",
+        )
+        assert_matches_type(ViewDocsResponse, view, path=["response"])
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
@@ -68,7 +76,7 @@ class TestView:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         view = response.parse()
-        assert_matches_type(object, view, path=["response"])
+        assert_matches_type(ViewDocsResponse, view, path=["response"])
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
@@ -78,7 +86,7 @@ class TestView:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             view = response.parse()
-            assert_matches_type(object, view, path=["response"])
+            assert_matches_type(ViewDocsResponse, view, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
@@ -129,7 +137,15 @@ class TestAsyncView:
     @parametrize
     async def test_method_docs(self, async_client: AsyncAlchemystAI) -> None:
         view = await async_client.v1.context.view.docs()
-        assert_matches_type(object, view, path=["response"])
+        assert_matches_type(ViewDocsResponse, view, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_method_docs_with_all_params(self, async_client: AsyncAlchemystAI) -> None:
+        view = await async_client.v1.context.view.docs(
+            magic_key="magic_key",
+        )
+        assert_matches_type(ViewDocsResponse, view, path=["response"])
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
@@ -139,7 +155,7 @@ class TestAsyncView:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         view = await response.parse()
-        assert_matches_type(object, view, path=["response"])
+        assert_matches_type(ViewDocsResponse, view, path=["response"])
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
@@ -149,6 +165,6 @@ class TestAsyncView:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             view = await response.parse()
-            assert_matches_type(object, view, path=["response"])
+            assert_matches_type(ViewDocsResponse, view, path=["response"])
 
         assert cast(Any, response.is_closed) is True

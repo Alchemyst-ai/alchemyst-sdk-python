@@ -35,15 +35,16 @@ client = AlchemystAI(
 response = client.v1.context.add(
     context_type="resource",
     documents=[{"content": "The content of the document"}],
+    scope="internal",
+    source="platform.api.context.add",
     metadata={
         "file_name": "notes.txt",
         "file_type": "text/plain",
         "last_modified": "2025-10-01T18:42:40.419Z",
         "file_size": 1024,
     },
-    scope="internal",
-    source="platform.api.context.add",
 )
+print(response.context_id)
 ```
 
 While you can provide an `api_key` keyword argument,
@@ -69,15 +70,16 @@ async def main() -> None:
     response = await client.v1.context.add(
         context_type="resource",
         documents=[{"content": "The content of the document"}],
+        scope="internal",
+        source="platform.api.context.add",
         metadata={
             "file_name": "notes.txt",
             "file_type": "text/plain",
             "last_modified": "2025-10-01T18:42:40.419Z",
             "file_size": 1024,
         },
-        scope="internal",
-        source="platform.api.context.add",
     )
+    print(response.context_id)
 
 
 asyncio.run(main())
@@ -113,15 +115,16 @@ async def main() -> None:
         response = await client.v1.context.add(
             context_type="resource",
             documents=[{"content": "The content of the document"}],
+            scope="internal",
+            source="platform.api.context.add",
             metadata={
                 "file_name": "notes.txt",
                 "file_type": "text/plain",
                 "last_modified": "2025-10-01T18:42:40.419Z",
                 "file_size": 1024,
             },
-            scope="internal",
-            source="platform.api.context.add",
         )
+        print(response.context_id)
 
 
 asyncio.run(main())
@@ -146,6 +149,10 @@ from alchemyst_ai import AlchemystAI
 client = AlchemystAI()
 
 response = client.v1.context.add(
+    context_type="resource",
+    documents=[{}],
+    scope="internal",
+    source="support-inbox",
     metadata={
         "file_name": "support_thread_TCK-1234.txt",
         "file_size": 2048,
@@ -176,14 +183,14 @@ try:
     client.v1.context.add(
         context_type="resource",
         documents=[{"content": "The content of the document"}],
+        scope="internal",
+        source="platform.api.context.add",
         metadata={
             "file_name": "notes.txt",
             "file_type": "text/plain",
             "last_modified": "2025-10-01T18:42:40.419Z",
             "file_size": 1024,
         },
-        scope="internal",
-        source="platform.api.context.add",
     )
 except alchemyst_ai.APIConnectionError as e:
     print("The server could not be reached")
@@ -230,14 +237,14 @@ client = AlchemystAI(
 client.with_options(max_retries=5).v1.context.add(
     context_type="resource",
     documents=[{"content": "The content of the document"}],
+    scope="internal",
+    source="platform.api.context.add",
     metadata={
         "file_name": "notes.txt",
         "file_type": "text/plain",
         "last_modified": "2025-10-01T18:42:40.419Z",
         "file_size": 1024,
     },
-    scope="internal",
-    source="platform.api.context.add",
 )
 ```
 
@@ -264,14 +271,14 @@ client = AlchemystAI(
 client.with_options(timeout=5.0).v1.context.add(
     context_type="resource",
     documents=[{"content": "The content of the document"}],
+    scope="internal",
+    source="platform.api.context.add",
     metadata={
         "file_name": "notes.txt",
         "file_type": "text/plain",
         "last_modified": "2025-10-01T18:42:40.419Z",
         "file_size": 1024,
     },
-    scope="internal",
-    source="platform.api.context.add",
 )
 ```
 
@@ -318,19 +325,19 @@ response = client.v1.context.with_raw_response.add(
     documents=[{
         "content": "The content of the document"
     }],
+    scope="internal",
+    source="platform.api.context.add",
     metadata={
         "file_name": "notes.txt",
         "file_type": "text/plain",
         "last_modified": "2025-10-01T18:42:40.419Z",
         "file_size": 1024,
     },
-    scope="internal",
-    source="platform.api.context.add",
 )
 print(response.headers.get('X-My-Header'))
 
 context = response.parse()  # get the object that `v1.context.add()` would have returned
-print(context)
+print(context.context_id)
 ```
 
 These methods return an [`APIResponse`](https://github.com/Alchemyst-ai/alchemyst-sdk-python/tree/main/src/alchemyst_ai/_response.py) object.
@@ -347,14 +354,14 @@ To stream the response body, use `.with_streaming_response` instead, which requi
 with client.v1.context.with_streaming_response.add(
     context_type="resource",
     documents=[{"content": "The content of the document"}],
+    scope="internal",
+    source="platform.api.context.add",
     metadata={
         "file_name": "notes.txt",
         "file_type": "text/plain",
         "last_modified": "2025-10-01T18:42:40.419Z",
         "file_size": 1024,
     },
-    scope="internal",
-    source="platform.api.context.add",
 ) as response:
     print(response.headers.get("X-My-Header"))
 

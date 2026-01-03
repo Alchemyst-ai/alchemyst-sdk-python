@@ -25,6 +25,15 @@ class TestTraces:
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
+    def test_method_list_with_all_params(self, client: AlchemystAI) -> None:
+        trace = client.v1.context.traces.list(
+            limit=0,
+            page=0,
+        )
+        assert_matches_type(TraceListResponse, trace, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
     def test_raw_response_list(self, client: AlchemystAI) -> None:
         response = client.v1.context.traces.with_raw_response.list()
 
@@ -97,6 +106,15 @@ class TestAsyncTraces:
     @parametrize
     async def test_method_list(self, async_client: AsyncAlchemystAI) -> None:
         trace = await async_client.v1.context.traces.list()
+        assert_matches_type(TraceListResponse, trace, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_method_list_with_all_params(self, async_client: AsyncAlchemystAI) -> None:
+        trace = await async_client.v1.context.traces.list(
+            limit=0,
+            page=0,
+        )
         assert_matches_type(TraceListResponse, trace, path=["response"])
 
     @pytest.mark.skip(reason="Prism tests are disabled")
