@@ -9,7 +9,10 @@ import pytest
 
 from tests.utils import assert_matches_type
 from alchemyst_ai import AlchemystAI, AsyncAlchemystAI
-from alchemyst_ai.types.v1 import ContextAddResponse
+from alchemyst_ai.types.v1 import (
+    ContextAddResponse,
+    ContextSearchResponse,
+)
 
 base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
 
@@ -127,6 +130,61 @@ class TestContext:
 
         assert cast(Any, response.is_closed) is True
 
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_method_search(self, client: AlchemystAI) -> None:
+        context = client.v1.context.search(
+            minimum_similarity_threshold=0.5,
+            query="What did the customer ask about pricing for the Scale plan?",
+            similarity_threshold=0.8,
+        )
+        assert_matches_type(ContextSearchResponse, context, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_method_search_with_all_params(self, client: AlchemystAI) -> None:
+        context = client.v1.context.search(
+            minimum_similarity_threshold=0.5,
+            query="What did the customer ask about pricing for the Scale plan?",
+            similarity_threshold=0.8,
+            metadata=None,
+            mode="fast",
+            body_metadata={},
+            scope="internal",
+            user_id="user123",
+        )
+        assert_matches_type(ContextSearchResponse, context, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_raw_response_search(self, client: AlchemystAI) -> None:
+        response = client.v1.context.with_raw_response.search(
+            minimum_similarity_threshold=0.5,
+            query="What did the customer ask about pricing for the Scale plan?",
+            similarity_threshold=0.8,
+        )
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        context = response.parse()
+        assert_matches_type(ContextSearchResponse, context, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_streaming_response_search(self, client: AlchemystAI) -> None:
+        with client.v1.context.with_streaming_response.search(
+            minimum_similarity_threshold=0.5,
+            query="What did the customer ask about pricing for the Scale plan?",
+            similarity_threshold=0.8,
+        ) as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            context = response.parse()
+            assert_matches_type(ContextSearchResponse, context, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
 
 class TestAsyncContext:
     parametrize = pytest.mark.parametrize(
@@ -240,5 +298,60 @@ class TestAsyncContext:
 
             context = await response.parse()
             assert_matches_type(ContextAddResponse, context, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_method_search(self, async_client: AsyncAlchemystAI) -> None:
+        context = await async_client.v1.context.search(
+            minimum_similarity_threshold=0.5,
+            query="What did the customer ask about pricing for the Scale plan?",
+            similarity_threshold=0.8,
+        )
+        assert_matches_type(ContextSearchResponse, context, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_method_search_with_all_params(self, async_client: AsyncAlchemystAI) -> None:
+        context = await async_client.v1.context.search(
+            minimum_similarity_threshold=0.5,
+            query="What did the customer ask about pricing for the Scale plan?",
+            similarity_threshold=0.8,
+            metadata=None,
+            mode="fast",
+            body_metadata={},
+            scope="internal",
+            user_id="user123",
+        )
+        assert_matches_type(ContextSearchResponse, context, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_raw_response_search(self, async_client: AsyncAlchemystAI) -> None:
+        response = await async_client.v1.context.with_raw_response.search(
+            minimum_similarity_threshold=0.5,
+            query="What did the customer ask about pricing for the Scale plan?",
+            similarity_threshold=0.8,
+        )
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        context = await response.parse()
+        assert_matches_type(ContextSearchResponse, context, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_streaming_response_search(self, async_client: AsyncAlchemystAI) -> None:
+        async with async_client.v1.context.with_streaming_response.search(
+            minimum_similarity_threshold=0.5,
+            query="What did the customer ask about pricing for the Scale plan?",
+            similarity_threshold=0.8,
+        ) as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            context = await response.parse()
+            assert_matches_type(ContextSearchResponse, context, path=["response"])
 
         assert cast(Any, response.is_closed) is True
