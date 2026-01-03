@@ -18,6 +18,8 @@ from ...._response import (
 )
 from ...._base_client import make_request_options
 from ....types.v1.context import memory_add_params, memory_delete_params, memory_update_params
+from ....types.v1.context.memory_add_response import MemoryAddResponse
+from ....types.v1.context.memory_update_response import MemoryUpdateResponse
 
 __all__ = ["MemoryResource", "AsyncMemoryResource"]
 
@@ -45,15 +47,15 @@ class MemoryResource(SyncAPIResource):
     def update(
         self,
         *,
-        contents: Iterable[memory_update_params.Content] | Omit = omit,
-        memory_id: str | Omit = omit,
+        contents: Iterable[memory_update_params.Content],
+        memory_id: str,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> None:
+    ) -> MemoryUpdateResponse:
         """
         This endpoint updates memory context data.
 
@@ -70,7 +72,6 @@ class MemoryResource(SyncAPIResource):
 
           timeout: Override the client-level default timeout for this request, in seconds
         """
-        extra_headers = {"Accept": "*/*", **(extra_headers or {})}
         return self._post(
             "/api/v1/context/memory/update",
             body=maybe_transform(
@@ -83,14 +84,16 @@ class MemoryResource(SyncAPIResource):
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=NoneType,
+            cast_to=MemoryUpdateResponse,
         )
 
     def delete(
         self,
         *,
-        memory_id: str | Omit = omit,
-        organization_id: Optional[str] | Omit = omit,
+        memory_id: str,
+        organization_id: Optional[str],
+        by_doc: Optional[bool] | Omit = omit,
+        by_id: Optional[bool] | Omit = omit,
         user_id: Optional[str] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -100,12 +103,16 @@ class MemoryResource(SyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> None:
         """
-        Deletes memory context data based on provided parameters
+        Deletes memory context data based on provided parameters.
 
         Args:
           memory_id: The ID of the memory to delete
 
-          organization_id: Optional organization ID
+          organization_id: Organization ID
+
+          by_doc: Delete by document flag
+
+          by_id: Delete by ID flag
 
           user_id: Optional user ID
 
@@ -124,6 +131,8 @@ class MemoryResource(SyncAPIResource):
                 {
                     "memory_id": memory_id,
                     "organization_id": organization_id,
+                    "by_doc": by_doc,
+                    "by_id": by_id,
                     "user_id": user_id,
                 },
                 memory_delete_params.MemoryDeleteParams,
@@ -137,15 +146,15 @@ class MemoryResource(SyncAPIResource):
     def add(
         self,
         *,
-        contents: Iterable[memory_add_params.Content] | Omit = omit,
-        memory_id: str | Omit = omit,
+        contents: Iterable[memory_add_params.Content],
+        memory_id: str,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> None:
+    ) -> MemoryAddResponse:
         """
         This endpoint adds memory context data, fetching chat history if needed.
 
@@ -162,7 +171,6 @@ class MemoryResource(SyncAPIResource):
 
           timeout: Override the client-level default timeout for this request, in seconds
         """
-        extra_headers = {"Accept": "*/*", **(extra_headers or {})}
         return self._post(
             "/api/v1/context/memory/add",
             body=maybe_transform(
@@ -175,7 +183,7 @@ class MemoryResource(SyncAPIResource):
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=NoneType,
+            cast_to=MemoryAddResponse,
         )
 
 
@@ -202,15 +210,15 @@ class AsyncMemoryResource(AsyncAPIResource):
     async def update(
         self,
         *,
-        contents: Iterable[memory_update_params.Content] | Omit = omit,
-        memory_id: str | Omit = omit,
+        contents: Iterable[memory_update_params.Content],
+        memory_id: str,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> None:
+    ) -> MemoryUpdateResponse:
         """
         This endpoint updates memory context data.
 
@@ -227,7 +235,6 @@ class AsyncMemoryResource(AsyncAPIResource):
 
           timeout: Override the client-level default timeout for this request, in seconds
         """
-        extra_headers = {"Accept": "*/*", **(extra_headers or {})}
         return await self._post(
             "/api/v1/context/memory/update",
             body=await async_maybe_transform(
@@ -240,14 +247,16 @@ class AsyncMemoryResource(AsyncAPIResource):
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=NoneType,
+            cast_to=MemoryUpdateResponse,
         )
 
     async def delete(
         self,
         *,
-        memory_id: str | Omit = omit,
-        organization_id: Optional[str] | Omit = omit,
+        memory_id: str,
+        organization_id: Optional[str],
+        by_doc: Optional[bool] | Omit = omit,
+        by_id: Optional[bool] | Omit = omit,
         user_id: Optional[str] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -257,12 +266,16 @@ class AsyncMemoryResource(AsyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> None:
         """
-        Deletes memory context data based on provided parameters
+        Deletes memory context data based on provided parameters.
 
         Args:
           memory_id: The ID of the memory to delete
 
-          organization_id: Optional organization ID
+          organization_id: Organization ID
+
+          by_doc: Delete by document flag
+
+          by_id: Delete by ID flag
 
           user_id: Optional user ID
 
@@ -281,6 +294,8 @@ class AsyncMemoryResource(AsyncAPIResource):
                 {
                     "memory_id": memory_id,
                     "organization_id": organization_id,
+                    "by_doc": by_doc,
+                    "by_id": by_id,
                     "user_id": user_id,
                 },
                 memory_delete_params.MemoryDeleteParams,
@@ -294,15 +309,15 @@ class AsyncMemoryResource(AsyncAPIResource):
     async def add(
         self,
         *,
-        contents: Iterable[memory_add_params.Content] | Omit = omit,
-        memory_id: str | Omit = omit,
+        contents: Iterable[memory_add_params.Content],
+        memory_id: str,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> None:
+    ) -> MemoryAddResponse:
         """
         This endpoint adds memory context data, fetching chat history if needed.
 
@@ -319,7 +334,6 @@ class AsyncMemoryResource(AsyncAPIResource):
 
           timeout: Override the client-level default timeout for this request, in seconds
         """
-        extra_headers = {"Accept": "*/*", **(extra_headers or {})}
         return await self._post(
             "/api/v1/context/memory/add",
             body=await async_maybe_transform(
@@ -332,7 +346,7 @@ class AsyncMemoryResource(AsyncAPIResource):
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=NoneType,
+            cast_to=MemoryAddResponse,
         )
 
 

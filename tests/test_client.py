@@ -756,7 +756,9 @@ class TestAlchemystAI:
         respx_mock.post("/api/v1/context/add").mock(side_effect=httpx.TimeoutException("Test timeout error"))
 
         with pytest.raises(APITimeoutError):
-            client.v1.context.with_streaming_response.add().__enter__()
+            client.v1.context.with_streaming_response.add(
+                context_type="resource", documents=[{}], scope="internal", source="support-inbox"
+            ).__enter__()
 
         assert _get_open_connections(client) == 0
 
@@ -766,7 +768,9 @@ class TestAlchemystAI:
         respx_mock.post("/api/v1/context/add").mock(return_value=httpx.Response(500))
 
         with pytest.raises(APIStatusError):
-            client.v1.context.with_streaming_response.add().__enter__()
+            client.v1.context.with_streaming_response.add(
+                context_type="resource", documents=[{}], scope="internal", source="support-inbox"
+            ).__enter__()
         assert _get_open_connections(client) == 0
 
     @pytest.mark.parametrize("failures_before_success", [0, 2, 4])
@@ -795,7 +799,9 @@ class TestAlchemystAI:
 
         respx_mock.post("/api/v1/context/add").mock(side_effect=retry_handler)
 
-        response = client.v1.context.with_raw_response.add()
+        response = client.v1.context.with_raw_response.add(
+            context_type="resource", documents=[{}], scope="internal", source="support-inbox"
+        )
 
         assert response.retries_taken == failures_before_success
         assert int(response.http_request.headers.get("x-stainless-retry-count")) == failures_before_success
@@ -819,7 +825,13 @@ class TestAlchemystAI:
 
         respx_mock.post("/api/v1/context/add").mock(side_effect=retry_handler)
 
-        response = client.v1.context.with_raw_response.add(extra_headers={"x-stainless-retry-count": Omit()})
+        response = client.v1.context.with_raw_response.add(
+            context_type="resource",
+            documents=[{}],
+            scope="internal",
+            source="support-inbox",
+            extra_headers={"x-stainless-retry-count": Omit()},
+        )
 
         assert len(response.http_request.headers.get_list("x-stainless-retry-count")) == 0
 
@@ -842,7 +854,13 @@ class TestAlchemystAI:
 
         respx_mock.post("/api/v1/context/add").mock(side_effect=retry_handler)
 
-        response = client.v1.context.with_raw_response.add(extra_headers={"x-stainless-retry-count": "42"})
+        response = client.v1.context.with_raw_response.add(
+            context_type="resource",
+            documents=[{}],
+            scope="internal",
+            source="support-inbox",
+            extra_headers={"x-stainless-retry-count": "42"},
+        )
 
         assert response.http_request.headers.get("x-stainless-retry-count") == "42"
 
@@ -1601,7 +1619,9 @@ class TestAsyncAlchemystAI:
         respx_mock.post("/api/v1/context/add").mock(side_effect=httpx.TimeoutException("Test timeout error"))
 
         with pytest.raises(APITimeoutError):
-            await async_client.v1.context.with_streaming_response.add().__aenter__()
+            await async_client.v1.context.with_streaming_response.add(
+                context_type="resource", documents=[{}], scope="internal", source="support-inbox"
+            ).__aenter__()
 
         assert _get_open_connections(async_client) == 0
 
@@ -1613,7 +1633,9 @@ class TestAsyncAlchemystAI:
         respx_mock.post("/api/v1/context/add").mock(return_value=httpx.Response(500))
 
         with pytest.raises(APIStatusError):
-            await async_client.v1.context.with_streaming_response.add().__aenter__()
+            await async_client.v1.context.with_streaming_response.add(
+                context_type="resource", documents=[{}], scope="internal", source="support-inbox"
+            ).__aenter__()
         assert _get_open_connections(async_client) == 0
 
     @pytest.mark.parametrize("failures_before_success", [0, 2, 4])
@@ -1642,7 +1664,9 @@ class TestAsyncAlchemystAI:
 
         respx_mock.post("/api/v1/context/add").mock(side_effect=retry_handler)
 
-        response = await client.v1.context.with_raw_response.add()
+        response = await client.v1.context.with_raw_response.add(
+            context_type="resource", documents=[{}], scope="internal", source="support-inbox"
+        )
 
         assert response.retries_taken == failures_before_success
         assert int(response.http_request.headers.get("x-stainless-retry-count")) == failures_before_success
@@ -1666,7 +1690,13 @@ class TestAsyncAlchemystAI:
 
         respx_mock.post("/api/v1/context/add").mock(side_effect=retry_handler)
 
-        response = await client.v1.context.with_raw_response.add(extra_headers={"x-stainless-retry-count": Omit()})
+        response = await client.v1.context.with_raw_response.add(
+            context_type="resource",
+            documents=[{}],
+            scope="internal",
+            source="support-inbox",
+            extra_headers={"x-stainless-retry-count": Omit()},
+        )
 
         assert len(response.http_request.headers.get_list("x-stainless-retry-count")) == 0
 
@@ -1689,7 +1719,13 @@ class TestAsyncAlchemystAI:
 
         respx_mock.post("/api/v1/context/add").mock(side_effect=retry_handler)
 
-        response = await client.v1.context.with_raw_response.add(extra_headers={"x-stainless-retry-count": "42"})
+        response = await client.v1.context.with_raw_response.add(
+            context_type="resource",
+            documents=[{}],
+            scope="internal",
+            source="support-inbox",
+            extra_headers={"x-stainless-retry-count": "42"},
+        )
 
         assert response.http_request.headers.get("x-stainless-retry-count") == "42"
 

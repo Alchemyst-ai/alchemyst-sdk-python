@@ -3,23 +3,23 @@
 from __future__ import annotations
 
 from typing import Optional
-from typing_extensions import TypedDict
+from typing_extensions import Required, TypedDict
 
 __all__ = ["ContextDeleteParams"]
 
 
 class ContextDeleteParams(TypedDict, total=False):
+    organization_id: Required[str]
+    """Organization ID"""
+
+    source: Required[str]
+    """Source identifier for the context"""
+
     by_doc: Optional[bool]
     """Flag to delete by document"""
 
     by_id: Optional[bool]
     """Flag to delete by ID"""
-
-    organization_id: Optional[str]
-    """Optional organization ID"""
-
-    source: str
-    """Source identifier for the context"""
 
     user_id: Optional[str]
     """Optional user ID"""

@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from typing import Dict, Union, Iterable
-from typing_extensions import Literal, Annotated, TypeAlias, TypedDict
+from typing_extensions import Literal, Required, Annotated, TypeAlias, TypedDict
 
 from ..._types import SequenceNotStr
 from ..._utils import PropertyInfo
@@ -12,20 +12,20 @@ __all__ = ["ContextAddParams", "Document", "Metadata"]
 
 
 class ContextAddParams(TypedDict, total=False):
-    context_type: Literal["resource", "conversation", "instruction"]
+    context_type: Required[Literal["resource", "conversation", "instruction"]]
     """Type of context being added"""
 
-    documents: Iterable[Document]
+    documents: Required[Iterable[Document]]
     """Array of documents with content and additional metadata"""
+
+    scope: Required[Literal["internal", "external"]]
+    """Scope of the context"""
+
+    source: Required[str]
+    """The source of the context data"""
 
     metadata: Metadata
     """Additional metadata for the context"""
-
-    scope: Literal["internal", "external"]
-    """Scope of the context"""
-
-    source: str
-    """The source of the context data"""
 
 
 class DocumentTyped(TypedDict, total=False):
