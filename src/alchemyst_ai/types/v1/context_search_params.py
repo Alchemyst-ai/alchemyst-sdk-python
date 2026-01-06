@@ -17,7 +17,7 @@ class ContextSearchParams(TypedDict, total=False):
     similarity_threshold: Required[float]
     """Maximum similarity threshold (must be >= minimum_similarity_threshold)"""
 
-    metadata: Literal["true", "false"]
+    metadata: Literal
     """Controls whether metadata is included in the response:
 
     - metadata=true → metadata will be included in each context item in the
