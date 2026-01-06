@@ -10,6 +10,7 @@ import pytest
 from tests.utils import assert_matches_type
 from alchemyst_ai import AlchemystAI, AsyncAlchemystAI
 from alchemyst_ai.types.v1 import (
+    ContextAddResponse,
     ContextSearchResponse,
 )
 
@@ -22,17 +23,20 @@ class TestContext:
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     def test_method_delete(self, client: AlchemystAI) -> None:
-        context = client.v1.context.delete()
+        context = client.v1.context.delete(
+            organization_id="org_01HXYZABC",
+            source="support-inbox",
+        )
         assert_matches_type(object, context, path=["response"])
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     def test_method_delete_with_all_params(self, client: AlchemystAI) -> None:
         context = client.v1.context.delete(
+            organization_id="org_01HXYZABC",
+            source="support-inbox",
             by_doc=True,
             by_id=False,
-            organization_id="organization_id",
-            source="support-inbox",
             user_id="user_id",
         )
         assert_matches_type(object, context, path=["response"])
@@ -40,7 +44,10 @@ class TestContext:
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     def test_raw_response_delete(self, client: AlchemystAI) -> None:
-        response = client.v1.context.with_raw_response.delete()
+        response = client.v1.context.with_raw_response.delete(
+            organization_id="org_01HXYZABC",
+            source="support-inbox",
+        )
 
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -50,7 +57,10 @@ class TestContext:
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     def test_streaming_response_delete(self, client: AlchemystAI) -> None:
-        with client.v1.context.with_streaming_response.delete() as response:
+        with client.v1.context.with_streaming_response.delete(
+            organization_id="org_01HXYZABC",
+            source="support-inbox",
+        ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
@@ -62,8 +72,13 @@ class TestContext:
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     def test_method_add(self, client: AlchemystAI) -> None:
-        context = client.v1.context.add()
-        assert_matches_type(object, context, path=["response"])
+        context = client.v1.context.add(
+            context_type="resource",
+            documents=[{}],
+            scope="internal",
+            source="support-inbox",
+        )
+        assert_matches_type(ContextAddResponse, context, path=["response"])
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
@@ -71,6 +86,8 @@ class TestContext:
         context = client.v1.context.add(
             context_type="resource",
             documents=[{"content": "Customer asked about pricing for the Scale plan."}],
+            scope="internal",
+            source="support-inbox",
             metadata={
                 "file_name": "support_thread_TCK-1234.txt",
                 "file_size": 2048,
@@ -78,30 +95,38 @@ class TestContext:
                 "group_name": ["support", "pricing"],
                 "last_modified": "2025-01-10T12:34:56.000Z",
             },
-            scope="internal",
-            source="support-inbox",
         )
-        assert_matches_type(object, context, path=["response"])
+        assert_matches_type(ContextAddResponse, context, path=["response"])
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     def test_raw_response_add(self, client: AlchemystAI) -> None:
-        response = client.v1.context.with_raw_response.add()
+        response = client.v1.context.with_raw_response.add(
+            context_type="resource",
+            documents=[{}],
+            scope="internal",
+            source="support-inbox",
+        )
 
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         context = response.parse()
-        assert_matches_type(object, context, path=["response"])
+        assert_matches_type(ContextAddResponse, context, path=["response"])
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     def test_streaming_response_add(self, client: AlchemystAI) -> None:
-        with client.v1.context.with_streaming_response.add() as response:
+        with client.v1.context.with_streaming_response.add(
+            context_type="resource",
+            documents=[{}],
+            scope="internal",
+            source="support-inbox",
+        ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             context = response.parse()
-            assert_matches_type(object, context, path=["response"])
+            assert_matches_type(ContextAddResponse, context, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
@@ -122,7 +147,7 @@ class TestContext:
             minimum_similarity_threshold=0.5,
             query="What did the customer ask about pricing for the Scale plan?",
             similarity_threshold=0.8,
-            metadata="true",
+            metadata=None,
             mode="fast",
             body_metadata={},
             scope="internal",
@@ -169,17 +194,20 @@ class TestAsyncContext:
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     async def test_method_delete(self, async_client: AsyncAlchemystAI) -> None:
-        context = await async_client.v1.context.delete()
+        context = await async_client.v1.context.delete(
+            organization_id="org_01HXYZABC",
+            source="support-inbox",
+        )
         assert_matches_type(object, context, path=["response"])
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     async def test_method_delete_with_all_params(self, async_client: AsyncAlchemystAI) -> None:
         context = await async_client.v1.context.delete(
+            organization_id="org_01HXYZABC",
+            source="support-inbox",
             by_doc=True,
             by_id=False,
-            organization_id="organization_id",
-            source="support-inbox",
             user_id="user_id",
         )
         assert_matches_type(object, context, path=["response"])
@@ -187,7 +215,10 @@ class TestAsyncContext:
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     async def test_raw_response_delete(self, async_client: AsyncAlchemystAI) -> None:
-        response = await async_client.v1.context.with_raw_response.delete()
+        response = await async_client.v1.context.with_raw_response.delete(
+            organization_id="org_01HXYZABC",
+            source="support-inbox",
+        )
 
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -197,7 +228,10 @@ class TestAsyncContext:
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     async def test_streaming_response_delete(self, async_client: AsyncAlchemystAI) -> None:
-        async with async_client.v1.context.with_streaming_response.delete() as response:
+        async with async_client.v1.context.with_streaming_response.delete(
+            organization_id="org_01HXYZABC",
+            source="support-inbox",
+        ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
@@ -209,8 +243,13 @@ class TestAsyncContext:
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     async def test_method_add(self, async_client: AsyncAlchemystAI) -> None:
-        context = await async_client.v1.context.add()
-        assert_matches_type(object, context, path=["response"])
+        context = await async_client.v1.context.add(
+            context_type="resource",
+            documents=[{}],
+            scope="internal",
+            source="support-inbox",
+        )
+        assert_matches_type(ContextAddResponse, context, path=["response"])
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
@@ -218,6 +257,8 @@ class TestAsyncContext:
         context = await async_client.v1.context.add(
             context_type="resource",
             documents=[{"content": "Customer asked about pricing for the Scale plan."}],
+            scope="internal",
+            source="support-inbox",
             metadata={
                 "file_name": "support_thread_TCK-1234.txt",
                 "file_size": 2048,
@@ -225,30 +266,38 @@ class TestAsyncContext:
                 "group_name": ["support", "pricing"],
                 "last_modified": "2025-01-10T12:34:56.000Z",
             },
-            scope="internal",
-            source="support-inbox",
         )
-        assert_matches_type(object, context, path=["response"])
+        assert_matches_type(ContextAddResponse, context, path=["response"])
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     async def test_raw_response_add(self, async_client: AsyncAlchemystAI) -> None:
-        response = await async_client.v1.context.with_raw_response.add()
+        response = await async_client.v1.context.with_raw_response.add(
+            context_type="resource",
+            documents=[{}],
+            scope="internal",
+            source="support-inbox",
+        )
 
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         context = await response.parse()
-        assert_matches_type(object, context, path=["response"])
+        assert_matches_type(ContextAddResponse, context, path=["response"])
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     async def test_streaming_response_add(self, async_client: AsyncAlchemystAI) -> None:
-        async with async_client.v1.context.with_streaming_response.add() as response:
+        async with async_client.v1.context.with_streaming_response.add(
+            context_type="resource",
+            documents=[{}],
+            scope="internal",
+            source="support-inbox",
+        ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             context = await response.parse()
-            assert_matches_type(object, context, path=["response"])
+            assert_matches_type(ContextAddResponse, context, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
@@ -269,7 +318,7 @@ class TestAsyncContext:
             minimum_similarity_threshold=0.5,
             query="What did the customer ask about pricing for the Scale plan?",
             similarity_threshold=0.8,
-            metadata="true",
+            metadata=None,
             mode="fast",
             body_metadata={},
             scope="internal",

@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
-from typing import Dict, Union, Iterable
-from typing_extensions import Annotated, TypeAlias, TypedDict
+from typing import Dict, Iterable
+from typing_extensions import Required, Annotated, TypedDict
 
 from ...._utils import PropertyInfo
 
@@ -11,15 +11,25 @@ __all__ = ["MemoryUpdateParams", "Content"]
 
 
 class MemoryUpdateParams(TypedDict, total=False):
-    contents: Iterable[Content]
+    contents: Required[Iterable[Content]]
     """Array of updated content objects"""
 
-    memory_id: Annotated[str, PropertyInfo(alias="memoryId")]
+    memory_id: Required[Annotated[str, PropertyInfo(alias="memoryId")]]
     """The ID of the memory to update"""
 
 
-class ContentTyped(TypedDict, total=False):
+class Content(TypedDict, total=False):
+    id: str
+    """Unique ID for the message"""
+
     content: str
+    """The content of the memory entry"""
 
+    created_at: Annotated[str, PropertyInfo(alias="createdAt")]
+    """Creation timestamp"""
 
-Content: TypeAlias = Union[ContentTyped, Dict[str, object]]
+    metadata: Dict[str, object]
+    """Additional metadata for the memory entry"""
+
+    role: str
+    """Role of the message (e.g., user, assistant)"""

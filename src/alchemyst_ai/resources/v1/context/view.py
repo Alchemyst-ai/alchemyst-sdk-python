@@ -15,7 +15,8 @@ from ...._response import (
     async_to_streamed_response_wrapper,
 )
 from ...._base_client import make_request_options
-from ....types.v1.context import view_retrieve_params
+from ....types.v1.context import view_docs_params, view_retrieve_params
+from ....types.v1.context.view_docs_response import ViewDocsResponse
 from ....types.v1.context.view_retrieve_response import ViewRetrieveResponse
 
 __all__ = ["ViewResource", "AsyncViewResource"]
@@ -54,7 +55,7 @@ class ViewResource(SyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> ViewRetrieveResponse:
         """
-        Gets the context information for the authenticated user
+        Gets the context information for the authenticated user.
 
         Args:
           file_name: Name of the file to retrieve context for
@@ -90,22 +91,39 @@ class ViewResource(SyncAPIResource):
     def docs(
         self,
         *,
+        magic_key: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> object:
+    ) -> ViewDocsResponse:
         """
-        Fetches documents view for authenticated user with optional organization context
+        Fetches documents view for authenticated user with optional organization
+        context.
+
+        Args:
+          magic_key: Optional magic key for special access or filtering
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
         """
         return self._get(
             "/api/v1/context/view/docs",
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=maybe_transform({"magic_key": magic_key}, view_docs_params.ViewDocsParams),
             ),
-            cast_to=object,
+            cast_to=ViewDocsResponse,
         )
 
 
@@ -142,7 +160,7 @@ class AsyncViewResource(AsyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> ViewRetrieveResponse:
         """
-        Gets the context information for the authenticated user
+        Gets the context information for the authenticated user.
 
         Args:
           file_name: Name of the file to retrieve context for
@@ -178,22 +196,39 @@ class AsyncViewResource(AsyncAPIResource):
     async def docs(
         self,
         *,
+        magic_key: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> object:
+    ) -> ViewDocsResponse:
         """
-        Fetches documents view for authenticated user with optional organization context
+        Fetches documents view for authenticated user with optional organization
+        context.
+
+        Args:
+          magic_key: Optional magic key for special access or filtering
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
         """
         return await self._get(
             "/api/v1/context/view/docs",
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=await async_maybe_transform({"magic_key": magic_key}, view_docs_params.ViewDocsParams),
             ),
-            cast_to=object,
+            cast_to=ViewDocsResponse,
         )
 
 

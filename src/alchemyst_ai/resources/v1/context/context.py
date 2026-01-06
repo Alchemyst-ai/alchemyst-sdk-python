@@ -43,6 +43,7 @@ from ...._response import (
     async_to_streamed_response_wrapper,
 )
 from ...._base_client import make_request_options
+from ....types.v1.context_add_response import ContextAddResponse
 from ....types.v1.context_search_response import ContextSearchResponse
 
 __all__ = ["ContextResource", "AsyncContextResource"]
@@ -83,10 +84,10 @@ class ContextResource(SyncAPIResource):
     def delete(
         self,
         *,
+        organization_id: str,
+        source: str,
         by_doc: Optional[bool] | Omit = omit,
         by_id: Optional[bool] | Omit = omit,
-        organization_id: Optional[str] | Omit = omit,
-        source: str | Omit = omit,
         user_id: Optional[str] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -95,17 +96,19 @@ class ContextResource(SyncAPIResource):
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> object:
-        """
-        Deletes context data based on provided parameters
+        """This endpoint deletes context data based on the provided parameters.
+
+        It returns
+        a success or error response depending on the result from the context processor.
 
         Args:
+          organization_id: Organization ID
+
+          source: Source identifier for the context
+
           by_doc: Flag to delete by document
 
           by_id: Flag to delete by ID
-
-          organization_id: Optional organization ID
-
-          source: Source identifier for the context
 
           user_id: Optional user ID
 
@@ -121,10 +124,10 @@ class ContextResource(SyncAPIResource):
             "/api/v1/context/delete",
             body=maybe_transform(
                 {
-                    "by_doc": by_doc,
-                    "by_id": by_id,
                     "organization_id": organization_id,
                     "source": source,
+                    "by_doc": by_doc,
+                    "by_id": by_id,
                     "user_id": user_id,
                 },
                 context_delete_params.ContextDeleteParams,
@@ -138,18 +141,18 @@ class ContextResource(SyncAPIResource):
     def add(
         self,
         *,
-        context_type: Literal["resource", "conversation", "instruction"] | Omit = omit,
-        documents: Iterable[context_add_params.Document] | Omit = omit,
+        context_type: Literal["resource", "conversation", "instruction"],
+        documents: Iterable[context_add_params.Document],
+        scope: Literal["internal", "external"],
+        source: str,
         metadata: context_add_params.Metadata | Omit = omit,
-        scope: Literal["internal", "external"] | Omit = omit,
-        source: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> object:
+    ) -> ContextAddResponse:
         """
         This endpoint accepts context data and sends it to a context processor for
         further handling. It returns a success or error response depending on the result
@@ -160,11 +163,11 @@ class ContextResource(SyncAPIResource):
 
           documents: Array of documents with content and additional metadata
 
-          metadata: Additional metadata for the context
-
           scope: Scope of the context
 
           source: The source of the context data
+
+          metadata: Additional metadata for the context
 
           extra_headers: Send extra headers
 
@@ -180,16 +183,16 @@ class ContextResource(SyncAPIResource):
                 {
                     "context_type": context_type,
                     "documents": documents,
-                    "metadata": metadata,
                     "scope": scope,
                     "source": source,
+                    "metadata": metadata,
                 },
                 context_add_params.ContextAddParams,
             ),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=object,
+            cast_to=ContextAddResponse,
         )
 
     def search(
@@ -198,7 +201,7 @@ class ContextResource(SyncAPIResource):
         minimum_similarity_threshold: float,
         query: str,
         similarity_threshold: float,
-        metadata: Literal["true", "false"] | Omit = omit,
+        metadata: Literal | Omit = omit,
         mode: Literal["fast", "standard"] | Omit = omit,
         body_metadata: object | Omit = omit,
         scope: Literal["internal", "external"] | Omit = omit,
@@ -314,10 +317,10 @@ class AsyncContextResource(AsyncAPIResource):
     async def delete(
         self,
         *,
+        organization_id: str,
+        source: str,
         by_doc: Optional[bool] | Omit = omit,
         by_id: Optional[bool] | Omit = omit,
-        organization_id: Optional[str] | Omit = omit,
-        source: str | Omit = omit,
         user_id: Optional[str] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -326,17 +329,19 @@ class AsyncContextResource(AsyncAPIResource):
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> object:
-        """
-        Deletes context data based on provided parameters
+        """This endpoint deletes context data based on the provided parameters.
+
+        It returns
+        a success or error response depending on the result from the context processor.
 
         Args:
+          organization_id: Organization ID
+
+          source: Source identifier for the context
+
           by_doc: Flag to delete by document
 
           by_id: Flag to delete by ID
-
-          organization_id: Optional organization ID
-
-          source: Source identifier for the context
 
           user_id: Optional user ID
 
@@ -352,10 +357,10 @@ class AsyncContextResource(AsyncAPIResource):
             "/api/v1/context/delete",
             body=await async_maybe_transform(
                 {
-                    "by_doc": by_doc,
-                    "by_id": by_id,
                     "organization_id": organization_id,
                     "source": source,
+                    "by_doc": by_doc,
+                    "by_id": by_id,
                     "user_id": user_id,
                 },
                 context_delete_params.ContextDeleteParams,
@@ -369,18 +374,18 @@ class AsyncContextResource(AsyncAPIResource):
     async def add(
         self,
         *,
-        context_type: Literal["resource", "conversation", "instruction"] | Omit = omit,
-        documents: Iterable[context_add_params.Document] | Omit = omit,
+        context_type: Literal["resource", "conversation", "instruction"],
+        documents: Iterable[context_add_params.Document],
+        scope: Literal["internal", "external"],
+        source: str,
         metadata: context_add_params.Metadata | Omit = omit,
-        scope: Literal["internal", "external"] | Omit = omit,
-        source: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> object:
+    ) -> ContextAddResponse:
         """
         This endpoint accepts context data and sends it to a context processor for
         further handling. It returns a success or error response depending on the result
@@ -391,11 +396,11 @@ class AsyncContextResource(AsyncAPIResource):
 
           documents: Array of documents with content and additional metadata
 
-          metadata: Additional metadata for the context
-
           scope: Scope of the context
 
           source: The source of the context data
+
+          metadata: Additional metadata for the context
 
           extra_headers: Send extra headers
 
@@ -411,16 +416,16 @@ class AsyncContextResource(AsyncAPIResource):
                 {
                     "context_type": context_type,
                     "documents": documents,
-                    "metadata": metadata,
                     "scope": scope,
                     "source": source,
+                    "metadata": metadata,
                 },
                 context_add_params.ContextAddParams,
             ),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=object,
+            cast_to=ContextAddResponse,
         )
 
     async def search(
@@ -429,7 +434,7 @@ class AsyncContextResource(AsyncAPIResource):
         minimum_similarity_threshold: float,
         query: str,
         similarity_threshold: float,
-        metadata: Literal["true", "false"] | Omit = omit,
+        metadata: Literal | Omit = omit,
         mode: Literal["fast", "standard"] | Omit = omit,
         body_metadata: object | Omit = omit,
         scope: Literal["internal", "external"] | Omit = omit,

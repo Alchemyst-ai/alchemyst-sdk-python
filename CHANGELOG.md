@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.9.0 (2026-01-06)
+
+Full Changelog: [v0.8.1...v0.9.0](https://github.com/Alchemyst-ai/alchemyst-sdk-python/compare/v0.8.1...v0.9.0)
+
+### Features
+
+* **api:** api update ([5a09fdf](https://github.com/Alchemyst-ai/alchemyst-sdk-python/commit/5a09fdff9e747cf91b00ae94d5c8065233d977ed))
+* **api:** api update ([37fe717](https://github.com/Alchemyst-ai/alchemyst-sdk-python/commit/37fe717e79e45077482e518ce0a5d5395d4bba8f))
+* **api:** api update ([ff8408a](https://github.com/Alchemyst-ai/alchemyst-sdk-python/commit/ff8408a8fffbdb9519937072d49e5ad90c879266))
+* **api:** api update ([2613fcc](https://github.com/Alchemyst-ai/alchemyst-sdk-python/commit/2613fcc2aa42f9af1c7ca601f66aa436b3fba57f))
+* **api:** manual updates ([0089599](https://github.com/Alchemyst-ai/alchemyst-sdk-python/commit/0089599cbd3ba3e74dda1b5eee9a5f89fd517e50))
+* **api:** manual updates ([c8d2ff3](https://github.com/Alchemyst-ai/alchemyst-sdk-python/commit/c8d2ff3dc1466e58a5615616906c9fdac0745d78))
+
 ## 0.8.1 (2025-12-21)
 
 Full Changelog: [v0.8.1...v0.8.1](https://github.com/Alchemyst-ai/alchemyst-sdk-python/compare/v0.8.1...v0.8.1)

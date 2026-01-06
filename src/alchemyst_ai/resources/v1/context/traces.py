@@ -4,7 +4,8 @@ from __future__ import annotations
 
 import httpx
 
-from ...._types import Body, Query, Headers, NotGiven, not_given
+from ...._types import Body, Omit, Query, Headers, NotGiven, omit, not_given
+from ...._utils import maybe_transform, async_maybe_transform
 from ...._compat import cached_property
 from ...._resource import SyncAPIResource, AsyncAPIResource
 from ...._response import (
@@ -14,6 +15,7 @@ from ...._response import (
     async_to_streamed_response_wrapper,
 )
 from ...._base_client import make_request_options
+from ....types.v1.context import trace_list_params
 from ....types.v1.context.trace_list_response import TraceListResponse
 from ....types.v1.context.trace_delete_response import TraceDeleteResponse
 
@@ -43,6 +45,8 @@ class TracesResource(SyncAPIResource):
     def list(
         self,
         *,
+        limit: int | Omit = omit,
+        page: int | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -50,11 +54,36 @@ class TracesResource(SyncAPIResource):
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> TraceListResponse:
-        """Retrieves a list of traces for the authenticated user"""
+        """
+        Returns paginated traces for the authenticated user within their organization.
+
+        Args:
+          limit: Number of traces per page
+
+          page: Page number for pagination
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
         return self._get(
             "/api/v1/context/traces",
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=maybe_transform(
+                    {
+                        "limit": limit,
+                        "page": page,
+                    },
+                    trace_list_params.TraceListParams,
+                ),
             ),
             cast_to=TraceListResponse,
         )
@@ -71,7 +100,7 @@ class TracesResource(SyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> TraceDeleteResponse:
         """
-        Deletes a data trace for the authenticated user with the specified trace ID
+        Deletes a data trace for the authenticated user with the specified trace ID.
 
         Args:
           extra_headers: Send extra headers
@@ -116,6 +145,8 @@ class AsyncTracesResource(AsyncAPIResource):
     async def list(
         self,
         *,
+        limit: int | Omit = omit,
+        page: int | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -123,11 +154,36 @@ class AsyncTracesResource(AsyncAPIResource):
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> TraceListResponse:
-        """Retrieves a list of traces for the authenticated user"""
+        """
+        Returns paginated traces for the authenticated user within their organization.
+
+        Args:
+          limit: Number of traces per page
+
+          page: Page number for pagination
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
         return await self._get(
             "/api/v1/context/traces",
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=await async_maybe_transform(
+                    {
+                        "limit": limit,
+                        "page": page,
+                    },
+                    trace_list_params.TraceListParams,
+                ),
             ),
             cast_to=TraceListResponse,
         )
@@ -144,7 +200,7 @@ class AsyncTracesResource(AsyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> TraceDeleteResponse:
         """
-        Deletes a data trace for the authenticated user with the specified trace ID
+        Deletes a data trace for the authenticated user with the specified trace ID.
 
         Args:
           extra_headers: Send extra headers
