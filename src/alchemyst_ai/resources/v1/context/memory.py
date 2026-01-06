@@ -148,7 +148,6 @@ class MemoryResource(SyncAPIResource):
         *,
         contents: Iterable[memory_add_params.Content],
         memory_id: str,
-        metadata: memory_add_params.Metadata | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -160,11 +159,9 @@ class MemoryResource(SyncAPIResource):
         This endpoint adds memory context data, fetching chat history if needed.
 
         Args:
-          contents: Array of content objects with metadata
+          contents: Array of content objects with additional properties allowed
 
           memory_id: The ID of the memory
-
-          metadata: Optional metadata with groupName defaulting to ["default"]
 
           extra_headers: Send extra headers
 
@@ -180,7 +177,6 @@ class MemoryResource(SyncAPIResource):
                 {
                     "contents": contents,
                     "memory_id": memory_id,
-                    "metadata": metadata,
                 },
                 memory_add_params.MemoryAddParams,
             ),
@@ -315,7 +311,6 @@ class AsyncMemoryResource(AsyncAPIResource):
         *,
         contents: Iterable[memory_add_params.Content],
         memory_id: str,
-        metadata: memory_add_params.Metadata | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -327,11 +322,9 @@ class AsyncMemoryResource(AsyncAPIResource):
         This endpoint adds memory context data, fetching chat history if needed.
 
         Args:
-          contents: Array of content objects with metadata
+          contents: Array of content objects with additional properties allowed
 
           memory_id: The ID of the memory
-
-          metadata: Optional metadata with groupName defaulting to ["default"]
 
           extra_headers: Send extra headers
 
@@ -347,7 +340,6 @@ class AsyncMemoryResource(AsyncAPIResource):
                 {
                     "contents": contents,
                     "memory_id": memory_id,
-                    "metadata": metadata,
                 },
                 memory_add_params.MemoryAddParams,
             ),

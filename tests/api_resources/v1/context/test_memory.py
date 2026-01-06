@@ -110,36 +110,8 @@ class TestMemory:
     @parametrize
     def test_method_add(self, client: AlchemystAI) -> None:
         memory = client.v1.context.memory.add(
-            contents=[
-                {
-                    "content": "Customer asked about pricing for the Scale plan.",
-                    "metadata": {"message_id": "msg-1"},
-                },
-                {
-                    "content": "Explained the Scale plan pricing and shared the pricing page link.",
-                    "metadata": {"message_id": "msg-2"},
-                },
-            ],
+            contents=[{}, {}],
             memory_id="support-thread-TCK-1234",
-        )
-        assert_matches_type(MemoryAddResponse, memory, path=["response"])
-
-    @pytest.mark.skip(reason="Prism tests are disabled")
-    @parametrize
-    def test_method_add_with_all_params(self, client: AlchemystAI) -> None:
-        memory = client.v1.context.memory.add(
-            contents=[
-                {
-                    "content": "Customer asked about pricing for the Scale plan.",
-                    "metadata": {"message_id": "msg-1"},
-                },
-                {
-                    "content": "Explained the Scale plan pricing and shared the pricing page link.",
-                    "metadata": {"message_id": "msg-2"},
-                },
-            ],
-            memory_id="support-thread-TCK-1234",
-            metadata={"group_name": ["support", "pricing"]},
         )
         assert_matches_type(MemoryAddResponse, memory, path=["response"])
 
@@ -147,16 +119,7 @@ class TestMemory:
     @parametrize
     def test_raw_response_add(self, client: AlchemystAI) -> None:
         response = client.v1.context.memory.with_raw_response.add(
-            contents=[
-                {
-                    "content": "Customer asked about pricing for the Scale plan.",
-                    "metadata": {"message_id": "msg-1"},
-                },
-                {
-                    "content": "Explained the Scale plan pricing and shared the pricing page link.",
-                    "metadata": {"message_id": "msg-2"},
-                },
-            ],
+            contents=[{}, {}],
             memory_id="support-thread-TCK-1234",
         )
 
@@ -169,16 +132,7 @@ class TestMemory:
     @parametrize
     def test_streaming_response_add(self, client: AlchemystAI) -> None:
         with client.v1.context.memory.with_streaming_response.add(
-            contents=[
-                {
-                    "content": "Customer asked about pricing for the Scale plan.",
-                    "metadata": {"message_id": "msg-1"},
-                },
-                {
-                    "content": "Explained the Scale plan pricing and shared the pricing page link.",
-                    "metadata": {"message_id": "msg-2"},
-                },
-            ],
+            contents=[{}, {}],
             memory_id="support-thread-TCK-1234",
         ) as response:
             assert not response.is_closed
@@ -285,36 +239,8 @@ class TestAsyncMemory:
     @parametrize
     async def test_method_add(self, async_client: AsyncAlchemystAI) -> None:
         memory = await async_client.v1.context.memory.add(
-            contents=[
-                {
-                    "content": "Customer asked about pricing for the Scale plan.",
-                    "metadata": {"message_id": "msg-1"},
-                },
-                {
-                    "content": "Explained the Scale plan pricing and shared the pricing page link.",
-                    "metadata": {"message_id": "msg-2"},
-                },
-            ],
+            contents=[{}, {}],
             memory_id="support-thread-TCK-1234",
-        )
-        assert_matches_type(MemoryAddResponse, memory, path=["response"])
-
-    @pytest.mark.skip(reason="Prism tests are disabled")
-    @parametrize
-    async def test_method_add_with_all_params(self, async_client: AsyncAlchemystAI) -> None:
-        memory = await async_client.v1.context.memory.add(
-            contents=[
-                {
-                    "content": "Customer asked about pricing for the Scale plan.",
-                    "metadata": {"message_id": "msg-1"},
-                },
-                {
-                    "content": "Explained the Scale plan pricing and shared the pricing page link.",
-                    "metadata": {"message_id": "msg-2"},
-                },
-            ],
-            memory_id="support-thread-TCK-1234",
-            metadata={"group_name": ["support", "pricing"]},
         )
         assert_matches_type(MemoryAddResponse, memory, path=["response"])
 
@@ -322,16 +248,7 @@ class TestAsyncMemory:
     @parametrize
     async def test_raw_response_add(self, async_client: AsyncAlchemystAI) -> None:
         response = await async_client.v1.context.memory.with_raw_response.add(
-            contents=[
-                {
-                    "content": "Customer asked about pricing for the Scale plan.",
-                    "metadata": {"message_id": "msg-1"},
-                },
-                {
-                    "content": "Explained the Scale plan pricing and shared the pricing page link.",
-                    "metadata": {"message_id": "msg-2"},
-                },
-            ],
+            contents=[{}, {}],
             memory_id="support-thread-TCK-1234",
         )
 
@@ -344,16 +261,7 @@ class TestAsyncMemory:
     @parametrize
     async def test_streaming_response_add(self, async_client: AsyncAlchemystAI) -> None:
         async with async_client.v1.context.memory.with_streaming_response.add(
-            contents=[
-                {
-                    "content": "Customer asked about pricing for the Scale plan.",
-                    "metadata": {"message_id": "msg-1"},
-                },
-                {
-                    "content": "Explained the Scale plan pricing and shared the pricing page link.",
-                    "metadata": {"message_id": "msg-2"},
-                },
-            ],
+            contents=[{}, {}],
             memory_id="support-thread-TCK-1234",
         ) as response:
             assert not response.is_closed
