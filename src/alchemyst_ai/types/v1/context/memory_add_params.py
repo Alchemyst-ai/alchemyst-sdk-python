@@ -13,38 +13,51 @@ __all__ = ["MemoryAddParams", "Content", "ContentMetadata", "Metadata"]
 
 class MemoryAddParams(TypedDict, total=False):
     contents: Required[Iterable[Content]]
-    """Array of content objects with metadata"""
+    """Array of content objects.
 
-    memory_id: Required[Annotated[str, PropertyInfo(alias="memoryId")]]
-    """The ID of the memory"""
+    Each object must contain at least the 'content' field. Additional properties are
+    allowed.
+    """
+
+    session_id: Required[Annotated[str, PropertyInfo(alias="sessionId")]]
+    """The ID of the session"""
 
     metadata: Metadata
-    """Optional metadata with groupName defaulting to ["default"]"""
+    """Optional metadata for the memory context.
+
+    Defaults to ["default"] if not provided.
+    """
 
 
-class ContentMetadataTyped(TypedDict, total=False):
-    message_id: Required[Annotated[str, PropertyInfo(alias="messageId")]]
+class ContentMetadata(TypedDict, total=False):
+    """Additional metadata for the message (optional)"""
+
+    message_id: Annotated[str, PropertyInfo(alias="messageId")]
     """Unique message ID"""
-
-
-ContentMetadata: TypeAlias = Union[ContentMetadataTyped, Dict[str, object]]
 
 
 class ContentTyped(TypedDict, total=False):
     content: Required[str]
     """The content of the memory message"""
 
-    metadata: Required[ContentMetadata]
+    metadata: ContentMetadata
+    """Additional metadata for the message (optional)"""
 
 
 Content: TypeAlias = Union[ContentTyped, Dict[str, object]]
 
 
 class MetadataTyped(TypedDict, total=False):
-    """Optional metadata with groupName defaulting to ["default"]"""
+    """Optional metadata for the memory context.
+
+    Defaults to ["default"] if not provided.
+    """
 
     group_name: Annotated[SequenceNotStr[str], PropertyInfo(alias="groupName")]
-    """Group names for the memory context"""
+    """Optional group names for the memory context.
+
+    Defaults to ["default"] if not provided.
+    """
 
 
 Metadata: TypeAlias = Union[MetadataTyped, Dict[str, object]]

@@ -54,6 +54,32 @@ Methods:
 - <code title="post /api/v1/context/memory/delete">client.v1.context.memory.<a href="./src/alchemyst_ai/resources/v1/context/memory.py">delete</a>(\*\*<a href="src/alchemyst_ai/types/v1/context/memory_delete_params.py">params</a>) -> None</code>
 - <code title="post /api/v1/context/memory/add">client.v1.context.memory.<a href="./src/alchemyst_ai/resources/v1/context/memory.py">add</a>(\*\*<a href="src/alchemyst_ai/types/v1/context/memory_add_params.py">params</a>) -> <a href="./src/alchemyst_ai/types/v1/context/memory_add_response.py">MemoryAddResponse</a></code>
 
+### AddAsync
+
+Types:
+
+```python
+from alchemyst_ai.types.v1.context import AddAsyncCreateResponse, AddAsyncCancelResponse
+```
+
+Methods:
+
+- <code title="post /api/v1/context/add-async">client.v1.context.add_async.<a href="./src/alchemyst_ai/resources/v1/context/add_async/add_async.py">create</a>(\*\*<a href="src/alchemyst_ai/types/v1/context/add_async_create_params.py">params</a>) -> <a href="./src/alchemyst_ai/types/v1/context/add_async_create_response.py">AddAsyncCreateResponse</a></code>
+- <code title="delete /api/v1/context/add-async/{id}/cancel">client.v1.context.add_async.<a href="./src/alchemyst_ai/resources/v1/context/add_async/add_async.py">cancel</a>(id) -> <a href="./src/alchemyst_ai/types/v1/context/add_async_cancel_response.py">AddAsyncCancelResponse</a></code>
+
+#### Status
+
+Types:
+
+```python
+from alchemyst_ai.types.v1.context.add_async import StatusRetrieveResponse, StatusListResponse
+```
+
+Methods:
+
+- <code title="get /api/v1/context/add-async/{id}/status">client.v1.context.add_async.status.<a href="./src/alchemyst_ai/resources/v1/context/add_async/status.py">retrieve</a>(id) -> <a href="./src/alchemyst_ai/types/v1/context/add_async/status_retrieve_response.py">StatusRetrieveResponse</a></code>
+- <code title="get /api/v1/context/add-async/status">client.v1.context.add_async.status.<a href="./src/alchemyst_ai/resources/v1/context/add_async/status.py">list</a>(\*\*<a href="src/alchemyst_ai/types/v1/context/add_async/status_list_params.py">params</a>) -> <a href="./src/alchemyst_ai/types/v1/context/add_async/status_list_response.py">StatusListResponse</a></code>
+
 ## Org
 
 ### Context
