@@ -32,6 +32,14 @@ from .context import (
     ContextResourceWithStreamingResponse,
     AsyncContextResourceWithStreamingResponse,
 )
+from .add_async import (
+    AddAsyncResource,
+    AsyncAddAsyncResource,
+    AddAsyncResourceWithRawResponse,
+    AsyncAddAsyncResourceWithRawResponse,
+    AddAsyncResourceWithStreamingResponse,
+    AsyncAddAsyncResourceWithStreamingResponse,
+)
 
 __all__ = [
     "TracesResource",
@@ -52,6 +60,12 @@ __all__ = [
     "AsyncMemoryResourceWithRawResponse",
     "MemoryResourceWithStreamingResponse",
     "AsyncMemoryResourceWithStreamingResponse",
+    "AddAsyncResource",
+    "AsyncAddAsyncResource",
+    "AddAsyncResourceWithRawResponse",
+    "AsyncAddAsyncResourceWithRawResponse",
+    "AddAsyncResourceWithStreamingResponse",
+    "AsyncAddAsyncResourceWithStreamingResponse",
     "ContextResource",
     "AsyncContextResource",
     "ContextResourceWithRawResponse",
