@@ -19,21 +19,21 @@ class MemoryAddParams(TypedDict, total=False):
     allowed.
     """
 
-    memory_id: Required[Annotated[str, PropertyInfo(alias="memoryId")]]
-    """The ID of the memory"""
+    session_id: Required[Annotated[str, PropertyInfo(alias="sessionId")]]
+    """The ID of the session"""
 
     metadata: Metadata
-    """Optional metadata for the memory context. Defaults to ["default"]"""
+    """Optional metadata for the memory context.
+
+    Defaults to ["default"] if not provided.
+    """
 
 
-class ContentMetadataTyped(TypedDict, total=False):
+class ContentMetadata(TypedDict, total=False):
     """Additional metadata for the message (optional)"""
 
     message_id: Annotated[str, PropertyInfo(alias="messageId")]
     """Unique message ID"""
-
-
-ContentMetadata: TypeAlias = Union[ContentMetadataTyped, Dict[str, object]]
 
 
 class ContentTyped(TypedDict, total=False):
@@ -48,7 +48,10 @@ Content: TypeAlias = Union[ContentTyped, Dict[str, object]]
 
 
 class MetadataTyped(TypedDict, total=False):
-    """Optional metadata for the memory context. Defaults to ["default"]"""
+    """Optional metadata for the memory context.
+
+    Defaults to ["default"] if not provided.
+    """
 
     group_name: Annotated[SequenceNotStr[str], PropertyInfo(alias="groupName")]
     """Optional group names for the memory context.
