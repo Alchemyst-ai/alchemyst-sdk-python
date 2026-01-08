@@ -3,8 +3,10 @@
 from __future__ import annotations
 
 from .view_docs_params import ViewDocsParams as ViewDocsParams
+from .memory_add_params import MemoryAddParams as MemoryAddParams
 from .trace_list_params import TraceListParams as TraceListParams
 from .view_docs_response import ViewDocsResponse as ViewDocsResponse
+from .memory_add_response import MemoryAddResponse as MemoryAddResponse
 from .trace_list_response import TraceListResponse as TraceListResponse
 from .memory_delete_params import MemoryDeleteParams as MemoryDeleteParams
 from .memory_update_params import MemoryUpdateParams as MemoryUpdateParams
