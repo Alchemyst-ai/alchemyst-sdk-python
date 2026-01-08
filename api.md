@@ -45,13 +45,14 @@ Methods:
 Types:
 
 ```python
-from alchemyst_ai.types.v1.context import MemoryUpdateResponse
+from alchemyst_ai.types.v1.context import MemoryUpdateResponse, MemoryAddResponse
 ```
 
 Methods:
 
 - <code title="post /api/v1/context/memory/update">client.v1.context.memory.<a href="./src/alchemyst_ai/resources/v1/context/memory.py">update</a>(\*\*<a href="src/alchemyst_ai/types/v1/context/memory_update_params.py">params</a>) -> <a href="./src/alchemyst_ai/types/v1/context/memory_update_response.py">MemoryUpdateResponse</a></code>
 - <code title="post /api/v1/context/memory/delete">client.v1.context.memory.<a href="./src/alchemyst_ai/resources/v1/context/memory.py">delete</a>(\*\*<a href="src/alchemyst_ai/types/v1/context/memory_delete_params.py">params</a>) -> None</code>
+- <code title="post /api/v1/context/memory/add">client.v1.context.memory.<a href="./src/alchemyst_ai/resources/v1/context/memory.py">add</a>(\*\*<a href="src/alchemyst_ai/types/v1/context/memory_add_params.py">params</a>) -> <a href="./src/alchemyst_ai/types/v1/context/memory_add_response.py">MemoryAddResponse</a></code>
 
 ### AddAsync
 
