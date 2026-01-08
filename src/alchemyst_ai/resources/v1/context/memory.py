@@ -17,8 +17,7 @@ from ...._response import (
     async_to_streamed_response_wrapper,
 )
 from ...._base_client import make_request_options
-from ....types.v1.context import memory_add_params, memory_delete_params, memory_update_params
-from ....types.v1.context.memory_add_response import MemoryAddResponse
+from ....types.v1.context import memory_delete_params, memory_update_params
 from ....types.v1.context.memory_update_response import MemoryUpdateResponse
 
 __all__ = ["MemoryResource", "AsyncMemoryResource"]
@@ -143,55 +142,6 @@ class MemoryResource(SyncAPIResource):
             cast_to=NoneType,
         )
 
-    def add(
-        self,
-        *,
-        contents: Iterable[memory_add_params.Content],
-        session_id: str,
-        metadata: memory_add_params.Metadata | Omit = omit,
-        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
-        # The extra values given here take precedence over values defined on the client or passed to this method.
-        extra_headers: Headers | None = None,
-        extra_query: Query | None = None,
-        extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> MemoryAddResponse:
-        """
-        This endpoint adds memory (chat history) as context.
-
-        Args:
-          contents: Array of content objects. Each object must contain at least the 'content' field.
-              Additional properties are allowed.
-
-          session_id: The ID of the session
-
-          metadata: Optional metadata for the memory context. Defaults to ["default"] if not
-              provided.
-
-          extra_headers: Send extra headers
-
-          extra_query: Add additional query parameters to the request
-
-          extra_body: Add additional JSON properties to the request
-
-          timeout: Override the client-level default timeout for this request, in seconds
-        """
-        return self._post(
-            "/api/v1/context/memory/add",
-            body=maybe_transform(
-                {
-                    "contents": contents,
-                    "session_id": session_id,
-                    "metadata": metadata,
-                },
-                memory_add_params.MemoryAddParams,
-            ),
-            options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
-            ),
-            cast_to=MemoryAddResponse,
-        )
-
 
 class AsyncMemoryResource(AsyncAPIResource):
     @cached_property
@@ -312,55 +262,6 @@ class AsyncMemoryResource(AsyncAPIResource):
             cast_to=NoneType,
         )
 
-    async def add(
-        self,
-        *,
-        contents: Iterable[memory_add_params.Content],
-        session_id: str,
-        metadata: memory_add_params.Metadata | Omit = omit,
-        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
-        # The extra values given here take precedence over values defined on the client or passed to this method.
-        extra_headers: Headers | None = None,
-        extra_query: Query | None = None,
-        extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> MemoryAddResponse:
-        """
-        This endpoint adds memory (chat history) as context.
-
-        Args:
-          contents: Array of content objects. Each object must contain at least the 'content' field.
-              Additional properties are allowed.
-
-          session_id: The ID of the session
-
-          metadata: Optional metadata for the memory context. Defaults to ["default"] if not
-              provided.
-
-          extra_headers: Send extra headers
-
-          extra_query: Add additional query parameters to the request
-
-          extra_body: Add additional JSON properties to the request
-
-          timeout: Override the client-level default timeout for this request, in seconds
-        """
-        return await self._post(
-            "/api/v1/context/memory/add",
-            body=await async_maybe_transform(
-                {
-                    "contents": contents,
-                    "session_id": session_id,
-                    "metadata": metadata,
-                },
-                memory_add_params.MemoryAddParams,
-            ),
-            options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
-            ),
-            cast_to=MemoryAddResponse,
-        )
-
 
 class MemoryResourceWithRawResponse:
     def __init__(self, memory: MemoryResource) -> None:
@@ -371,9 +272,6 @@ class MemoryResourceWithRawResponse:
         )
         self.delete = to_raw_response_wrapper(
             memory.delete,
-        )
-        self.add = to_raw_response_wrapper(
-            memory.add,
         )
 
 
@@ -387,9 +285,6 @@ class AsyncMemoryResourceWithRawResponse:
         self.delete = async_to_raw_response_wrapper(
             memory.delete,
         )
-        self.add = async_to_raw_response_wrapper(
-            memory.add,
-        )
 
 
 class MemoryResourceWithStreamingResponse:
@@ -402,9 +297,6 @@ class MemoryResourceWithStreamingResponse:
         self.delete = to_streamed_response_wrapper(
             memory.delete,
         )
-        self.add = to_streamed_response_wrapper(
-            memory.add,
-        )
 
 
 class AsyncMemoryResourceWithStreamingResponse:
@@ -416,7 +308,4 @@ class AsyncMemoryResourceWithStreamingResponse:
         )
         self.delete = async_to_streamed_response_wrapper(
             memory.delete,
-        )
-        self.add = async_to_streamed_response_wrapper(
-            memory.add,
         )

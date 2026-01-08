@@ -43,6 +43,14 @@ from ...._response import (
     async_to_streamed_response_wrapper,
 )
 from ...._base_client import make_request_options
+from .add_async.add_async import (
+    AddAsyncResource,
+    AsyncAddAsyncResource,
+    AddAsyncResourceWithRawResponse,
+    AsyncAddAsyncResourceWithRawResponse,
+    AddAsyncResourceWithStreamingResponse,
+    AsyncAddAsyncResourceWithStreamingResponse,
+)
 from ....types.v1.context_add_response import ContextAddResponse
 from ....types.v1.context_search_response import ContextSearchResponse
 
@@ -61,6 +69,10 @@ class ContextResource(SyncAPIResource):
     @cached_property
     def memory(self) -> MemoryResource:
         return MemoryResource(self._client)
+
+    @cached_property
+    def add_async(self) -> AddAsyncResource:
+        return AddAsyncResource(self._client)
 
     @cached_property
     def with_raw_response(self) -> ContextResourceWithRawResponse:
@@ -294,6 +306,10 @@ class AsyncContextResource(AsyncAPIResource):
     @cached_property
     def memory(self) -> AsyncMemoryResource:
         return AsyncMemoryResource(self._client)
+
+    @cached_property
+    def add_async(self) -> AsyncAddAsyncResource:
+        return AsyncAddAsyncResource(self._client)
 
     @cached_property
     def with_raw_response(self) -> AsyncContextResourceWithRawResponse:
@@ -541,6 +557,10 @@ class ContextResourceWithRawResponse:
     def memory(self) -> MemoryResourceWithRawResponse:
         return MemoryResourceWithRawResponse(self._context.memory)
 
+    @cached_property
+    def add_async(self) -> AddAsyncResourceWithRawResponse:
+        return AddAsyncResourceWithRawResponse(self._context.add_async)
+
 
 class AsyncContextResourceWithRawResponse:
     def __init__(self, context: AsyncContextResource) -> None:
@@ -567,6 +587,10 @@ class AsyncContextResourceWithRawResponse:
     @cached_property
     def memory(self) -> AsyncMemoryResourceWithRawResponse:
         return AsyncMemoryResourceWithRawResponse(self._context.memory)
+
+    @cached_property
+    def add_async(self) -> AsyncAddAsyncResourceWithRawResponse:
+        return AsyncAddAsyncResourceWithRawResponse(self._context.add_async)
 
 
 class ContextResourceWithStreamingResponse:
@@ -595,6 +619,10 @@ class ContextResourceWithStreamingResponse:
     def memory(self) -> MemoryResourceWithStreamingResponse:
         return MemoryResourceWithStreamingResponse(self._context.memory)
 
+    @cached_property
+    def add_async(self) -> AddAsyncResourceWithStreamingResponse:
+        return AddAsyncResourceWithStreamingResponse(self._context.add_async)
+
 
 class AsyncContextResourceWithStreamingResponse:
     def __init__(self, context: AsyncContextResource) -> None:
@@ -621,3 +649,7 @@ class AsyncContextResourceWithStreamingResponse:
     @cached_property
     def memory(self) -> AsyncMemoryResourceWithStreamingResponse:
         return AsyncMemoryResourceWithStreamingResponse(self._context.memory)
+
+    @cached_property
+    def add_async(self) -> AsyncAddAsyncResourceWithStreamingResponse:
+        return AsyncAddAsyncResourceWithStreamingResponse(self._context.add_async)
