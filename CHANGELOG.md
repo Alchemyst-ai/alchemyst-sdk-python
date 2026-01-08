@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.10.0 (2026-01-08)
+
+Full Changelog: [v0.9.0...v0.10.0](https://github.com/Alchemyst-ai/alchemyst-sdk-python/compare/v0.9.0...v0.10.0)
+
+### Features
+
+* **api:** api update ([04c852d](https://github.com/Alchemyst-ai/alchemyst-sdk-python/commit/04c852da6d40f9b8ca4b157d978134cf4db180b5))
+* **api:** api update ([6b3b044](https://github.com/Alchemyst-ai/alchemyst-sdk-python/commit/6b3b0445a1d1920cc732b29155718f4c80a44b46))
+* **api:** api update ([7d5b6e4](https://github.com/Alchemyst-ai/alchemyst-sdk-python/commit/7d5b6e4828f2e010412e1a6947303d0282500fd6))
+* **api:** manual updates ([a502f74](https://github.com/Alchemyst-ai/alchemyst-sdk-python/commit/a502f74122c3183ff20d0146547349e9ecd062fc))
+* **api:** manual updates ([628e068](https://github.com/Alchemyst-ai/alchemyst-sdk-python/commit/628e068d6f4ced825a7d90a9a7730fecdfc8984a))
+
+
+### Bug Fixes
+
+* **client:** loosen auth header validation ([3d175cb](https://github.com/Alchemyst-ai/alchemyst-sdk-python/commit/3d175cb24d4ec289e8654eb2dcf4685ddb2a17af))
+
 ## 0.9.0 (2026-01-06)
 
 Full Changelog: [v0.8.1...v0.9.0](https://github.com/Alchemyst-ai/alchemyst-sdk-python/compare/v0.8.1...v0.9.0)
