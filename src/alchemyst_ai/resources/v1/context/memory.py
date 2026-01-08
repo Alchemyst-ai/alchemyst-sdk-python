@@ -147,7 +147,7 @@ class MemoryResource(SyncAPIResource):
         self,
         *,
         contents: Iterable[memory_add_params.Content],
-        memory_id: str,
+        session_id: str,
         metadata: memory_add_params.Metadata | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -163,9 +163,10 @@ class MemoryResource(SyncAPIResource):
           contents: Array of content objects. Each object must contain at least the 'content' field.
               Additional properties are allowed.
 
-          memory_id: The ID of the memory
+          session_id: The ID of the session
 
-          metadata: Optional metadata for the memory context. Defaults to ["default"]
+          metadata: Optional metadata for the memory context. Defaults to ["default"] if not
+              provided.
 
           extra_headers: Send extra headers
 
@@ -180,7 +181,7 @@ class MemoryResource(SyncAPIResource):
             body=maybe_transform(
                 {
                     "contents": contents,
-                    "memory_id": memory_id,
+                    "session_id": session_id,
                     "metadata": metadata,
                 },
                 memory_add_params.MemoryAddParams,
@@ -315,7 +316,7 @@ class AsyncMemoryResource(AsyncAPIResource):
         self,
         *,
         contents: Iterable[memory_add_params.Content],
-        memory_id: str,
+        session_id: str,
         metadata: memory_add_params.Metadata | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -331,9 +332,10 @@ class AsyncMemoryResource(AsyncAPIResource):
           contents: Array of content objects. Each object must contain at least the 'content' field.
               Additional properties are allowed.
 
-          memory_id: The ID of the memory
+          session_id: The ID of the session
 
-          metadata: Optional metadata for the memory context. Defaults to ["default"]
+          metadata: Optional metadata for the memory context. Defaults to ["default"] if not
+              provided.
 
           extra_headers: Send extra headers
 
@@ -348,7 +350,7 @@ class AsyncMemoryResource(AsyncAPIResource):
             body=await async_maybe_transform(
                 {
                     "contents": contents,
-                    "memory_id": memory_id,
+                    "session_id": session_id,
                     "metadata": metadata,
                 },
                 memory_add_params.MemoryAddParams,
