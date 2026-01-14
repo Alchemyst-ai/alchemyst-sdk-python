@@ -14,7 +14,7 @@ class MemoryUpdateParams(TypedDict, total=False):
     contents: Required[Iterable[Content]]
     """Array of updated content objects"""
 
-    memory_id: Required[Annotated[str, PropertyInfo(alias="memoryId")]]
+    session_id: Required[Annotated[str, PropertyInfo(alias="sessionId")]]
     """The ID of the memory to update"""
 
 

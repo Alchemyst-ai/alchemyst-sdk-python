@@ -25,7 +25,7 @@ class TestMemory:
     def test_method_update(self, client: AlchemystAI) -> None:
         memory = client.v1.context.memory.update(
             contents=[{}, {}],
-            memory_id="support-thread-TCK-1234",
+            session_id="support-thread-TCK-1234",
         )
         assert_matches_type(MemoryUpdateResponse, memory, path=["response"])
 
@@ -34,7 +34,7 @@ class TestMemory:
     def test_raw_response_update(self, client: AlchemystAI) -> None:
         response = client.v1.context.memory.with_raw_response.update(
             contents=[{}, {}],
-            memory_id="support-thread-TCK-1234",
+            session_id="support-thread-TCK-1234",
         )
 
         assert response.is_closed is True
@@ -47,7 +47,7 @@ class TestMemory:
     def test_streaming_response_update(self, client: AlchemystAI) -> None:
         with client.v1.context.memory.with_streaming_response.update(
             contents=[{}, {}],
-            memory_id="support-thread-TCK-1234",
+            session_id="support-thread-TCK-1234",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -169,7 +169,7 @@ class TestAsyncMemory:
     async def test_method_update(self, async_client: AsyncAlchemystAI) -> None:
         memory = await async_client.v1.context.memory.update(
             contents=[{}, {}],
-            memory_id="support-thread-TCK-1234",
+            session_id="support-thread-TCK-1234",
         )
         assert_matches_type(MemoryUpdateResponse, memory, path=["response"])
 
@@ -178,7 +178,7 @@ class TestAsyncMemory:
     async def test_raw_response_update(self, async_client: AsyncAlchemystAI) -> None:
         response = await async_client.v1.context.memory.with_raw_response.update(
             contents=[{}, {}],
-            memory_id="support-thread-TCK-1234",
+            session_id="support-thread-TCK-1234",
         )
 
         assert response.is_closed is True
@@ -191,7 +191,7 @@ class TestAsyncMemory:
     async def test_streaming_response_update(self, async_client: AsyncAlchemystAI) -> None:
         async with async_client.v1.context.memory.with_streaming_response.update(
             contents=[{}, {}],
-            memory_id="support-thread-TCK-1234",
+            session_id="support-thread-TCK-1234",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
