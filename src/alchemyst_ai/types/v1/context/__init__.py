@@ -14,3 +14,6 @@ from .view_retrieve_params import ViewRetrieveParams as ViewRetrieveParams
 from .trace_delete_response import TraceDeleteResponse as TraceDeleteResponse
 from .memory_update_response import MemoryUpdateResponse as MemoryUpdateResponse
 from .view_retrieve_response import ViewRetrieveResponse as ViewRetrieveResponse
+from .add_async_create_params import AddAsyncCreateParams as AddAsyncCreateParams
+from .add_async_cancel_response import AddAsyncCancelResponse as AddAsyncCancelResponse
+from .add_async_create_response import AddAsyncCreateResponse as AddAsyncCreateResponse
