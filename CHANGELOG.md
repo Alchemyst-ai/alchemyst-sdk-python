@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.10.1 (2026-01-27)
+
+Full Changelog: [v0.10.0...v0.10.1](https://github.com/Alchemyst-ai/alchemyst-sdk-python/compare/v0.10.0...v0.10.1)
+
+### Chores
+
+* **ci:** upgrade `actions/github-script` ([a150bcd](https://github.com/Alchemyst-ai/alchemyst-sdk-python/commit/a150bcd7c925517e649f6229932b7a03b67e78d8))
+
 ## 0.10.0 (2026-01-17)
 
 Full Changelog: [v0.9.0...v0.10.0](https://github.com/Alchemyst-ai/alchemyst-sdk-python/compare/v0.9.0...v0.10.0)
